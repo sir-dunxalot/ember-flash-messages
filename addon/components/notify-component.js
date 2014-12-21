@@ -1,8 +1,8 @@
 /* global velocity */
 
 import Em from 'ember';
-import Queue from 'ember-cli-notify/queue';
-import insert from 'ember-cli-notify/utils/computed/insert';
+import Queue from 'em-notify/queue';
+import insert from 'em-notify/utils/computed/insert';
 
 export default Em.Component.extend({
   animationLibrary: 'jQuery',
@@ -63,17 +63,17 @@ export default Em.Component.extend({
   but this is an example of how you can use Notify with pre-determined
   message types, each with their own icon */
 
-  // icons: {
+  icons: {
   //   error: 'icon-incorrect',
   //   info: 'icon-info',
   //   success: 'icon-correct',
   //   warning: 'icon-warning',
-  // },
+  },
 
   _checkForVendor: function() {
     var lib = this.get('animationLibrary');
 
-    Em.assert('The ' + lib + ' library has not been loaded. Please specify a different value for ember-cli-notify\'s animationLibrary option.', window[lib]);
+    Em.assert('The ' + lib + ' library has not been loaded. Please specify a different value for em-notify\'s animationLibrary option.', window[lib]);
   }.observes('animationLibrary'),
 
   _hideOnLoad: function() {

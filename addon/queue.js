@@ -1,6 +1,6 @@
 import Em from 'ember';
-import Message from 'ember-cli-notify/message';
-import defaultFor from 'ember-cli-notify/utils/default-for';
+import Message from 'em-notify/message';
+import defaultFor from 'em-notify/utils/default-for';
 
 export default Em.ArrayProxy.extend({
   content: Em.A(),

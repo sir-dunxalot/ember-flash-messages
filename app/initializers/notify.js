@@ -1,3 +1,3 @@
-import Notify from 'ember-cli-notify/initializers/notify';
+import Notify from 'em-notify/initializers/notify';
 
 export default Notify;

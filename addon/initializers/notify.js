@@ -1,5 +1,5 @@
 import Em from 'ember';
-import Queue from 'ember-cli-notify/queue';
+import Queue from 'em-notify/queue';
 
 export default {
   name: 'notify',

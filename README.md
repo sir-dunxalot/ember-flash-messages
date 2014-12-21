@@ -7,7 +7,7 @@ Installation
 ------
 
 ```
-npm install ember-cli-notify --save-dev
+npm install em-notify --save-dev
 ```
 
 Usage
