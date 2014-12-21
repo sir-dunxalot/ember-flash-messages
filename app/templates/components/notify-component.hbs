@@ -1,0 +1,20 @@
+{{#each queue.nonTimedMessages}}
+  {{type}}
+  {{message}}
+{{/each}}
+
+{{#with currentMessage}}
+
+  <dt>
+    {{#if iconClass}}
+      <span {{bind-attr class="iconClass"}}></span>
+    {{/if}}
+
+    <span {{bind-attr class='view.hiddenClass'}}>{{type}}</span>
+  </dt>
+
+  <dd>
+    {{message}}
+  </dd>
+
+{{/with}}

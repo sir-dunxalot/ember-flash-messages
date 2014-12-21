@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-notify",
-  "version": "0.0.0",
+  "version": "0.3.5",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -10,7 +10,10 @@
     "build": "ember build",
     "test": "ember test"
   },
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sir-dunxalot/notify"
+  },
   "engines": {
     "node": ">= 0.10.0"
   },
@@ -31,7 +34,7 @@
     "express": "^4.8.5",
     "glob": "^4.0.5"
   },
-  "description": "The default blueprint for ember-cli addons.",
+  "description": "A small notification library for showing flash messages in Ember CLI apps",
   "keywords": [
     "ember-addon"
   ],
