@@ -2,7 +2,7 @@
 
 import Em from 'ember';
 import Queue from 'em-notify/queue';
-import insert from 'em-notify/utils/computed/insert';
+// import insert from 'em-notify/utils/computed/insert';
 
 export default Em.Component.extend({
   animationLibrary: 'jQuery',
@@ -11,7 +11,7 @@ export default Em.Component.extend({
   currentMessage: Em.computed.oneWay('queue.currentMessage'),
   customHideMethod: null,
   customShowMethod: null,
-  hiddenClass: insert('classPrefix', '{{value}}-hidden'),
+  // hiddenClass: insert('classPrefix', '{{value}}-hidden'),
   interval: Em.computed.alias('queue.interval'),
   tagName: 'dl',
 

@@ -1,6 +1,6 @@
 {{#each queue.nonTimedMessages}}
   {{type}}
-  {{message}}
+  {{content}}
 {{/each}}
 
 {{#with currentMessage}}
@@ -10,11 +10,11 @@
       <span {{bind-attr class="iconClass"}}></span>
     {{/if}}
 
-    <span {{bind-attr class='view.hiddenClass'}}>{{type}}</span>
+    <span data-test="notify-type">{{type}}</span>
   </dt>
 
-  <dd>
-    {{message}}
+  <dd data-test="notify-content">
+    {{content}}
   </dd>
 
 {{/with}}

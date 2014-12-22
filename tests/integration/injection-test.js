@@ -12,8 +12,7 @@ module('Notify initializer injections', {
   },
 
   teardown: function() {
-    Em.run(App, 'destroy'); // Or reset?
-    // Em.run(App, App.destroy); // Or reset?
+    Em.run(App, 'reset');
   }
 
 });
