@@ -8,6 +8,12 @@ var message = {
   type: 'success'
 };
 
+var secondMessage = {
+  content: 'well done',
+  duration: 3000, // Default
+  type: 'error'
+};
+
 var App, container, controller;
 
 module('Notify queue', {
@@ -29,35 +35,57 @@ test('Notify component should render', function() {
   visit('/');
 
   andThen(function() {
-    var notifyElements = find('.notify');
-    var notify = Em.$(notifyElements[0]);
+    var notify = inspect('component');
 
-    equal(notify.length, 1, 'Notify component should render on the page');
+    ok(notify, 'Notify component should render on the page');
     equal(notify.text().trim(), '', 'Notify component should render empty');
 
     Em.run(function() {
       controller.notify(message['type'], message['content']);
     });
 
-    equal(inspect('type').html().trim(), message['type'], 'Notify type should render');
-    equal(inspect('content').html().trim(), message['content'], 'Notify content should render');
+    ['content', 'type'].forEach(function(property) {
+      var report = 'Notify ' + property + ' should render';
+
+      equal(inspect(property).html().trim(), message[property], report);
+    });
   });
 
 });
 
-// test('Notify component should display message', function() {
+test('Notify component should display multiple messages in sequence', function() {
 
-//   visit('/');
+  visit('/');
 
-//   andThen(function() {
-//     var notifyElements = find('.notify');
-//     var notify = Em.$(notifyElements[0]);
+  andThen(function() {
+    var notify = inspect('component');
 
-//     controller.notify(message['type'], message['content']);
+    Em.run(function() {
+      controller.notify(message['type'], message['content']);
+      controller.notify(secondMessage['type'], secondMessage['content']);
+    });
 
-//     Em.run.later(controller, function() {
-//       console.log(notify.html());
-//     }, 500);
-//   });
+    ['content', 'type'].forEach(function(property) {
+      var report = 'Notify first message: ' + property + ' should render';
 
-// });
+      equal(inspect(property).html().trim(), message[property], report);
+    });
+
+    Em.run.later(function() {
+      ['content', 'type'].forEach(function(property) {
+        var report = 'Notify first message: ' + property + ' should not have changed yet';
+
+        notEqual(inspect(property).html().trim(), secondMessage[property], report);
+      });
+    }, message['duration'] - 100);
+
+    Em.run.later(function() {
+      ['content', 'type'].forEach(function(property) {
+        var report = 'Notify second message: ' + property + ' should change';
+
+        equal(inspect(property).html().trim(), secondMessage[property], report);
+      });
+    }, message['duration']);
+  });
+
+});

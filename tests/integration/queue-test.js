@@ -46,10 +46,10 @@ test('Message should be pushed to queue', function() {
       equal(Queue.get('length'), 0, 'Message should be removed from queue after ' + duration + 'ms');
     }, duration);
 
-    ['content', 'duration', 'type'].forEach(function(option) {
-      var value = Queue.get('currentMessage.' + option);
+    ['content', 'duration', 'type'].forEach(function(property) {
+      var report = property.capitalize() + ' should be "' + message[property] + '"';
 
-      equal(value, message[option], option.capitalize() + ' should be "' + message[option] + '"');
+      equal(Queue.get('currentMessage.' + property), message[property], report);
     });
 
   });

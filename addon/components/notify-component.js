@@ -6,11 +6,13 @@ import Queue from 'em-notify/queue';
 
 export default Em.Component.extend({
   animationLibrary: 'jQuery',
+  attributeBindings: ['dataTest:data-test'],
   classNameBindings: ['typeClass'],
   classPrefix: 'notify',
   currentMessage: Em.computed.oneWay('queue.currentMessage'),
   customHideMethod: null,
   customShowMethod: null,
+  dataTest: 'notify-component',
   // hiddenClass: insert('classPrefix', '{{value}}-hidden'),
   interval: Em.computed.alias('queue.interval'),
   tagName: 'dl',
