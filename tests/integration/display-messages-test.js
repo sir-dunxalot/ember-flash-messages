@@ -1,12 +1,7 @@
 import Em from 'ember';
 import { test } from 'ember-qunit';
+import message from '../helpers/message';
 import startApp from '../helpers/start-app';
-
-var message = {
-  content: 'congratulations',
-  duration: 3000, // Default
-  type: 'success'
-};
 
 var secondMessage = {
   content: 'well done',
@@ -16,7 +11,7 @@ var secondMessage = {
 
 var App, container, controller;
 
-module('Notify queue', {
+module('Notify - display messages', {
   needs: ['component:notify-message'],
   setup: function() {
     App = startApp();
@@ -29,6 +24,8 @@ module('Notify queue', {
   }
 
 });
+
+
 
 test('Notify component should render', function() {
 
@@ -52,6 +49,8 @@ test('Notify component should render', function() {
   });
 
 });
+
+
 
 test('Notify component should display multiple messages in sequence', function() {
 

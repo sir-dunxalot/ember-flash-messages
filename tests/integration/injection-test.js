@@ -4,7 +4,7 @@ import startApp from '../helpers/start-app';
 
 var App, container;
 
-module('Notify initializer injections', {
+module('Notify - inject method', {
 
   setup: function() {
     App = startApp();

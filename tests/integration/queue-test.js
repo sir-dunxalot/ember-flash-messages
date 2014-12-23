@@ -1,17 +1,12 @@
 import Em from 'ember';
 import { test } from 'ember-qunit';
+import message from '../helpers/message';
 import startApp from '../helpers/start-app';
 import Queue from 'em-notify/queue';
 
-var message = {
-  content: 'congratulations',
-  duration: 3000, // Default
-  type: 'success'
-};
-
 var App, container, controller;
 
-module('Notify queue', {
+module('Notify - manage queue', {
 
   setup: function() {
     App = startApp();

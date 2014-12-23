@@ -5,7 +5,7 @@ import config from '../../config/environment';
 
 /* Custom helpers */
 
-import inspcet from './inspect';
+import inspect from './inspect';
 
 export default function startApp(attrs) {
   var App;
