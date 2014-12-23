@@ -4,7 +4,7 @@ import defaultFor from 'em-notify/utils/default-for';
 
 export default Em.ArrayProxy.extend({
   content: Em.A(),
-  currentMessage: Em.computed.oneWay('content.firstObject'),
+  currentMessage: Em.computed.oneWay('firstObject'),
   interval: 3000, // Duration to show each message
 
   pushMessage: function(type, content, duration) {
@@ -30,13 +30,12 @@ export default Em.ArrayProxy.extend({
   },
 
   _queueDidChange: function() {
-    var messageDuration = this.get('currentMessage.duration');
-    var duration = defaultFor(messageDuration, this.get('interval'));
+    var duration = this.get('currentMessage.duration');
 
-    Em.run.throttle(this, this._middleman, duration, duration);
-  }.observes('content.[]'),
+    Em.run.throttle(this, this._delayRemoval, duration, duration);
+  }.observes('currentMessage'),
 
-  _middleman: function(duration) {
+  _delayRemoval: function(duration) {
     Em.run.later(this, this.removeMessage, duration);
   },
 

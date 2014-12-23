@@ -5,6 +5,10 @@ var EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 
 var app = new EmberAddon();
 
+// Dependencies below are for testing purposes only
+
+app.import(app.bowerDirectory + '/velocity/velocity.min.js');
+
 // Use `app.import` to add additional libraries to the generated
 // output files.
 //

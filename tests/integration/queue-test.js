@@ -1,5 +1,5 @@
 import Em from 'ember';
-import { test, log } from 'ember-qunit';
+import { test } from 'ember-qunit';
 import startApp from '../helpers/start-app';
 import Queue from 'em-notify/queue';
 
@@ -27,7 +27,7 @@ module('Notify queue', {
 
 test('Message should be pushed to queue', function() {
   var duration = message['duration'];
-  var earlyDuration = duration - 10;
+  var earlyDuration = duration - 100;
 
   visit('/');
 

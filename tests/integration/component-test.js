@@ -1,5 +1,5 @@
 import Em from 'ember';
-import { test, log } from 'ember-qunit';
+import { test } from 'ember-qunit';
 import startApp from '../helpers/start-app';
 
 var message = {
@@ -17,7 +17,7 @@ var secondMessage = {
 var App, container, controller;
 
 module('Notify queue', {
-
+  needs: ['component:notify-message'],
   setup: function() {
     App = startApp();
     container = App.__container__;
@@ -35,7 +35,7 @@ test('Notify component should render', function() {
   visit('/');
 
   andThen(function() {
-    var notify = inspect('component');
+    var notify = inspect('queue');
 
     ok(notify, 'Notify component should render on the page');
     equal(notify.text().trim(), '', 'Notify component should render empty');
@@ -58,12 +58,16 @@ test('Notify component should display multiple messages in sequence', function()
   visit('/');
 
   andThen(function() {
-    var notify = inspect('component');
+    var notify = inspect('queue');
+
+    /* Send messages to queue */
 
     Em.run(function() {
       controller.notify(message['type'], message['content']);
       controller.notify(secondMessage['type'], secondMessage['content']);
     });
+
+    /* Check first message displays */
 
     ['content', 'type'].forEach(function(property) {
       var report = 'Notify first message: ' + property + ' should render';
@@ -78,6 +82,8 @@ test('Notify component should display multiple messages in sequence', function()
         notEqual(inspect(property).html().trim(), secondMessage[property], report);
       });
     }, message['duration'] - 100);
+
+    /* Check second message displays after change */
 
     Em.run.later(function() {
       ['content', 'type'].forEach(function(property) {

@@ -5,8 +5,8 @@ export default {
   name: 'notify',
 
   initialize: function(container, app) {
-    var notify = function(type, message, duration) {
-      Queue.pushMessage(type, message, duration);
+    var notify = function(type, content, duration) {
+      Queue.pushMessage(type, content, duration);
     };
 
     app.register('notify:main', notify, { instantiate: false });
