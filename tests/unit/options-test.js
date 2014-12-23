@@ -1,6 +1,7 @@
 import Em from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import { inspect } from '../helpers/inspect';
+import { resetQueue } from '../helpers/reset-queue';
 
 var message = {
   content: 'congratulations',
@@ -21,10 +22,10 @@ var component;
 
 moduleForComponent('notify-queue', 'Notify options', {
   needs: ['component:notify-message'],
+
   setup: function() {
     component = this.subject();
-    this.append();
-  },
+  }
 });
 
 test('Notify default options', function() {
@@ -37,6 +38,7 @@ test('Notify default options', function() {
 });
 
 test('Notify classPrefix option', function() {
+  var component = this.subject();
   var classPrefix = component.get('classPrefix');
   var newClassPrefix = 'squid';
 
@@ -63,23 +65,28 @@ test('Notify classPrefix option', function() {
 
   /* Check component class */
 
-  Em.run(function() {
+  Em.run(this, function() {
     component.get('queue').pushMessage(message['type'], message['content']);
   });
 
   ok(this.$().hasClass(newClassPrefix + '-' + message['type']),
     'Component should have correct type class');
 
+  resetQueue(component);
+
 });
 
 test('Notify animationLibrary option', function() {
   var newAnimationLibrary = 'velocity';
+  var component = this.subject();
 
   /* Change animationLibrary */
 
   Em.run(this, function() {
     component.set('animationLibrary', newAnimationLibrary);
   });
+
+  var element = this.append();
 
   equal(component.get('animationLibrary'), newAnimationLibrary,
     'Should have new animationLibrary value');
@@ -90,16 +97,17 @@ test('Notify animationLibrary option', function() {
     component.get('queue').pushMessage(message['type'], message['content']);
   });
 
-  ok(this.$().hasClass('velocity-animating'),
+  ok(element.hasClass('velocity-animating'),
       'Velocity should animate notify');
 
-  // Need better testing for bar displaying
-
+  resetQueue(component);
 });
 
 
 test('Notify interval option', function() {
   var newInterval = 1000;
+  var component = this.subject();
+  var element = this.append();
 
   /* Change animationLibrary */
 
@@ -119,10 +127,8 @@ test('Notify interval option', function() {
     component.get('queue').pushMessage(message['type'], message['content']);
   });
 
-  Em.run.next(function() {
   equal(component.get('currentMessage.duration'), newInterval,
     'Pushed message should have new interval value');
-  });
 
-
+  resetQueue(component);
 });

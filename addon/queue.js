@@ -7,6 +7,10 @@ export default Em.ArrayProxy.extend({
   currentMessage: Em.computed.oneWay('firstObject'),
   interval: 3000, // Duration to show each message
 
+  clear: function() {
+    this.set('content', Em.A());
+  },
+
   pushMessage: function(type, content, duration) {
     duration = defaultFor(duration, this.get('interval'));
 

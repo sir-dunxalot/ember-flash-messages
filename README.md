@@ -1,6 +1,8 @@
 Notify
 ======
 
+[![Build Status](https://travis-ci.org/sir-dunxalot/notify.svg?branch=overhaul)](https://travis-ci.org/sir-dunxalot/notify)
+
 A small Ember CLI notification library to show flash messages (success, warning, error, etc) to the user. Built off the idea of [cheapRoc/ember-flash](https://github.com/cheapRoc/ember-flash).
 
 Installation
