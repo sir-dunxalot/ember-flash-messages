@@ -71,3 +71,14 @@ The test suite can be ran as follows:
 ```
 ember test
 ```
+
+### Working on wiki documentation:
+
+Clone the repo as above. Then run:
+
+```
+cd docs
+git submodule update --init --recursive
+```
+
+You can open a PR to the documentation, as usual.

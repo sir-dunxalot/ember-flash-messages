@@ -99,9 +99,9 @@ test('animationLibrary option', function() {
   pushMessage(message['type'], message['content']);
 
   ok(this.$().hasClass('velocity-animating'),
-    'Velocity should animate notify');
+    'Velocity should animate the flash message');
 
-  // TODO - better test for whether notify shows or not
+  // TODO - better test for whether the flash message shows or not
 
 });
 
@@ -136,7 +136,7 @@ test('customShowMethod option', function() {
 
   component.set('customShowMethod', function(queueComponent) {
 
-    equal(queueComponent.get('dataTest'), 'flash-messages-queue',
+    equal(queueComponent.get('dataTest'), 'flash-queue',
       'Component should be passed into customShowMethod');
 
     component.set('itWorked', true);
@@ -161,7 +161,7 @@ test('customHideMethod option', function() {
 
   component.set('customHideMethod', function(queueComponent) {
 
-    equal(queueComponent.get('dataTest'), 'flash-messages-queue', 'Component should be passed into customShowMethod');
+    equal(queueComponent.get('dataTest'), 'flash-queue', 'Component should be passed into customShowMethod');
 
     component.set('itWorked', true);
   });

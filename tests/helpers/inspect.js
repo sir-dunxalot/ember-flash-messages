@@ -8,7 +8,7 @@ export function inspect(app, name, useJquery) {
     name = app;
   }
 
-  element = find('[data-test="flash-messages-' + name + '"]')[0];
+  element = find('[data-test="flash-' + name + '"]')[0];
 
   if (useJquery === false) {
     return element;

@@ -7,11 +7,11 @@ export default Em.Component.extend({
   animationLibrary: 'jQuery',
   attributeBindings: ['dataTest:data-test'],
   classNameBindings: ['className'],
-  classPrefix: 'flash_messages',
+  classPrefix: 'flash',
   currentMessage: Em.computed.oneWay('queue.currentMessage'),
   customHideMethod: null,
   customShowMethod: null,
-  dataTest: 'flash-messages-queue',
+  dataTest: 'flash-queue',
   interval: Em.computed.alias('queue.interval'),
 
   className: function() {
@@ -63,7 +63,7 @@ export default Em.Component.extend({
   _checkForVendor: function() {
     var lib = this.get('animationLibrary');
 
-    Em.warn('The ' + lib + ' library has not been loaded. Please specify a different value for em-notify\'s animationLibrary option.', window[lib]);
+    Em.warn('The ' + lib + ' library has not been loaded. Please specify a different value for the animationLibrary option on {{message-queue}}', window[lib]);
   }.observes('animationLibrary'),
 
   _hideOnLoad: function() {

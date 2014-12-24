@@ -29,7 +29,7 @@ export default Em.ArrayProxy.extend({
     if (this.indexOf(message) > -1) {
       this.removeObject(message);
     } else {
-      Em.warn('Message not found in notify queue: ' + JSON.stringify(message));
+      Em.warn('Message not found in message queue: ' + JSON.stringify(message));
     }
   },
 

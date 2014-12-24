@@ -4,10 +4,10 @@ import insert from '../utils/computed/insert';
 export default Em.Component.extend({
   attributeBindings: ['dataTest:data-test'],
   classNamesBindings: ['className'],
-  classPrefix: 'flash_messages',
+  classPrefix: 'flash',
   content: null,
   contentClass: insert('classPrefix', '{{value}}-content'),
-  dataTest: 'flash-messages-message',
+  dataTest: 'flash-message',
   iconClassFormat: 'icon-{{type}}',
   tagName: 'dl',
   type: null,
