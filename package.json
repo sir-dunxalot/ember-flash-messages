@@ -1,6 +1,6 @@
 {
   "name": "em-notify",
-  "version": "0.3.5",
+  "version": "0.3.7",
   "directories": {
     "doc": "doc",
     "test": "tests"
