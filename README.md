@@ -32,6 +32,7 @@ Documentation including installation, usage, and customizable options is availab
 
 ## Features in the Works
 
+- Demo (p1)
 - Message component will accept block content
 - Message component content property will accept Handlebars
 - Docs on 'how to extend and override classes and templates'
@@ -59,7 +60,7 @@ If you have any issues or feature requests/ideas, please [open an issue](https:/
 
 ## Development
 
-```
+```shell
 git clone https://github.com/sir-dunxalot/ember-flash-messages.git
 npm install
 bower install
@@ -68,7 +69,7 @@ ember s
 
 The test suite can be ran as follows:
 
-```
+```shell
 ember test
 ```
 
@@ -76,9 +77,9 @@ ember test
 
 Clone the repo as above. Then run:
 
-```
+```shell
 cd docs
-git submodule update --init --recursive // Updates submodule
+git submodule update --init --recursive # Updates submodule
 ```
 
 You can open a PR to the documentation, as usual. Please note it is technically a seperate git repo.
