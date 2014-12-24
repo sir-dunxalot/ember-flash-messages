@@ -1,4 +1,4 @@
-Ember Flash Messages [![Build Status](https://travis-ci.org/sir-dunxalot/ember-flash-messages.svg?branch=master)](https://travis-ci.org/sir-dunxalot/ember-flash-messages)
+Ember Flash Messages [![Build Status](https://travis-ci.org/sir-dunxalot/ember-flash-messages.svg?branch=master)](https://travis-ci.org/sir-dunxalot/ember-flash-messages) [![Dependencies Status](https://david-dm.org/sir-dunxalot/ember-flash-messages.png)](https://www.npmjs.com/package/ember-flash-messages)
 ======
 
 Ember Flash Messages (`ember-flash-messages`) is a customizable, lightweight Ember.js addon for displaying flash messages to users.
@@ -35,7 +35,7 @@ Documentation including installation, usage, and customizable options is availab
 - Message component will accept block content
 - Message component content property will accept Handlebars
 - Docs on 'how to extend and override classes and templates'
-- Basic CSS made available
+- Basic CSS made importable in Brocfile
 - The `clear()` method on the queue will be made public
 - You will be able to push static messages to the message queue that will require being 'closed' by the user
 - You will be able to specify 'css' as an animation option
@@ -78,7 +78,7 @@ Clone the repo as above. Then run:
 
 ```
 cd docs
-git submodule update --init --recursive
+git submodule update --init --recursive // Updates submodule
 ```
 
-You can open a PR to the documentation, as usual.
+You can open a PR to the documentation, as usual. Please note it is technically a seperate git repo.
