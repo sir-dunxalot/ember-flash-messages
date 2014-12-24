@@ -1,15 +1,7 @@
 import Em from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
+import { inspect } from '../../helpers/inspect';
 import message from '../../helpers/message';
-
-/*
-Options to test:
-- interval
-- classPrefix
-- animationLibrary
-- customShowMethod
-- customHideMethod
-*/
 
 var component;
 
@@ -40,7 +32,7 @@ moduleForComponent('notify-queue', 'Notify - queue component', {
 
 
 test('Default options', function() {
-  var requirements = ['animationLibrary', 'classPrefix', 'interval'];
+  var requirements = ['animationLibrary', 'classPrefix', 'iconClassFormat', 'interval'];
   var options = ['customHideMethod', 'customShowMethod'];
 
   requirements.forEach(function(property) {
@@ -140,11 +132,15 @@ test('interval option', function() {
 
 
 test('customShowMethod option', function() {
-
   component.set('itWorked', false);
 
-  component.set('customShowMethod', function() {
+  component.set('customShowMethod', function(queueComponent) {
+
+    equal(queueComponent.get('dataTest'), 'notify-queue',
+      'Component should be passed into customShowMethod');
+
     component.set('itWorked', true);
+
   });
 
   this.append();
@@ -163,7 +159,10 @@ test('customHideMethod option', function() {
 
   component.set('itWorked', false);
 
-  component.set('customHideMethod', function() {
+  component.set('customHideMethod', function(queueComponent) {
+
+    equal(queueComponent.get('dataTest'), 'notify-queue', 'Component should be passed into customShowMethod');
+
     component.set('itWorked', true);
   });
 

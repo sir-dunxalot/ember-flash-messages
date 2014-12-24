@@ -3,7 +3,7 @@ import Em from 'ember';
 export function inspect(app, name, useJquery) {
   var element;
 
-  if (!name) {
+  if (!name || typeof name === 'boolean') {
     useJquery = name;
     name = app;
   }
