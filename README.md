@@ -1,99 +1,277 @@
-Notify
+Notify [![Build Status](https://travis-ci.org/sir-dunxalot/notify.svg?branch=overhaul)](https://travis-ci.org/sir-dunxalot/notify)
 ======
 
-[![Build Status](https://travis-ci.org/sir-dunxalot/notify.svg?branch=overhaul)](https://travis-ci.org/sir-dunxalot/notify)
+Notify (`em-notify`) is a highly customizable, lightweight ember addon for displaying flash messages to users.
 
-A small Ember CLI notification library to show flash messages (success, warning, error, etc) to the user. Built off the idea of [cheapRoc/ember-flash](https://github.com/cheapRoc/ember-flash).
+Contents
+------
+
+- Features
+- Installation
+- Usage
+- Options
+- In the Works
+- Issues
+
+
+Features
+------
+
+- Messages queue and display one at a time
+- Works out-of-the-box in any route, controller, or view
+- No framework requirements (Bootstrap, jquery animate, etc)
+- Called `this.notify(type, content [, duration])`
+- Component made available for static alerts
+- Works in application or route-specific templates
+- Default and message-specific durations
+- Semantic markup
+
+[See what's in the works here](https://github.com/sir-dunxalot/notify).
 
 Installation
 ------
 
 ```
-npm install em-notify --save-dev
+npm install --save-dev em-notify
 ```
 
 Usage
 ------
 
-Add the notify view to your template(s):
+Simply add the notify component to your application template:
 
-```hbs
+```
+// templates/application.hbs
+{{notify-queue}}
+```
+
+You can also add the queue to any route template(s):
+
+```
+// templates/example-route.hbs
 {{notify}}
 ```
 
-Messages persist through route transitions so you can place `{{notify}}` in your application template or route-specific templates.
+Then send your message to the notify queue from any route, controller, or view:
 
-To show a message from any route, controller, or view call the following method:
+```
+// controllers/example-form.js
+import Em from 'ember';
 
-```js
-// this.notify(<type>, <message>, [<duration>])
-this.notify('warning','Oh no, you cannot do this!');
+export default Em.ObjectController.extend({
+
+  formSubmitted: function() {
+    this.notify('success', 'Congratulations! Your changes have been saved');
+  }
+
+});
 ```
 
-The type can be anything you like and is transformed to a prefixed class (e.g. .notify-warning or .notify-success). The message is the text displayed to the user.
+Done!
 
-The following html will be rendered and shown for three seconds, wherever you placed the notify helper:
+By default the message will be shown for 3000ms. You can change the duration the message is shown by passing a third, optional parameter:
 
-```html
-<dl class="notify-warning">
-  <dt class="hidden">Warning</dt><!-- Hidden-->
-  <dd>Oh no, you cannot do this!</dd>
-</dl>
+```
+// controllers/example-form.js
+import Em from 'ember';
+
+export default Em.ObjectController.extend({
+
+  formSubmitted: function() {
+    this.notify('success', 'Congratulations! Your changes have been saved', 1000);
+  }
+
+});
 ```
 
-If you include icon classes, like in [notify.js](https://github.com/sir-dunxalot/notify/blob/master/notify.js#L112), the html output will look like this:
+For information on how to change the default message duration, please see the [Notify options](TODO).
 
-```html
-<dl class="notify-warning">
-  <dt>
-    <i class="icon-warning"></i>
-    <span class="hidden">Warning</span><!-- Hidden-->
-  </dt>
-  <dd>Oh no, you cannot do this!</dd>
-</dl>
+
+### Individual messages
+
+Static messages can be added to your templates using a provided component:
+
+```hbs
+{{notify-message type='success' content='Congratulations! It worked'}}
+```
+
+Message not displayed via the `notify()` method will *not* be timed. The `{{notify-message}}` component will display until you remove it manually. You could use an if statement. For example:
+
+```
+{{#if loginError}}
+  {{notify-message type='error' content=loginError}}
+{{/if}}
 ```
 
 Options
 ------
 
-**Message Interval**
+Currently there are five customizable options, which can all be set on the queue component. You can see the options with their default values below:
 
-By default, all messages will be shown for 3000ms. You can override the default for all messages by specifying an interval, in milliseconds, on the Handlebars helper. For example:
-
-```
-{{notify interval=1000}} // 1000ms
-```
-
-Each message will be shown, in turn, to the user for the time specified for each message - only one message is shown at a time.
-
-You can override the default for specifi routes if `{{notify}}` is placed in your route's templates (not your application template). For example
-
-If your index template is `{{notify}}` and your about template is `{{notify interval=500}}` and you show a notification on both routes, when the user starts on the index route and immediately transitions to the about route they will see the index notification for 3000ms (the default) and the about notification will be shown afterwards for only 500ms.
-
-`{{em-notify}}` in the application template will follow whatever options you specify in the route's template. Thus, if, in the above example, you placed `{{em-notify}}` in your application template aswell, the behaviour you will not change - you will just see two notification messages instead of one.
-
-**Individual Message Duration**
-
-You can make specific message notifications show for any amount of milliseconds by specifying a third argument in the notify method. For example:
-
-```
-this.notify('info', 'This will not show for very long', 500); // Show for 500ms only
-this.notify('warning', 'This will show for a while!', 10000); // Show for 10 seconds
+```hbs
+{{#notify-queue
+  animationLibrary='jQuery'
+  classPrefix='notify'
+  interval=3000
+  customHideMethod=null // overrides animationLibrary
+  customShowMethod=null // overrides animationLibrary
+}}
 ```
 
-This will automatically override any default value you have specified.
+- [animationLibrary]()
+- [classPrefix]()
+- [interval]()
+- [customHideMethod]()
+- [customShowMethod]()
 
-**Class prefix**
 
-By default, the notify template will have the class `.notify`, or a modification based on the type of message being shown (e.g. `.notify-info` or `.notify-whoops`). You can change this by specifying the `classPrefix` option on the handlebars helper, as follows:
+### `animationLibrary`
+
+The name of the library you would like to use to animate hiding and showing of messages.
 
 ```
-{{notify classPrefix='alert'}}
+{{notify-queue animationLibrary='jQuery'}}
 ```
 
-Now, all classes will be prefixed by `alert` instead of `notify`. Thus, your classes will look like `.alert-info` or `alert-whoops`.
+Currently supported values are `jQuery`, `velocity`, and `none`.
 
-Questions and Issues
+- If you use `jQuery` you need not do anything.
+- If you use `velocity` you will need to include the Velocity.js library in your application. Install it with `bower install --save velocity` and include the main velocity file via your `Brocfile.js`.
+- If you use `none` the messages will simply hide and show with no animation
+
+Please note if you set a `customHideMethod` or `customShowMethod` then the value of `animationLibrary` will not take effect.
+
+Property | Value
+---------|--------
+name     | animationLibrary
+type     | String
+default  | 'jQuery'
+
+
+### `classPrefix`
+
+The text to prefix all element classes with. The default value, `notify` result in markup with classes like `.notify`, `.notify-success`, `.notify_message`, `.notify_content`, etc.
+
+```
+{{notify-queue classPrefix='notify'}}
+```
+
+For example, if you set `classPrefix='alert'`, the element classes will look like `.alert`, `.alert-success`, etc.
+
+For more information on the classes available for styling, please see here.
+
+Property | Value
+---------|--------
+name     | classPrefix
+type     | String
+default  | 'notify'
+
+
+### `interval`
+
+The default length to show each message for.
+
+```
+{{notify-queue interval=3000}}
+```
+
+This value will be overridden for individual messages if you pass a `duration` option with the call to `this.notify()`. For example:
+
+```
+// In the view
+this.notify('success', 'Well done!', 5000);
+```
+
+```
+// The application template
+{{notify-queue interval=200}}
+```
+
+... In this example the message will show for 5000ms. The individual message always takes precedence over the default properties set on `{{{notify-queue}}`.
+
+Property | Value
+---------|--------
+name     | interval
+type     | Number
+default  | 3000
+
+
+### `customHideMethod`
+
+A method called when a message is supposed to be hidden. This method will be called instead of one of the built in animation methods.
+
+```
+// views/example.js
+import Em from 'ember';
+
+export default Em.View.extend({
+  hideMessage: function(notifyQueueComponent) {
+    // Do something. For example:
+    notifyQueueComponent.$().fadeIn('fast');
+  }
+});
+```
+
+```
+{{notify-queue customHideMethod=view.hideMessage}}
+```
+
+Property | Value
+---------|--------
+name     | customHideMethod
+type     | Function
+default  | null
+
+
+### `customShowMethod`
+
+A method called when a message is supposed to be shown. This method will be called instead of one of the built in animation methods.
+
+```
+// views/example.js
+import Em from 'ember';
+
+export default Em.View.extend({
+  showMessage: function(notifyQueueComponent) {
+    // Do something. For example:
+    notifyQueueComponent.$().fadeIn('fast');
+  }
+});
+```
+
+```
+{{notify-queue customShowMethod=view.showMessage}}
+```
+
+Property | Value
+---------|--------
+name     | customShowMethod
+type     | Function
+default  | null
+
+
+In the Works
 ------
 
-Please open an issue or submit a PR.
+- Message component to accept block content (ISSUE LINK)
+- Message component to accept Handlebars as a string
+- Custom components and classes made easily extendible
+- Basic CSS made available
+- Clear queue method made public
+- Non-current-message messages should be in the template but hidden (?)
+- Css animation option (?)
+- customHideMethod to hideMethod or something like that
+- Public events
+- Explanation of CSS
+- Test for passing component into customShowMethod
+
+Issues and Development
+------
+
+Please [open an issue]() or submit a PR.
+
+### Tests
+
+```
+ember test
+```

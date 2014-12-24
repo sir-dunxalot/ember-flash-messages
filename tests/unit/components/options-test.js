@@ -17,13 +17,13 @@ var pushMessage = function (type, message, duration) {
   Em.run(function() {
     component.get('queue').pushMessage(type, message, duration);
   });
-}
+};
 
 var resetQueue = function() {
   Em.run(function() {
     component.get('queue').clear();
   });
-}
+};
 
 moduleForComponent('notify-queue', 'Notify - queue component', {
   needs: ['component:notify-message'],

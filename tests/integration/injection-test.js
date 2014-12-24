@@ -17,17 +17,23 @@ module('Notify - inject method', {
 
 });
 
+
+
 test('Notify method should be on routes', function() {
   var route = container.lookup('route:index');
 
   ok(route.notify);
 });
 
+
+
 test('Notify method should be on controllers', function() {
   var controller = container.lookup('controller:index');
 
   ok(controller.notify);
 });
+
+
 
 test('Notify method should be on views', function() {
   var view = container.lookup('view:index');

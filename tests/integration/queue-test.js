@@ -20,6 +20,8 @@ module('Notify - manage queue', {
 
 });
 
+
+
 test('Message should be pushed to queue', function() {
   var duration = message['duration'];
   var earlyDuration = duration - 100;
