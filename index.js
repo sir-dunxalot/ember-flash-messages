@@ -2,5 +2,5 @@
 'use strict';
 
 module.exports = {
-  name: 'em-notify'
+  name: 'ember-flash-messages'
 };

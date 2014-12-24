@@ -1,13 +1,13 @@
 import Em from 'ember';
-import insert from 'em-notify/utils/computed/insert';
+import insert from '../utils/computed/insert';
 
 export default Em.Component.extend({
   attributeBindings: ['dataTest:data-test'],
   classNamesBindings: ['className'],
-  classPrefix: 'notify',
+  classPrefix: 'flash_messages',
   content: null,
   contentClass: insert('classPrefix', '{{value}}-content'),
-  dataTest: 'notify-message',
+  dataTest: 'flash-messages-message',
   iconClassFormat: 'icon-{{type}}',
   tagName: 'dl',
   type: null,

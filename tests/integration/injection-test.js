@@ -4,7 +4,7 @@ import startApp from '../helpers/start-app';
 
 var App, container;
 
-module('Notify - inject method', {
+module('Flash messages - inject method', {
 
   setup: function() {
     App = startApp();
@@ -19,24 +19,24 @@ module('Notify - inject method', {
 
 
 
-test('Notify method should be on routes', function() {
+test('flashMessage method should be on routes', function() {
   var route = container.lookup('route:index');
 
-  ok(route.notify);
+  ok(route.flashMessage);
 });
 
 
 
-test('Notify method should be on controllers', function() {
+test('flashMessage method should be on controllers', function() {
   var controller = container.lookup('controller:index');
 
-  ok(controller.notify);
+  ok(controller.flashMessage);
 });
 
 
 
-test('Notify method should be on views', function() {
+test('flashMessage method should be on views', function() {
   var view = container.lookup('view:index');
 
-  ok(view.notify);
+  ok(view.flashMessage);
 });

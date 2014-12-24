@@ -1,0 +1,11 @@
+<dt {{bind-attr class='typeClass'}}>
+  {{#if iconClass}}
+    <span {{bind-attr class="iconClass"}} data-test="flash-messages-icon"></span>
+  {{/if}}
+
+  <span data-test="flash-messages-type">{{type}}</span>
+</dt>
+
+<dd {{bind-attr class='contentClass'}} data-test="flash-messages-content">
+  {{content}}
+</dd>

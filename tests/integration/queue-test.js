@@ -2,11 +2,11 @@ import Em from 'ember';
 import { test } from 'ember-qunit';
 import message from '../helpers/message';
 import startApp from '../helpers/start-app';
-import Queue from 'em-notify/queue';
+import Queue from 'ember-flash-messages/queue';
 
 var App, container, controller;
 
-module('Notify - manage queue', {
+module('Flash Messages - manage queue', {
 
   setup: function() {
     App = startApp();
@@ -31,7 +31,7 @@ test('Message should be pushed to queue', function() {
   andThen(function() {
     equal(Queue.get('length'), 0, 'Queue should be empty');
 
-    controller.notify(message['type'], message['content']);
+    controller.flashMessage(message['type'], message['content']);
 
     equal(Queue.get('length'), 1, 'Queue should contain one message');
 

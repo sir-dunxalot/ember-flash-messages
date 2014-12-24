@@ -17,8 +17,8 @@ var resetQueue = function() {
   });
 };
 
-moduleForComponent('notify-queue', 'Notify - queue component', {
-  needs: ['component:notify-message'],
+moduleForComponent('message-queue', 'Flash messages - queue component', {
+  needs: ['component:flash-message'],
 
   setup: function() {
     component = this.subject();
@@ -37,12 +37,12 @@ test('Default options', function() {
 
   requirements.forEach(function(property) {
     ok(component.get(property),
-      'Notify component should have a default value for ' + property);
+      'Component should have a default value for ' + property);
   });
 
   options.forEach(function(property) {
     ok(!component.get('property'),
-      'Notify component should not have value for ' + property);
+      'Component should not have value for ' + property);
   });
 });
 
@@ -136,7 +136,7 @@ test('customShowMethod option', function() {
 
   component.set('customShowMethod', function(queueComponent) {
 
-    equal(queueComponent.get('dataTest'), 'notify-queue',
+    equal(queueComponent.get('dataTest'), 'flash-messages-queue',
       'Component should be passed into customShowMethod');
 
     component.set('itWorked', true);
@@ -161,7 +161,7 @@ test('customHideMethod option', function() {
 
   component.set('customHideMethod', function(queueComponent) {
 
-    equal(queueComponent.get('dataTest'), 'notify-queue', 'Component should be passed into customShowMethod');
+    equal(queueComponent.get('dataTest'), 'flash-messages-queue', 'Component should be passed into customShowMethod');
 
     component.set('itWorked', true);
   });

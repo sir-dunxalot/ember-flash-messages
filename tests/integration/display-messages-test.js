@@ -11,8 +11,8 @@ var secondMessage = {
 
 var App, container, controller;
 
-module('Notify - display messages', {
-  needs: ['component:notify-message'],
+module('Flash Messages - display messages', {
+  needs: ['component:flash-message'],
   setup: function() {
     App = startApp();
     container = App.__container__;
@@ -27,22 +27,22 @@ module('Notify - display messages', {
 
 
 
-test('Notify component should render', function() {
+test('Message queue component should render', function() {
 
   visit('/');
 
   andThen(function() {
-    var notify = inspect('queue');
+    var queueComponent = inspect('queue');
 
-    ok(notify, 'Notify component should render on the page');
-    equal(notify.text().trim(), '', 'Notify component should render empty');
+    ok(queueComponent, 'Message queue component should render on the page');
+    equal(queueComponent.text().trim(), '', 'Message queue component should render empty');
 
     Em.run(function() {
-      controller.notify(message['type'], message['content']);
+      controller.flashMessage(message['type'], message['content']);
     });
 
     ['content', 'type'].forEach(function(property) {
-      var report = 'Notify ' + property + ' should render';
+      var report = 'Message ' + property + ' should render';
 
       equal(inspect(property).html().trim(), message[property], report);
     });
@@ -52,31 +52,31 @@ test('Notify component should render', function() {
 
 
 
-test('Notify component should display multiple messages in sequence', function() {
+test('Message queue component should display multiple messages in sequence', function() {
 
   visit('/');
 
   andThen(function() {
-    var notify = inspect('queue');
+    // var queueComponent = inspect('queue');
 
     /* Send messages to queue */
 
     Em.run(function() {
-      controller.notify(message['type'], message['content']);
-      controller.notify(secondMessage['type'], secondMessage['content']);
+      controller.flashMessage(message['type'], message['content']);
+      controller.flashMessage(secondMessage['type'], secondMessage['content']);
     });
 
     /* Check first message displays */
 
     ['content', 'type'].forEach(function(property) {
-      var report = 'Notify first message: ' + property + ' should render';
+      var report = 'First flash message: ' + property + ' should render';
 
       equal(inspect(property).html().trim(), message[property], report);
     });
 
     Em.run.later(function() {
       ['content', 'type'].forEach(function(property) {
-        var report = 'Notify first message: ' + property + ' should not have changed yet';
+        var report = 'First flash message: ' + property + ' should not have changed yet';
 
         notEqual(inspect(property).html().trim(), secondMessage[property], report);
       });
@@ -86,7 +86,7 @@ test('Notify component should display multiple messages in sequence', function()
 
     Em.run.later(function() {
       ['content', 'type'].forEach(function(property) {
-        var report = 'Notify second message: ' + property + ' should change';
+        var report = 'Second flash message: ' + property + ' should change';
 
         equal(inspect(property).html().trim(), secondMessage[property], report);
       });

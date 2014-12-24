@@ -1,17 +1,17 @@
 /* global velocity */
 
 import Em from 'ember';
-import Queue from 'em-notify/queue';
+import Queue from '../queue';
 
 export default Em.Component.extend({
   animationLibrary: 'jQuery',
   attributeBindings: ['dataTest:data-test'],
   classNameBindings: ['className'],
-  classPrefix: 'notify',
+  classPrefix: 'flash_messages',
   currentMessage: Em.computed.oneWay('queue.currentMessage'),
   customHideMethod: null,
   customShowMethod: null,
-  dataTest: 'notify-queue',
+  dataTest: 'flash-messages-queue',
   interval: Em.computed.alias('queue.interval'),
 
   className: function() {
