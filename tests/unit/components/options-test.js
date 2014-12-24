@@ -32,7 +32,7 @@ moduleForComponent('notify-queue', 'Notify - queue component', {
 
 
 test('Default options', function() {
-  var requirements = ['animationLibrary', 'classPrefix', 'iconClassFormat', 'interval'];
+  var requirements = ['animationLibrary', 'classPrefix', 'interval'];
   var options = ['customHideMethod', 'customShowMethod'];
 
   requirements.forEach(function(property) {
