@@ -41,6 +41,9 @@ Documentation including installation, usage, and customizable options is availab
 - You will be able to specify 'css' as an animation option
 - Assertions to check that `type` and `content` are always passed to the `{{notify-message}}` component
 - The `iconClassFormat` property will be made public
+- Increased test coverage for:
+  - `{{notify-message}}` component
+  - Testing `animationLibrary` property
 
 We might implement:
 
