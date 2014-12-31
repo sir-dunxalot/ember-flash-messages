@@ -1,4 +1,4 @@
-Ember Flash Messages [![Build Status](https://travis-ci.org/sir-dunxalot/ember-flash-messages.svg?branch=master)](https://travis-ci.org/sir-dunxalot/ember-flash-messages) [![Dependencies Status](https://david-dm.org/sir-dunxalot/ember-flash-messages.png)](https://www.npmjs.com/package/ember-flash-messages)
+Ember Flash Messages [![Build Status](https://travis-ci.org/sir-dunxalot/ember-flash-messages.svg?branch=master)](https://travis-ci.org/sir-dunxalot/ember-flash-messages) ![Ember Addon](https://s3.amazonaws.com/images.jebbit.com/ember/badge.svg)
 ======
 
 Ember Flash Messages (`ember-flash-messages`) is a customizable, lightweight Ember.js addon for displaying flash messages to users.
