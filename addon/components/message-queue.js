@@ -13,6 +13,7 @@ export default Em.Component.extend({
   customShowMethod: null,
   dataTest: 'flash-queue',
   interval: Em.computed.alias('queue.interval'),
+  nonTimedMessages: Em.computed.oneWay('queue.nonTimedMessages'),
 
   className: function() {
     var type = this.get('currentMessage.type');
@@ -82,11 +83,11 @@ export default Em.Component.extend({
   }.on('didInsertElement'),
 
   _showOrHide: function() {
-    if (this.get('currentMessage')) {
+    if (this.get('currentMessage') || this.get('nonTimedMessages.length')) {
       this.show();
     } else {
       this.hide();
     }
-  }.observes('currentMessage'),
+  }.observes('currentMessage', 'nonTimedMessages.length'),
 
 });

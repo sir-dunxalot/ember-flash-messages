@@ -4,8 +4,10 @@ import defaultFor from './utils/default-for';
 
 export default Em.ArrayProxy.extend({
   content: Em.A(),
-  currentMessage: Em.computed.oneWay('firstObject'),
+  currentMessage: Em.computed.oneWay('queuedMessages.firstObject'),
   interval: 3000, // Duration to show each message
+  nonTimedMessages: Em.computed.filterBy('content', 'timed', false),
+  queuedMessages: Em.computed.filterBy('content', 'timed', true),
 
   clear: function() {
     this.set('content', Em.A());
@@ -40,7 +42,7 @@ export default Em.ArrayProxy.extend({
   }.observes('currentMessage'),
 
   _delayRemoval: function(duration) {
-    Em.run.later(this, this.removeMessage, duration);
+    Em.run.later(this, this.removeMessage, this.get('currentMessage'), duration);
   },
 
 }).create();

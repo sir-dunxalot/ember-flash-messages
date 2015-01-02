@@ -1,3 +1,5 @@
+<h2>Queued Messages</h2>
+
 <button {{action 'showMessage' 'success' 'First messsge'}}>
   Show Message 1
 </button>
@@ -6,14 +8,20 @@
   Show Message 2
 </button>
 
-<button {{action 'showMessage' 'error' 'Second message' 1000}}>
+<button {{action 'showMessage' 'error' 'Third message' 1000}}>
   Show Message 3 for 1000ms
 </button>
 
-<h2>Block Message</h2>
+<h2>Non-queued Messages</h2>
 
-{{flash-message type='success' content='what?'}}
+<button {{action 'showMessage' 'success' 'Fourth message' 0}}>
+  Show Message 4 indefinitely
+</button>
+
+<h2>Block Messages</h2>
 
 {{#flash-message type='hello'}}
   Testing block content {{#link-to 'index'}}and Handlebars{{/link-to}}
 {{/flash-message}}
+
+{{flash-message type='success' content='what?'}}
