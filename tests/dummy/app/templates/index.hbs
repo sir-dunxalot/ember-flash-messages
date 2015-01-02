@@ -9,3 +9,11 @@
 <button {{action 'showMessage' 'error' 'Second message' 1000}}>
   Show Message 3 for 1000ms
 </button>
+
+<h2>Block Message</h2>
+
+{{flash-message type='success' content='what?'}}
+
+{{#flash-message type='hello'}}
+  Testing block content {{#link-to 'index'}}and Handlebars{{/link-to}}
+{{/flash-message}}

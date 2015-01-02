@@ -20,4 +20,5 @@ export default Em.Component.extend({
   iconClass: function() {
     this.get('iconClassFormat').replace('{{type}}', this.get('type'));
   }.property('iconClassFormat', 'type'),
+
 });

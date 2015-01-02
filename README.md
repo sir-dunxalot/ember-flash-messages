@@ -45,6 +45,7 @@ Documentation including installation, usage, and customizable options is availab
 - Increased test coverage for:
   - `{{flash-message}}` component
   - Testing `animationLibrary` property
+  - Data test attributes moved to dummy or helper made available in app tests
 
 We might implement:
 
