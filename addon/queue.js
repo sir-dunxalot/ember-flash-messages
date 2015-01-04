@@ -28,6 +28,8 @@ export default Em.ArrayProxy.extend({
   removeMessage: function(message) {
     var message = defaultFor(message, this.get('currentMessage'));
 
+    // We could implement Em.run.cancel here to cancel the run.later call ni _queueDidChange but it's a lot of overhead
+
     if (this.indexOf(message) > -1) {
       this.removeObject(message);
     } else {
@@ -44,12 +46,8 @@ export default Em.ArrayProxy.extend({
       duration = currentMessage.get('duration');
 
       // ... then send that message to be removed
-      Em.run.throttle(this, this._delayRemoval, currentMessage, duration, duration);
+      Em.run.later(this, this.removeMessage, currentMessage, duration);
     }
   }.observes('currentMessage'),
-
-  _delayRemoval: function(message, duration) {
-    Em.run.later(this, this.removeMessage, message.get('id'), duration);
-  },
 
 }).create();

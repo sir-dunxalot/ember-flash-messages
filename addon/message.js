@@ -6,6 +6,6 @@ export default Em.Object.extend({
   type: null,
 
   timed: function() {
-    return this.get('duration') !== 0 /* && this.get('id') */;
+    return this.get('duration') !== 0;
   }.property('duration'),
 });

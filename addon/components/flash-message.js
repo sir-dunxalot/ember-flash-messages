@@ -31,16 +31,18 @@ export default Em.Component.extend(
   }.property('iconClassFormat', 'type'),
 
   click: function() {
-    // this.handleClick();
-    this.sendAction('action', this.get('message')); // Only runs if action is set
+    this.handleClick();
+    if (this.get('action')) {
+      this.sendAction('action', this.get('message')); // Only runs if action is set
+    }
   },
 
   handleClick: function() {
-    this.hide();
+    // this.hide();
 
-    Em.run.later(this, function() {
-      this.removeFromParent();
-    }, 500);
+    // Em.run.later(this, function() {
+    //   this.removeFromParent();
+    // }, 500);
   },
 
 });

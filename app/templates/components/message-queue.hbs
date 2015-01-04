@@ -1,7 +1,6 @@
 {{#each nonTimedMessages}}
   {{flash-message
     action='removeMessage'
-    id=id
     type=type
     content=content
     classPrefix=classPrefix
@@ -12,7 +11,6 @@
 {{#if currentMessage}}
   {{flash-message
     action='removeMessage'
-    id=currentMessage.id
     type=currentMessage.type
     content=currentMessage.content
     classPrefix=classPrefix

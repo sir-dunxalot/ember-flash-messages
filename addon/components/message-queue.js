@@ -30,7 +30,6 @@ export default Em.Component.extend(
 
   actions: {
     removeMessage: function(message) {
-      console.log('Action received');
       this.get('queue').removeMessage(message);
     }
   },
