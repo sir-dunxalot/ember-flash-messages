@@ -4,33 +4,35 @@ import Em from 'ember';
 
 export default Em.Mixin.create({
   animationDuration: 500,
-  animationLibrary: 'jQuery',
+  // animationLibrary: 'jQuery',
 
   setVisibility: function(shouldShow) {
-    var lib = this.get('animationLibrary');
+    // var lib = this.get('animationLibrary');
     var animationMethod = shouldShow ? 'slideDown' : 'slideUp';
-    var customHideMethod = this.get('customHideMethod');
-    var customShowMethod = this.get('customShowMethod');
+    // var customHideMethod = this.get('customHideMethod');
+    // var customShowMethod = this.get('customShowMethod');
 
-    if (this.get('_state') === 'inDOM') {
-      if (shouldShow && customShowMethod) {
-        this.get('customShowMethod')(this);
-      } else if (customHideMethod) {
-        this.get('customHideMethod')(this);
-      } else if (lib === 'jQuery') {
-        this.$()[animationMethod]('fast');
-      } else if (lib === 'velocity') {
-        if (Em.$) {
-          this.$().velocity(animationMethod);
-        } else {
-          Em.run.bind(this, function() {
-            velocity('#' + this.get('elementId'), animationMethod);
-          });
-        }
-      } else {
-        this.set('isVisible', shouldShow);
-      }
-    }
+    // if (this.get('_state') === 'inDOM') {
+    //   if (shouldShow && customShowMethod) {
+    //     this.get('customShowMethod')(this);
+    //   } else if (customHideMethod) {
+    //     this.get('customHideMethod')(this);
+    //   } else if (lib === 'jQuery') {
+    //     this.$()[animationMethod]('fast');
+    //   } else if (lib === 'velocity') {
+    //     if (Em.$) {
+    //       this.$().velocity(animationMethod);
+    //     } else {
+    //       Em.run.bind(this, function() {
+    //         velocity('#' + this.get('elementId'), animationMethod);
+    //       });
+    //     }
+    //   } else {
+    //     this.set('isVisible', shouldShow);
+    //   }
+    // }
+
+    this.$()[animationMethod](this.get('animationDuration'));
   },
 
   show: function() {

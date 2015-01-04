@@ -1,15 +1,19 @@
-{{#each untimedMessages}}
-  {{flash-message
-    action='removeMessage'
-    classPrefix=classPrefix
-    message=this
-  }}
-{{/each}}
+{{#if untimedMessages}}
+  <ul>
+    {{#each untimedMessages}}
+      <li>
+        {{flash-message
+          action='removeMessage'
+          message=this
+        }}
+      </li>
+    {{/each}}
+  </ul>
+{{/if}}
 
 {{#if currentMessage}}
   {{flash-message
     action='removeMessage'
-    classPrefix=classPrefix
     message=currentMessage
   }}
 {{/if}}

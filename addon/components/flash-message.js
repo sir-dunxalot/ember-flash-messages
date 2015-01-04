@@ -3,7 +3,7 @@
 import Em from 'ember';
 import insert from '../utils/computed/insert';
 import Animations from '../mixins/animations';
-import Message from '../message';
+import Message from '../models/message';
 
 export default Em.Component.extend(
   Animations, {
@@ -45,14 +45,23 @@ export default Em.Component.extend(
   },
 
   handleClick: function(resolve) {
-    var queueLength = this.get('parentView').getQueueLength();
+    var parentView = this.get('parentView');
+    var parentViewName = parentView.get('constructor').toString();
+    var queueLength;
 
-    if (queueLength > 1) {
-      resolve();
+    if (parentViewName.indexOf('message-queue') > -1) {
+      queueLength = this.get('parentView').getQueueLength();
+
+      if (queueLength > 1) {
+        resolve();
+      } else {
+        this.hide();
+
+        Em.run.later(this, resolve, this.get('animationDuration'));
+      }
     } else {
-      this.hide();
-
-      Em.run.later(this, resolve, this.get('animationDuration'));
+      this.removeFromParent();
+      resolve();
     }
   },
 
@@ -83,8 +92,3 @@ export default Em.Component.extend(
   }.observes('message').on('willInsertElement'),
 
 });
-
-
-// With promises:
-
-

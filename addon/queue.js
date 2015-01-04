@@ -1,5 +1,5 @@
 import Em from 'ember';
-import Message from './message';
+import Message from './models/message';
 import defaultFor from './utils/default-for';
 
 export default Em.ArrayProxy.extend({
@@ -26,7 +26,7 @@ export default Em.ArrayProxy.extend({
   },
 
   removeMessage: function(message) {
-    var message = defaultFor(message, this.get('currentMessage'));
+    message = defaultFor(message, this.get('currentMessage'));
 
     // We could implement Em.run.cancel here to cancel the run.later call ni _queueDidChange but it's a lot of overhead
 

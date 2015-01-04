@@ -15,6 +15,7 @@ export default Em.Component.extend(
   customShowMethod: null,
   dataTest: 'flash-queue',
   interval: Em.computed.alias('queue.interval'),
+  shouldShow: Em.computed.or('currentMessage', 'untimedMessages.length'),
   untimedMessages: Em.computed.oneWay('queue.untimedMessages'),
 
   className: function() {
@@ -38,28 +39,30 @@ export default Em.Component.extend(
     return this.get('queue.timedMessages.length');
   },
 
-  _hideOnLoad: function() {
-    var currentMessage = this.get('currentMessage');
+  // _hideOnLoad: function() {
+  //   // this.$().css('display', 'none');
+  // //   var currentMessage = this.get('currentMessage');
 
-    /* When transitioning to a new route, if there is a
-    message being shown to the user keep it shown with
-    no animation until the interval time has ellapsed.
-    Otherwise, hide view so we can slide down the message. */
+  // //   /* When transitioning to a new route, if there is a
+  // //   message being shown to the user keep it shown with
+  // //   no animation until the interval time has ellapsed.
+  // //   Otherwise, hide view so we can slide down the message. */
 
-    if (!currentMessage) {
-      this.hide();
-    }
+  //   if (!this.get('shouldShow')) {
+  //     this.hide();
+  //   }
 
-    this._showOrHide();
-  }.on('didInsertElement'),
+  // //   // this._showOrHide();
+  // }.on('didInsertElement'),
 
-  _showOrHide: function() {
-    if (this.get('currentMessage') || this.get('untimedMessages.length')) {
-      console.log('trying to show');
-      this.show();
-    } else {
-      this.hide();
-    }
-  }.observes('currentMessage', 'untimedMessages.length'),
+  // _showOrHide: function() {
+  //   if (this.get('shouldShow')) {
+  //     // console.log(this.get('currentMessage'));
+  //     this.show();
+  //   } else {
+  //     // console.log(this.get('currentMessage'));
+  //     this.hide();
+  //   }
+  // }.observes('currentMessage', 'untimedMessages.length'),
 
 });
