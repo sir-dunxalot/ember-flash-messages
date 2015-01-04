@@ -30,16 +30,9 @@ export default Em.Component.extend(
 
   actions: {
     removeMessage: function(message) {
-      console.log('hellow');
+      console.log('Action received');
+      this.get('queue').removeMessage(message);
     }
-  },
-
-  show: function() {
-    this.setVisibility(true);
-  },
-
-  hide: function() {
-    this.setVisibility(false);
   },
 
   _hideOnLoad: function() {

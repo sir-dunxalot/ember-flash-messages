@@ -26,7 +26,7 @@ export default Em.ArrayProxy.extend({
   },
 
   removeMessage: function(message) {
-    message = defaultFor(message, this.get('currentMessage'));
+    var message = defaultFor(message, this.get('currentMessage'));
 
     if (this.indexOf(message) > -1) {
       this.removeObject(message);
@@ -36,13 +36,20 @@ export default Em.ArrayProxy.extend({
   },
 
   _queueDidChange: function() {
-    var duration = this.get('currentMessage.duration');
+    var currentMessage = this.get('currentMessage');
+    var duration;
 
-    Em.run.throttle(this, this._delayRemoval, duration, duration);
+    // If there is another message in the queue...
+    if (currentMessage) {
+      duration = currentMessage.get('duration');
+
+      // ... then send that message to be removed
+      Em.run.throttle(this, this._delayRemoval, currentMessage, duration, duration);
+    }
   }.observes('currentMessage'),
 
-  _delayRemoval: function(duration) {
-    Em.run.later(this, this.removeMessage, this.get('currentMessage'), duration);
+  _delayRemoval: function(message, duration) {
+    Em.run.later(this, this.removeMessage, message.get('id'), duration);
   },
 
 }).create();

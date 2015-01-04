@@ -1,3 +1,5 @@
+/* global velocity */
+
 import Em from 'ember';
 
 export default Em.Mixin.create({
@@ -28,6 +30,14 @@ export default Em.Mixin.create({
         this.set('isVisible', shouldShow);
       }
     }
+  },
+
+  show: function() {
+    this.setVisibility(true);
+  },
+
+  hide: function() {
+    this.setVisibility(false);
   },
 
   _checkForVendor: function() {

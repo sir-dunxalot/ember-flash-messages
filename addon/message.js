@@ -6,8 +6,6 @@ export default Em.Object.extend({
   type: null,
 
   timed: function() {
-    return this.get('duration') !== 0;
+    return this.get('duration') !== 0 /* && this.get('id') */;
   }.property('duration'),
-
-  // timed: Em.computed.notEqual('duration', 0) // TODO - Util doesn't exist
 });

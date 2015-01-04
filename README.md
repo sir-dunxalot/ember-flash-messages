@@ -46,6 +46,7 @@ Documentation including installation, usage, and customizable options is availab
   - `{{flash-message}}` component
   - Testing `animationLibrary` property
   - Data test attributes moved to dummy or helper made available in app tests
+- Ability to pass in message as an object
 
 We might implement:
 

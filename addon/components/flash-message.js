@@ -3,10 +3,12 @@
 import Em from 'ember';
 import insert from '../utils/computed/insert';
 import Animations from '../mixins/animations';
+import Message from '../message';
 
 export default Em.Component.extend(
   Animations, {
 
+  action: null,
   attributeBindings: ['dataTest:data-test'],
   classNamesBindings: ['className'],
   classPrefix: 'flash',
@@ -14,6 +16,8 @@ export default Em.Component.extend(
   contentClass: insert('classPrefix', '{{value}}-content'),
   dataTest: 'flash-message',
   iconClassFormat: 'icon-{{type}}',
+  id: null,
+  message: null,
   tagName: 'dl',
   type: null,
   typeClass: insert('classPrefix', '{{value}}-type'),
@@ -27,12 +31,12 @@ export default Em.Component.extend(
   }.property('iconClassFormat', 'type'),
 
   click: function() {
-    this.handleClick();
-    this.sendAction();
+    // this.handleClick();
+    this.sendAction('action', this.get('message')); // Only runs if action is set
   },
 
   handleClick: function() {
-    this.setVisibility(false);
+    this.hide();
 
     Em.run.later(this, function() {
       this.removeFromParent();
