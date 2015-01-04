@@ -3,7 +3,9 @@
     <span {{bind-attr class="iconClass"}} data-test="flash-icon"></span>
   {{/if}}
 
-  <span data-test="flash-type">{{type}}</span>
+  <span class="hidden" data-test="flash-type">
+    {{type}}
+  </span>
 </dt>
 
 <dd {{bind-attr class='contentClass'}} data-test="flash-content">

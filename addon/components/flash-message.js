@@ -8,26 +8,36 @@ import Message from '../models/message';
 export default Em.Component.extend(
   Animations, {
 
+  /* Options */
+
   action: null,
-  attributeBindings: ['dataTest:data-test'],
-  classNamesBindings: ['className'],
   classPrefix: 'flash',
   content: null,
+  message: null,
+  type: null,
+
+  /* Properties */
+
+  animationDuration: 500,
+  attributeBindings: ['dataTest:data-test'],
+  // classNamesBindings: ['className'],
+  classNames: ['flash_message'],
   contentClass: insert('classPrefix', '{{value}}-content'),
   dataTest: 'flash-message',
   iconClassFormat: 'icon-{{type}}',
-  message: null,
+  inQueue: Em.computed.bool('parentView.queue'),
   tagName: 'dl',
-  type: null,
   typeClass: insert('classPrefix', '{{value}}-type'),
 
-  className: function() {
-    return this.get('classPrefix') + '_message-' + this.get('type');
-  }.property('classPrefix', 'type'),
+  // className: function() {
+  //   return this.get('classPrefix') + '_message-' + this.get('type');
+  // }.property('classPrefix', 'type'),
 
   iconClass: function() {
     this.get('iconClassFormat').replace('{{type}}', this.get('type'));
   }.property('iconClassFormat', 'type'),
+
+  /* Methods */
 
   click: function() {
     var _this = this;
@@ -41,35 +51,46 @@ export default Em.Component.extend(
 
         _this.sendAction('action', _this.get('message')); // Only runs if action is set
       }
+    }, function() {
+      Em.warn('handleClick returned a rejection');
     });
   },
 
-  handleClick: function(resolve) {
+  handleClick: function(resolve, reject) {
     var parentView = this.get('parentView');
-    var parentViewName = parentView.get('constructor').toString();
-    var queueLength;
 
-    if (parentViewName.indexOf('message-queue') > -1) {
-      queueLength = this.get('parentView').getQueueLength();
+    /* If message is in the queue, see if the queue should remain visible... */
 
-      if (queueLength > 1) {
-        resolve();
-      } else {
-        this.hide();
-
-        Em.run.later(this, resolve, this.get('animationDuration'));
-      }
-    } else {
-      this.removeFromParent();
+    if (this.get('inQueue') && parentView.getQueueLength() > 1) {
       resolve();
+    } else {
+      this.hide();
+
+      Em.run.later(this, function() {
+        if (!inQueue) {
+          this.removeFromParent();
+        }
+
+        resolve();
+      }, this.get('animationDuration'));
     }
   },
+
+  shouldShow: function() {
+    this.show();
+  }.on('didInsertElement'),
+
+  shouldHide: function() {
+    this.hide();
+  }.on('willDestroyElement'),
+
+  /* Private methods */
 
   _handleClick: function() {
     var _this = this;
 
-    return new Em.RSVP.Promise(function(resolve /*, reject */) {
-      _this.handleClick(resolve);
+    return new Em.RSVP.Promise(function(resolve, reject) {
+      _this.handleClick(resolve, reject);
     });
   },
 
@@ -90,5 +111,15 @@ export default Em.Component.extend(
       this.setProperties(changes);
     }
   }.observes('message').on('willInsertElement'),
+
+  _hideEndingQueue: function() {
+    var _this = this;
+
+    if (_this.get('inQueue')) {
+      _this.get('parentView.queue').on('willChangeMessage', function() {
+        _this.hide();
+      });
+    }
+  }.on('willInsertElement'),
 
 });

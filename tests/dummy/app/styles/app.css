@@ -3,3 +3,7 @@ html, body {
   background: #333;
   color: #ccc;
 }
+
+.flash_message {
+  display: none;
+}

@@ -2,7 +2,10 @@ import Em from 'ember';
 import Message from './models/message';
 import defaultFor from './utils/default-for';
 
-export default Em.ArrayProxy.extend({
+export default Em.ArrayProxy.extend(
+  Em.Evented, {
+
+  animationDuration: 500,
   content: Em.A(),
   currentMessage: Em.computed.oneWay('timedMessages.firstObject'),
   interval: 3000, // Duration to show each message
@@ -41,11 +44,15 @@ export default Em.ArrayProxy.extend({
     var currentMessage = this.get('currentMessage');
     var duration;
 
-    // If there is another message in the queue...
+    /* If there is another message in the queue... */
+
     if (currentMessage) {
       duration = currentMessage.get('duration');
 
-      // ... then send that message to be removed
+      /* ... then send that message to be removed */
+
+      // console.log(this.trigger);
+      Em.run.later(this, this.trigger, 'willChangeMessage', duration - this.get('animationDuration'));
       Em.run.later(this, this.removeMessage, currentMessage, duration);
     }
   }.observes('currentMessage'),

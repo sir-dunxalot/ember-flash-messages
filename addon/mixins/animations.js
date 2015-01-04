@@ -3,7 +3,7 @@
 import Em from 'ember';
 
 export default Em.Mixin.create({
-  animationDuration: 500,
+  // animationDuration: 500,
   // animationLibrary: 'jQuery',
 
   setVisibility: function(shouldShow) {

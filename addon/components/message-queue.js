@@ -7,27 +7,34 @@ import Animations from '../mixins/animations';
 export default Em.Component.extend(
   Animations, {
 
-  attributeBindings: ['dataTest:data-test'],
-  classNameBindings: ['className'],
+  /* Options */
+
   classPrefix: 'flash',
-  currentMessage: Em.computed.oneWay('queue.currentMessage'),
-  customHideMethod: null,
-  customShowMethod: null,
-  dataTest: 'flash-queue',
   interval: Em.computed.alias('queue.interval'),
+
+  /* Properties */
+
+  animationDuration: Em.computed.alias('queue.animationDuration'),
+  attributeBindings: ['dataTest:data-test'],
+  // classNameBindings: ['className'],
+  classNames: ['flash_queue'],
+  currentMessage: Em.computed.oneWay('queue.currentMessage'),
+  dataTest: 'flash-queue',
   shouldShow: Em.computed.or('currentMessage', 'untimedMessages.length'),
   untimedMessages: Em.computed.oneWay('queue.untimedMessages'),
 
-  className: function() {
-    var type = this.get('currentMessage.type');
-    type = type ? '-' + type : '';
+  // className: function() {
+  //   var type = this.get('currentMessage.type');
+  //   type = type ? '-' + type : '';
 
-    return this.get('classPrefix') + type;
-  }.property('currentMessage.type', 'classPrefix'),
+  //   return this.get('classPrefix') + type;
+  // }.property('currentMessage.type', 'classPrefix'),
 
   queue: function() {
     return Queue;
   }.property().readOnly(),
+
+  /* Methods */
 
   actions: {
     removeMessage: function(message) {
