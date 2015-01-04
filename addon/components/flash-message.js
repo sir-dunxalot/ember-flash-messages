@@ -29,21 +29,39 @@ export default Em.Component.extend(
     this.get('iconClassFormat').replace('{{type}}', this.get('type'));
   }.property('iconClassFormat', 'type'),
 
-  // Explanation for why not using a CP
-
   click: function() {
-    this.handleClick();
-    if (this.get('action')) {
-      this.sendAction('action', this.get('message')); // Only runs if action is set
+    var _this = this;
+
+    /* Remove message visually... */
+
+    _this._handleClick().then(function() {
+      if (_this.get('action')) {
+
+        /* ... Then remove message from queue(s) */
+
+        _this.sendAction('action', _this.get('message')); // Only runs if action is set
+      }
+    });
+  },
+
+  handleClick: function(resolve) {
+    var queueLength = this.get('parentView').getQueueLength();
+
+    if (queueLength > 1) {
+      resolve();
+    } else {
+      this.hide();
+
+      Em.run.later(this, resolve, this.get('animationDuration'));
     }
   },
 
-  handleClick: function() {
-    // this.hide();
+  _handleClick: function() {
+    var _this = this;
 
-    // Em.run.later(this, function() {
-    //   this.removeFromParent();
-    // }, 500);
+    return new Em.RSVP.Promise(function(resolve /*, reject */) {
+      _this.handleClick(resolve);
+    });
   },
 
   _setMessageProperties: function() {
@@ -69,24 +87,4 @@ export default Em.Component.extend(
 
 // With promises:
 
-// click: function() {
-//   var _this = this;
 
-//   _this._handleClick().then(function() {
-//     _this.sendAction();
-//   });
-// },
-
-// handleClick: function(resolve) {
-//   Em.run.later(this, function() {
-//     resolve();
-//   }, 1000);
-// },
-
-// _handleClick: function() {
-//   var _this = this;
-
-//   return new Em.RSVP.Promise(function(resolve /*, reject */) {
-//     _this.handleClick(resolve);
-//   });
-// },

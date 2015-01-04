@@ -4,10 +4,10 @@ import defaultFor from './utils/default-for';
 
 export default Em.ArrayProxy.extend({
   content: Em.A(),
-  currentMessage: Em.computed.oneWay('queuedMessages.firstObject'),
+  currentMessage: Em.computed.oneWay('timedMessages.firstObject'),
   interval: 3000, // Duration to show each message
-  staticMessages: Em.computed.filterBy('content', 'timed', false),
-  queuedMessages: Em.computed.filterBy('content', 'timed', true),
+  untimedMessages: Em.computed.filterBy('content', 'timed', false),
+  timedMessages: Em.computed.filterBy('content', 'timed', true),
 
   clear: function() {
     this.set('content', Em.A());

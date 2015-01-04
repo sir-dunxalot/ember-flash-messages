@@ -15,7 +15,7 @@ export default Em.Component.extend(
   customShowMethod: null,
   dataTest: 'flash-queue',
   interval: Em.computed.alias('queue.interval'),
-  staticMessages: Em.computed.oneWay('queue.staticMessages'),
+  untimedMessages: Em.computed.oneWay('queue.untimedMessages'),
 
   className: function() {
     var type = this.get('currentMessage.type');
@@ -34,6 +34,10 @@ export default Em.Component.extend(
     }
   },
 
+  getQueueLength: function() {
+    return this.get('queue.timedMessages.length');
+  },
+
   _hideOnLoad: function() {
     var currentMessage = this.get('currentMessage');
 
@@ -50,11 +54,12 @@ export default Em.Component.extend(
   }.on('didInsertElement'),
 
   _showOrHide: function() {
-    if (this.get('currentMessage') || this.get('nonTimedMessages.length')) {
+    if (this.get('currentMessage') || this.get('untimedMessages.length')) {
+      console.log('trying to show');
       this.show();
     } else {
       this.hide();
     }
-  }.observes('currentMessage', 'nonTimedMessages.length'),
+  }.observes('currentMessage', 'untimedMessages.length'),
 
 });
