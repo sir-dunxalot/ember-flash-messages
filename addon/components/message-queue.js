@@ -15,7 +15,7 @@ export default Em.Component.extend(
   customShowMethod: null,
   dataTest: 'flash-queue',
   interval: Em.computed.alias('queue.interval'),
-  nonTimedMessages: Em.computed.oneWay('queue.nonTimedMessages'),
+  staticMessages: Em.computed.oneWay('queue.staticMessages'),
 
   className: function() {
     var type = this.get('currentMessage.type');

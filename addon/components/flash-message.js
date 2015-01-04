@@ -16,7 +16,6 @@ export default Em.Component.extend(
   contentClass: insert('classPrefix', '{{value}}-content'),
   dataTest: 'flash-message',
   iconClassFormat: 'icon-{{type}}',
-  id: null,
   message: null,
   tagName: 'dl',
   type: null,
@@ -29,6 +28,8 @@ export default Em.Component.extend(
   iconClass: function() {
     this.get('iconClassFormat').replace('{{type}}', this.get('type'));
   }.property('iconClassFormat', 'type'),
+
+  // Explanation for why not using a CP
 
   click: function() {
     this.handleClick();
@@ -44,6 +45,24 @@ export default Em.Component.extend(
     //   this.removeFromParent();
     // }, 500);
   },
+
+  _setMessageProperties: function() {
+    var message = this.get('message');
+    var keys = ['content', 'duration', 'type'];
+    var changes = {};
+
+    if (message) {
+      keys.forEach(function(key) {
+        var property = message.get(key);
+
+        if (property) {
+          changes[key] = property;
+        }
+      });
+
+      this.setProperties(changes);
+    }
+  }.observes('message').on('willInsertElement'),
 
 });
 

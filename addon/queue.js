@@ -6,7 +6,7 @@ export default Em.ArrayProxy.extend({
   content: Em.A(),
   currentMessage: Em.computed.oneWay('queuedMessages.firstObject'),
   interval: 3000, // Duration to show each message
-  nonTimedMessages: Em.computed.filterBy('content', 'timed', false),
+  staticMessages: Em.computed.filterBy('content', 'timed', false),
   queuedMessages: Em.computed.filterBy('content', 'timed', true),
 
   clear: function() {
