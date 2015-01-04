@@ -1,6 +1,7 @@
 /* global velocity */
 
 import Em from 'ember';
+import defaultFor from '../utils/computed/defaultFor';
 import insert from '../utils/computed/insert';
 import Animations from '../mixins/animations';
 import Message from '../models/message';
@@ -18,9 +19,7 @@ export default Em.Component.extend(
 
   /* Properties */
 
-  animationDuration: 500,
   attributeBindings: ['dataTest:data-test'],
-  // classNamesBindings: ['className'],
   classNames: ['flash_message'],
   contentClass: insert('classPrefix', '{{value}}-content'),
   dataTest: 'flash-message',
@@ -29,9 +28,9 @@ export default Em.Component.extend(
   tagName: 'dl',
   typeClass: insert('classPrefix', '{{value}}-type'),
 
-  // className: function() {
-  //   return this.get('classPrefix') + '_message-' + this.get('type');
-  // }.property('classPrefix', 'type'),
+  animationDuration: function(key) {
+    return defaultFor(this.get(key), 500);
+  }.property('parentView.animationDuration'),
 
   iconClass: function() {
     this.get('iconClassFormat').replace('{{type}}', this.get('type'));
@@ -76,6 +75,8 @@ export default Em.Component.extend(
     }
   },
 
+  /* Animation methods */
+
   shouldShow: function() {
     this.show();
   }.on('didInsertElement'),
@@ -83,6 +84,20 @@ export default Em.Component.extend(
   shouldHide: function() {
     this.hide();
   }.on('willDestroyElement'),
+
+  setVisibility: function(shouldShow) {
+    var animationMethod = shouldShow ? 'slideDown' : 'slideUp';
+
+    this.$()[animationMethod](this.get('animationDuration'));
+  },
+
+  show: function() {
+    this.setVisibility(true);
+  },
+
+  hide: function() {
+    this.setVisibility(false);
+  },
 
   /* Private methods */
 

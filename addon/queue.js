@@ -12,12 +12,18 @@ export default Em.ArrayProxy.extend(
   untimedMessages: Em.computed.filterBy('content', 'timed', false),
   timedMessages: Em.computed.filterBy('content', 'timed', true),
 
+  /* Public methods */
+
   clear: function() {
     this.set('content', Em.A());
   },
 
   pushMessage: function(type, content, duration) {
     duration = defaultFor(duration, this.get('interval'));
+
+    /* Add animation time to message duration */
+
+    duration += this.get('animationDuration') * 2;
 
     this.pushObject(
       Message.create({
@@ -40,21 +46,24 @@ export default Em.ArrayProxy.extend(
     }
   },
 
+  /* Private methods */
+
   _queueDidChange: function() {
     var currentMessage = this.get('currentMessage');
-    var duration;
-
-    /* If there is another message in the queue... */
+    var duration, earlyDuration;
 
     if (currentMessage) {
       duration = currentMessage.get('duration');
+      earlyDuration = duration - this.get('animationDuration');
 
-      /* ... then send that message to be removed */
+      /* Schedule the timed message to be visually hidden */
 
-      // console.log(this.trigger);
-      Em.run.later(this, this.trigger, 'willChangeMessage', duration - this.get('animationDuration'));
+      Em.run.later(this, this.trigger, 'willChangeMessage', earlyDuration);
+
+      /* Schedule the timed message to be removed from the queue */
+
       Em.run.later(this, this.removeMessage, currentMessage, duration);
     }
   }.observes('currentMessage'),
 
-}).create();
+}).create(); /* The magic */
