@@ -1,20 +1,21 @@
 /* global velocity */
 
 import Em from 'ember';
+import insert from '../utils/computed/insert';
 import Queue from '../queue';
 
 export default Em.Component.extend({
 
   /* Options */
 
-  classPrefix: 'flash',
+  className: 'flash_queue',
   interval: Em.computed.alias('queue.interval'),
 
   /* Properties */
 
   animationDuration: Em.computed.alias('queue.animationDuration'),
   attributeBindings: ['dataTest:data-test'],
-  classNames: ['flash_queue'],
+  classNameBindings: ['className'],
   currentMessage: Em.computed.oneWay('queue.currentMessage'),
   dataTest: 'flash-queue',
   shouldShow: Em.computed.or('currentMessage', 'untimedMessages.length'),

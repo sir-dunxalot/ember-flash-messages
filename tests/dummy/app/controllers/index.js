@@ -11,7 +11,7 @@ export default Em.ObjectController.extend({
           duration: duration
         })
       } else {
-        this.flashMessage(type, content, duration);
+        this.flashMessage(type, content);
       }
     }
   }

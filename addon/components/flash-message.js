@@ -10,8 +10,9 @@ export default Em.Component.extend({
   /* Options */
 
   action: null,
-  classPrefix: 'flash',
+  className: 'flash_message',
   content: null,
+  iconClassFormat: 'icon-{{type}}',
   message: null,
   type: null,
 
@@ -19,20 +20,21 @@ export default Em.Component.extend({
 
   attributeBindings: ['dataTest:data-test'],
   classNames: ['flash_message'],
-  contentClass: insert('classPrefix', '{{value}}-content'),
   dataTest: 'flash-message',
-  iconClassFormat: 'icon-{{type}}',
   inQueue: Em.computed.bool('parentView.queue'),
   tagName: 'dl',
-  typeClass: insert('classPrefix', '{{value}}-type'),
 
   animationDuration: function() {
     return defaultFor(this.get('parentView.animationDuration'), 500);
   }.property('parentView.animationDuration'),
 
   iconClass: function() {
-    this.get('iconClassFormat').replace('{{type}}', this.get('type'));
+    return this.get('iconClassFormat').replace('{{type}}', this.get('type'));
   }.property('iconClassFormat', 'type'),
+
+  typeClass: function() {
+    return this.get('className') + '-' + this.get('type');
+  }.property('className', 'type'),
 
   /* Methods */
 

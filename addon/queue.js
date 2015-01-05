@@ -28,8 +28,6 @@ export default Em.ArrayProxy.extend(
 
     /* Covers cases with no duration and duration of zero */
 
-    console.log(messageProperties);
-
     if (!messageProperties.duration) {
       messageProperties.duration = defaultFor(messageProperties.duration, this.get('interval'));
     }
