@@ -44,6 +44,7 @@ Documentation including installation, usage, and customizable options is availab
   - Testing `animationLibrary` property
   - Data test attributes moved to dummy or helper made available in app tests
 - Should message property be two-way
+- close option on messages?
 
 We might implement:
 

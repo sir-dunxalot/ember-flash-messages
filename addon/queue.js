@@ -52,8 +52,6 @@ export default Em.ArrayProxy.extend(
   },
 
   removeMessage: function(message) {
-    message = defaultFor(message, this.get('currentMessage'));
-
     if (this.indexOf(message) > -1) {
       this.removeObject(message);
     } else {
@@ -66,8 +64,6 @@ export default Em.ArrayProxy.extend(
   _queueDidChange: function() {
     var currentMessage = this.get('currentMessage');
     var duration, earlyDuration;
-
-    // console.log(currentMessage);
 
     if (currentMessage) {
       duration = currentMessage.get('duration');
@@ -83,4 +79,4 @@ export default Em.ArrayProxy.extend(
     }
   }.observes('currentMessage'),
 
-}).create(); /* The magic */
+}).create(); /* Creates a singleton */

@@ -4,7 +4,6 @@ import Em from 'ember';
 import Queue from '../queue';
 
 export default Em.Component.extend({
-  // Animations, {
 
   /* Options */
 
@@ -22,7 +21,7 @@ export default Em.Component.extend({
   untimedMessages: Em.computed.oneWay('queue.untimedMessages'),
 
   queue: function() {
-    return Queue; // The magic
+    return Queue;
   }.property().readOnly(),
 
   /* Methods */
