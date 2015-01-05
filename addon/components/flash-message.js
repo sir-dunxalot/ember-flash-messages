@@ -1,7 +1,7 @@
 /* global velocity */
 
 import Em from 'ember';
-import defaultFor from '../utils/computed/defaultFor';
+import defaultFor from '../utils/default-for';
 import insert from '../utils/computed/insert';
 import Animations from '../mixins/animations';
 import Message from '../models/message';
@@ -28,13 +28,19 @@ export default Em.Component.extend(
   tagName: 'dl',
   typeClass: insert('classPrefix', '{{value}}-type'),
 
-  animationDuration: function(key) {
-    return defaultFor(this.get(key), 500);
+  animationDuration: function() {
+    return defaultFor(this.get('parentView.animationDuration'), 500);
   }.property('parentView.animationDuration'),
 
   iconClass: function() {
     this.get('iconClassFormat').replace('{{type}}', this.get('type'));
   }.property('iconClassFormat', 'type'),
+
+  // anotherMessageIsQueued: function() {
+  //   var queue = this.get('parentView.queue');
+
+  //   return queue.get('timedMessages.length') > 1;
+  // }.property('parentView.queue.timedMessages.[]'),
 
   /* Methods */
 
@@ -57,10 +63,11 @@ export default Em.Component.extend(
 
   handleClick: function(resolve, reject) {
     var parentView = this.get('parentView');
+    var inQueue = this.get('inQueue');
 
     /* If message is in the queue, see if the queue should remain visible... */
 
-    if (this.get('inQueue') && parentView.getQueueLength() > 1) {
+    if (inQueue && parentView.getQueueLength() > 1) {
       resolve();
     } else {
       this.hide();
@@ -88,7 +95,9 @@ export default Em.Component.extend(
   setVisibility: function(shouldShow) {
     var animationMethod = shouldShow ? 'slideDown' : 'slideUp';
 
-    this.$()[animationMethod](this.get('animationDuration'));
+    if (this.get('_state') === 'inDOM') {
+      this.$()[animationMethod](this.get('animationDuration'));
+    }
   },
 
   show: function() {
@@ -129,10 +138,27 @@ export default Em.Component.extend(
 
   _hideEndingQueue: function() {
     var _this = this;
+    var queue = _this.get('parentView.queue');
 
-    if (_this.get('inQueue')) {
-      _this.get('parentView.queue').on('willChangeMessage', function() {
-        _this.hide();
+    /* If this message is in the timed queue we might need to hide the message before it's removed from the queue, but only if there are no other messages in the queue. */
+
+    if (_this.get('message.timed')) {
+      queue.on('willHideQueue', function() {
+        var queueLength = queue.get('timedMessages.length');
+
+        /* If there is not another message queued, start hiding the queue */
+
+        if (queueLength === 1) {
+          _this.hide();
+        }
+
+        /* However, check to see if another message has been added in the interim and, if so, cancel the hiding of the queue */
+
+        Em.run.later(this, function() {
+          if (queueLength > 1) {
+            _this.show();
+          }
+        }, this.get('animationDuration') * 0.9);
       });
     }
   }.on('willInsertElement'),

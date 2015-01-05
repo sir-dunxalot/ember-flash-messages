@@ -19,23 +19,41 @@ export default Em.ArrayProxy.extend(
   },
 
   pushMessage: function(type, content, duration) {
-    duration = defaultFor(duration, this.get('interval'));
+    var message;
+
+    /* Allow message to be passed as an object */
+
+    if (typeof type === 'object') {
+      message = type;
+    } else {
+      message = {
+        type: type,
+        content: content,
+        duration: duration
+      }
+    }
+
+    /* Covers cases with no duration and duration of zero */
+
+    if (!message.duration) {
+      message.duration = defaultFor(message.duration, this.get('interval'));
+    }
 
     /* Add animation time to message duration */
 
-    duration += this.get('animationDuration') * 2;
+    if (message.duration !== 0) {
+      message.duration += this.get('animationDuration') * 2;
+    }
 
-    this.pushObject(
-      Message.create({
-        content: content,
-        duration: duration,
-        type: type
-      })
-    );
+    console.log('pushing', message);
+
+    this.pushObject(Message.create(message));
   },
 
   removeMessage: function(message) {
     message = defaultFor(message, this.get('currentMessage'));
+
+    console.log('removing', message);
 
     // We could implement Em.run.cancel here to cancel the run.later call ni _queueDidChange but it's a lot of overhead
 
@@ -52,13 +70,15 @@ export default Em.ArrayProxy.extend(
     var currentMessage = this.get('currentMessage');
     var duration, earlyDuration;
 
+    // console.log(currentMessage);
+
     if (currentMessage) {
       duration = currentMessage.get('duration');
       earlyDuration = duration - this.get('animationDuration');
 
       /* Schedule the timed message to be visually hidden */
 
-      Em.run.later(this, this.trigger, 'willChangeMessage', earlyDuration);
+      Em.run.later(this, this.trigger, 'willHideQueue', earlyDuration);
 
       /* Schedule the timed message to be removed from the queue */
 
