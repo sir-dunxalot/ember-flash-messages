@@ -2,7 +2,6 @@
 
 import Em from 'ember';
 import Queue from '../queue';
-import Animations from '../mixins/animations';
 
 export default Em.Component.extend({
   // Animations, {

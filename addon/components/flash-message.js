@@ -3,11 +3,9 @@
 import Em from 'ember';
 import defaultFor from '../utils/default-for';
 import insert from '../utils/computed/insert';
-import Animations from '../mixins/animations';
 import Message from '../models/message';
 
-export default Em.Component.extend(
-  Animations, {
+export default Em.Component.extend({
 
   /* Options */
 
@@ -35,12 +33,6 @@ export default Em.Component.extend(
   iconClass: function() {
     this.get('iconClassFormat').replace('{{type}}', this.get('type'));
   }.property('iconClassFormat', 'type'),
-
-  // anotherMessageIsQueued: function() {
-  //   var queue = this.get('parentView.queue');
-
-  //   return queue.get('timedMessages.length') > 1;
-  // }.property('parentView.queue.timedMessages.[]'),
 
   /* Methods */
 
@@ -84,14 +76,6 @@ export default Em.Component.extend(
 
   /* Animation methods */
 
-  shouldShow: function() {
-    this.show();
-  }.on('didInsertElement'),
-
-  shouldHide: function() {
-    this.hide();
-  }.on('willDestroyElement'),
-
   setVisibility: function(shouldShow) {
     var animationMethod = shouldShow ? 'slideDown' : 'slideUp';
 
@@ -118,24 +102,6 @@ export default Em.Component.extend(
     });
   },
 
-  _setMessageProperties: function() {
-    var message = this.get('message');
-    var keys = ['content', 'duration', 'type'];
-    var changes = {};
-
-    if (message) {
-      keys.forEach(function(key) {
-        var property = message.get(key);
-
-        if (property) {
-          changes[key] = property;
-        }
-      });
-
-      this.setProperties(changes);
-    }
-  }.observes('message').on('willInsertElement'),
-
   _hideEndingQueue: function() {
     var _this = this;
     var queue = _this.get('parentView.queue');
@@ -158,9 +124,35 @@ export default Em.Component.extend(
           if (queueLength > 1) {
             _this.show();
           }
-        }, this.get('animationDuration') * 0.9);
+        }, this.get('animationDuration') * 0.9); // Allows for small margin of error
       });
     }
   }.on('willInsertElement'),
+
+  _setMessageProperties: function() {
+    var message = this.get('message');
+    var keys = ['content', 'duration', 'type'];
+    var changes = {};
+
+    if (message) {
+      keys.forEach(function(key) {
+        var property = message.get(key);
+
+        if (property) {
+          changes[key] = property;
+        }
+      });
+
+      this.setProperties(changes);
+    }
+  }.observes('message').on('willInsertElement'),
+
+  _willShow: function() {
+    this.show();
+  }.on('didInsertElement'),
+
+  _willHide: function() {
+    this.hide();
+  }.on('willDestroyElement'),
 
 });

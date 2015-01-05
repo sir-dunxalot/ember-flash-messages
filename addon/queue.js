@@ -33,6 +33,9 @@ export default Em.ArrayProxy.extend(
       }
     }
 
+    Em.assert('Flash message must have a type', message.type);
+    Em.assert('Flash message must have content', message.content);
+
     /* Covers cases with no duration and duration of zero */
 
     if (!message.duration) {
@@ -45,17 +48,11 @@ export default Em.ArrayProxy.extend(
       message.duration += this.get('animationDuration') * 2;
     }
 
-    console.log('pushing', message);
-
     this.pushObject(Message.create(message));
   },
 
   removeMessage: function(message) {
     message = defaultFor(message, this.get('currentMessage'));
-
-    console.log('removing', message);
-
-    // We could implement Em.run.cancel here to cancel the run.later call ni _queueDidChange but it's a lot of overhead
 
     if (this.indexOf(message) > -1) {
       this.removeObject(message);

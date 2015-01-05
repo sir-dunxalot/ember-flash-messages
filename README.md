@@ -37,16 +37,13 @@ Documentation including installation, usage, and customizable options is availab
 - Message component content property will accept Handlebars
 - Docs on 'how to extend and override classes and templates'
 - Basic CSS made importable in Brocfile
-- The `clear()` method on the queue will be made public
-- You will be able to push static messages to the message queue that will require being 'closed' by the user
-- You will be able to specify 'css' as an animation option
 - Assertions to check that `type` and `content` are always passed to the `{{flash-message}}` component
 - The `iconClassFormat` property will be made public
 - Increased test coverage for:
   - `{{flash-message}}` component
   - Testing `animationLibrary` property
   - Data test attributes moved to dummy or helper made available in app tests
-- Ability to pass in message as an object
+- Should message property be two-way
 
 We might implement:
 
