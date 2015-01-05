@@ -5,8 +5,15 @@ export default {
   name: 'ember-flash-messages',
 
   initialize: function(container, app) {
-    var flashMessage = function(type, content, duration) {
-      Queue.pushMessage(type, content, duration);
+    var flashMessage = function(message) {
+      if (typeof message === 'string') {
+        message = {
+          type: arguments[0],
+          content: arguments[1]
+        }
+      }
+
+      Queue.pushMessage(message);
     };
 
     app.register('flashMessage:main', flashMessage, { instantiate: false });

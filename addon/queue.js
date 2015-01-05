@@ -5,10 +5,10 @@ import defaultFor from './utils/default-for';
 export default Em.ArrayProxy.extend(
   Em.Evented, {
 
-  animationDuration: 500,
+  animationDuration: 500, // Default duration to account for animations
   content: Em.A(),
   currentMessage: Em.computed.oneWay('timedMessages.firstObject'),
-  interval: 3000, // Duration to show each message
+  interval: 3000, // Default duration to show each message
   untimedMessages: Em.computed.filterBy('content', 'timed', false),
   timedMessages: Em.computed.filterBy('content', 'timed', true),
 
@@ -18,37 +18,34 @@ export default Em.ArrayProxy.extend(
     this.set('content', Em.A());
   },
 
-  pushMessage: function(type, content, duration) {
-    var message;
+  pushMessage: function(messageProperties) {
+    var message, isTimed, multiplier;
 
     /* Allow message to be passed as an object */
 
-    if (typeof type === 'object') {
-      message = type;
-    } else {
-      message = {
-        type: type,
-        content: content,
-        duration: duration
-      }
-    }
-
-    Em.assert('Flash message must have a type', message.type);
-    Em.assert('Flash message must have content', message.content);
+    Em.assert('Flash message must have a type', messageProperties.type);
+    Em.assert('Flash message must have content', messageProperties.content);
 
     /* Covers cases with no duration and duration of zero */
 
-    if (!message.duration) {
-      message.duration = defaultFor(message.duration, this.get('interval'));
+    console.log(messageProperties);
+
+    if (!messageProperties.duration) {
+      messageProperties.duration = defaultFor(messageProperties.duration, this.get('interval'));
     }
+
+    message = Message.create(messageProperties);
+    isTimed = message.get('timed');
 
     /* Add animation time to message duration */
 
-    if (message.duration !== 0) {
-      message.duration += this.get('animationDuration') * 2;
+    if(isTimed) {
+      multiplier = this.get('timedMessages.length') > 0 ? 1 : 2;
+
+      message.incrementProperty('duration', this.get('animationDuration') * multiplier);
     }
 
-    this.pushObject(Message.create(message));
+    this.pushObject(message);
   },
 
   removeMessage: function(message) {

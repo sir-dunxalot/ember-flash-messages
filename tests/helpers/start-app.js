@@ -8,16 +8,16 @@ import config from '../../config/environment';
 import inspect from './inspect';
 
 export default function startApp(attrs) {
-  var App;
+  var application;
 
   var attributes = Ember.merge({}, config.APP);
   attributes = Ember.merge(attributes, attrs); // use defaults, but you can override;
 
   Ember.run(function() {
-    App = Application.create(attributes);
-    App.setupForTesting();
-    App.injectTestHelpers();
+    application = Application.create(attributes);
+    application.setupForTesting();
+    application.injectTestHelpers();
   });
 
-  return App;
+  return application;
 }
