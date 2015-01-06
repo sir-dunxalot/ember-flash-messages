@@ -23,6 +23,7 @@ export default Em.Component.extend({
   classNames: ['flash_message'],
   dataTest: 'flash-message',
   inQueue: Em.computed.bool('parentView.queue'),
+  removeMessageAction: 'removeMessage',
   role: 'alert',
   tagName: 'dl',
   visible: false,
@@ -53,6 +54,8 @@ export default Em.Component.extend({
 
         _this.sendAction('action', _this.get('message')); // Only runs if action is set
       }
+
+      _this.sendAction('removeMessageAction', _this.get('message'));
     }, function() {
       Em.warn('handleClick returned a rejection');
     });

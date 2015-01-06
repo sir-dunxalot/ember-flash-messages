@@ -3,7 +3,6 @@
     {{#each untimedMessages}}
       <li>
         {{flash-message
-          action='removeMessage'
           message=this
         }}
       </li>
@@ -13,7 +12,6 @@
 
 {{#if currentMessage}}
   {{flash-message
-    action='removeMessage'
     message=currentMessage
   }}
 {{/if}}
