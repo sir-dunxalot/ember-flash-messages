@@ -8,6 +8,7 @@ var app = new EmberAddon();
 // Dependencies below are for testing purposes only
 
 app.import('vendor/styles/layout.css');
+app.import('vendor/styles/theme.css');
 
 app.import(app.bowerDirectory + '/velocity/velocity.min.js');
 

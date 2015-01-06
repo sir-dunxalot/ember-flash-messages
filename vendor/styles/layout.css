@@ -4,13 +4,11 @@
 }
 
 .flash_message {
-  border: 1px solid gray;
   padding: 15px;
   margin: 0 0 15px 0;
 
   display: none;
 
-  /* Graceful fallback */
   -webkit-transition: opacity 0.5s;
   transition: opacity 0.5s;
   opacity: 0;
@@ -29,10 +27,6 @@
 .flash_message .button_wrapper {
   display: table-cell;
   vertical-align: middle;
-}
-
-.flash_message [class*=icon-] {
-  margin-right: 15px;
 }
 
 .flash_message .hidden {

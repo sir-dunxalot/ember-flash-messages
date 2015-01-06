@@ -18,11 +18,12 @@ export default Em.Component.extend({
 
   /* Properties */
 
-  attributeBindings: ['dataTest:data-test'],
-  classNameBindings: ['visible'],
+  attributeBindings: ['dataTest:data-test', 'role'],
+  classNameBindings: ['typeClass', 'visible'],
   classNames: ['flash_message'],
   dataTest: 'flash-message',
   inQueue: Em.computed.bool('parentView.queue'),
+  role: 'alert',
   tagName: 'dl',
   visible: false,
 
@@ -83,24 +84,30 @@ export default Em.Component.extend({
   setVisibility: function(shouldShow) {
     var animationMethod = shouldShow ? 'slideDown' : 'slideUp';
 
-    if (this.get('_state') === 'inDOM') {
+    this.$()[animationMethod](this.get('animationDuration'));
+  },
+
+  show: function() {
+    this._setVisibility(true);
+  },
+
+  hide: function() {
+    this._setVisibility(false);
+  },
+
+  _setVisibility: function(shouldShow) {
+    if (!this.get('isDestroying')) {
 
       /* Enough time to invoke CSS transitions */
 
       Em.run.later(this, function() {
-        this.set('visible', shouldShow);
+        if (!this.get('isDestroying')) {
+          this.set('visible', shouldShow);
+        }
       }, 100);
 
-      this.$()[animationMethod](this.get('animationDuration'));
+      this.setVisibility(shouldShow);
     }
-  },
-
-  show: function() {
-    this.setVisibility(true);
-  },
-
-  hide: function() {
-    this.setVisibility(false);
   },
 
   /* Private methods */

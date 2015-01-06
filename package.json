@@ -36,7 +36,12 @@
   },
   "description": "A small notification library for showing flash messages in Ember CLI apps",
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "alert",
+    "alerts",
+    "flash messages",
+    "messages",
+    "notify"
   ],
   "ember-addon": {
     "configPath": "tests/dummy/config"
