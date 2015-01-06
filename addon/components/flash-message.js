@@ -19,10 +19,12 @@ export default Em.Component.extend({
   /* Properties */
 
   attributeBindings: ['dataTest:data-test'],
+  classNameBindings: ['visible'],
   classNames: ['flash_message'],
   dataTest: 'flash-message',
   inQueue: Em.computed.bool('parentView.queue'),
   tagName: 'dl',
+  visible: false,
 
   animationDuration: function() {
     return defaultFor(this.get('parentView.animationDuration'), 500);
@@ -82,6 +84,13 @@ export default Em.Component.extend({
     var animationMethod = shouldShow ? 'slideDown' : 'slideUp';
 
     if (this.get('_state') === 'inDOM') {
+
+      /* Enough time to invoke CSS transitions */
+
+      Em.run.later(this, function() {
+        this.set('visible', shouldShow);
+      }, 100);
+
       this.$()[animationMethod](this.get('animationDuration'));
     }
   },

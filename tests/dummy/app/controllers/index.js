@@ -9,7 +9,7 @@ export default Em.ObjectController.extend({
           type: type,
           content: content,
           duration: duration
-        })
+        });
       } else {
         this.flashMessage(type, content);
       }

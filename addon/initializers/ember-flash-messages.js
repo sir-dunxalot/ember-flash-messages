@@ -10,7 +10,7 @@ export default {
         message = {
           type: arguments[0],
           content: arguments[1]
-        }
+        };
       }
 
       Queue.pushMessage(message);
