@@ -174,6 +174,13 @@ export default Em.Component.extend({
   }.observes('message').on('willInsertElement'),
 
   _showOnRender: function() {
+
+    /* Assert the required properties are passed. Don't check
+    for the content property because this could be used as a
+    block helper */
+
+    Em.assert('You must pass the type option to {{flash-message}} component', this.get('type'));
+
     this.setVisibility(true);
   }.on('didInsertElement'),
 

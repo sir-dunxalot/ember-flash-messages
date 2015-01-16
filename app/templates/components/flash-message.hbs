@@ -7,17 +7,18 @@
 </dt>
 
 <dd class="content" data-test="flash-content">
-  {{content}}
+  {{!-- Allow HTML --}}
+  {{{content}}}
 
   {{!-- Allow block helpers --}}
   {{yield}}
 </dd>
 
-{{!-- {{#unless message.timed}} --}}
+{{#unless message.timed}}
 <div class="button_wrapper">
   <button class="button">
     <span class="icon-close"></span>
     <span class="hidden">Close</span>
   </button>
 </div>
-{{!-- {{/unless}} --}}
+{{/unless}}

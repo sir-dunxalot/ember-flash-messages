@@ -39,7 +39,7 @@ export default Em.ArrayProxy.extend(
     ['content', 'type'].forEach(function(property) {
       var propertyExists = !!messageProperties[property];
 
-      Em.assert('Flash message must have ' + property, propertyExists);
+      Em.assert('You must pass the ' + property + ' property to flashMessage', propertyExists);
     });
 
     /* Covers cases with no duration and duration of zero */
