@@ -4,8 +4,6 @@ import defaultFor from './utils/default-for';
 
 // TODO - Currently the queue can't be extended.
 
-var hider, timer;
-
 export default Em.ArrayProxy.extend(
   Em.Evented, {
 
@@ -16,6 +14,9 @@ export default Em.ArrayProxy.extend(
   untimedMessages: Em.computed.filterBy('content', 'timed', false),
   timedMessages: Em.computed.filterBy('content', 'timed', true),
 
+  _hider: null,
+  _remover: null,
+
   /* Public methods */
 
   clear: function() {
@@ -24,8 +25,6 @@ export default Em.ArrayProxy.extend(
 
   pushMessage: function(messageProperties) {
     var message, newDuration, multiplier;
-
-    console.log(messageProperties);
 
     /* Allow message to be passed as an object */
 
@@ -60,8 +59,8 @@ export default Em.ArrayProxy.extend(
 
   removeMessage: function(message) {
     if (this.indexOf(message) > -1) {
-      Em.run.cancel(timer);
-      Em.run.cancel(hider);
+      Em.run.cancel(this.get('_hider'));
+      Em.run.cancel(this.get('_remover'));
       this.removeObject(message);
     } else {
       Em.warn('Message not found in message queue: ' + JSON.stringify(message));
@@ -80,15 +79,15 @@ export default Em.ArrayProxy.extend(
 
       /* Schedule the timed message to be visually hidden */
 
-      hider = Em.run.later(this, function() {
+      this.set('_hider', Em.run.later(this, function() {
         this.trigger('willHideQueue');
-      }, earlyDuration);
+      }, earlyDuration));
 
       /* Schedule the timed message to be removed from the queue */
 
-      timer = Em.run.later(this, function() {
+      this.set('_remover', Em.run.later(this, function() {
         this.removeMessage(currentMessage);
-      }, duration);
+      }, duration));
     }
   }.observes('currentMessage'),
 

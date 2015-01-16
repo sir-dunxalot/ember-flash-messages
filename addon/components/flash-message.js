@@ -29,18 +29,23 @@ export default Em.Component.extend({
   visible: false,
 
   animationDuration: function() {
-    return defaultFor(this.get('parentView.animationDuration'), 500);
+    return defaultFor(
+      this.get('parentView.animationDuration'),
+      500
+    );
   }.property('parentView.animationDuration'),
 
   iconClass: function() {
-    return this.get('iconClassFormat').replace('{{type}}', this.get('type'));
+    var format = this.get('iconClassFormat');
+
+    return format.replace('{{type}}', this.get('type'));
   }.property('iconClassFormat', 'type'),
 
   typeClass: function() {
     return this.get('className') + '-' + this.get('type');
   }.property('className', 'type'),
 
-  /* Methods */
+  /* Event handling */
 
   click: function() {
     var _this = this;
@@ -48,14 +53,16 @@ export default Em.Component.extend({
     /* Remove message visually... */
 
     _this.handleClick().then(function() {
+      var message = _this.get('message');
+
       if (_this.get('action')) {
 
         /* ... Then remove message from queue(s) */
 
-        _this.sendAction('action', _this.get('message')); // Only runs if action is set
+        _this.sendAction('action', message); // Only runs if action is set
       }
 
-      _this.sendAction('removeMessageAction', _this.get('message'));
+      _this.sendAction('removeMessageAction', message);
     });
   },
 
@@ -87,13 +94,6 @@ export default Em.Component.extend({
 
   /* Animation methods */
 
-  // setVisibility: function(shouldShow) {
-  //   var method = shouldShow
-  //   // var animationMethod = shouldShow ? 'slideDown' : 'slideUp';
-
-  //   // this.$()[animationMethod](this.get('animationDuration'));
-  // },
-
   show: function() {
     this.$().slideDown(this.get('animationDuration'));
   },
@@ -122,23 +122,22 @@ export default Em.Component.extend({
   /* Private methods */
 
   _hideEndingQueue: function() {
-    var _this = this;
-    var queue = _this.get('parentView.queue');
+    var queue = this.get('parentView.queue');
 
     /* If this message is in the timed queue we might
     need to hide the message before it's removed from
     the queue, but only if there are no other messages
     in the queue. */
 
-    if (_this.get('message.timed')) {
-      queue.on('willHideQueue', function() {
+    if (this.get('message.timed')) {
+      queue.on('willHideQueue', this, function() {
         var queueLength = queue.get('timedMessages.length');
 
         /* If there is not another message queued, start
         hiding the queue */
 
         if (queueLength === 1) {
-          _this.setVisibility(false);
+          this.setVisibility(false);
         }
 
         /* However, check to see if another message has been
@@ -149,7 +148,7 @@ export default Em.Component.extend({
 
         Em.run.later(this, function() {
           if (queueLength > 1) {
-            _this.setVisibility(true);
+            this.setVisibility(true);
           }
         }, this.get('animationDuration') * 0.9);
       });
