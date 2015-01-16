@@ -47,7 +47,7 @@ export default Em.Component.extend({
 
     /* Remove message visually... */
 
-    _this._handleClick().then(function() {
+    _this.handleClick().then(function() {
       if (_this.get('action')) {
 
         /* ... Then remove message from queue(s) */
@@ -56,49 +56,55 @@ export default Em.Component.extend({
       }
 
       _this.sendAction('removeMessageAction', _this.get('message'));
-    }, function() {
-      Em.warn('handleClick returned a rejection');
     });
   },
 
   handleClick: function(resolve, reject) {
+    var _this = this;
     var parentView = this.get('parentView');
     var inQueue = this.get('inQueue');
 
-    /* If message is in the queue, see if the queue should remain visible... */
+    return new Em.RSVP.Promise(function(resolve, reject) {
 
-    if (inQueue && parentView.getQueueLength() > 1) {
-      resolve();
-    } else {
-      this.hide();
+      /* If message is in the queue, see if the queue should remain visible... */
 
-      Em.run.later(this, function() {
-        if (!inQueue) {
-          this.removeFromParent();
-        }
-
+      if (inQueue && parentView.getQueueLength() > 1) {
         resolve();
-      }, this.get('animationDuration'));
-    }
+      } else {
+        _this.setVisibility(false);
+
+        Em.run.later(_this, function() {
+          if (!inQueue) {
+            _this.removeFromParent();
+          }
+
+          resolve();
+        }, _this.get('animationDuration'));
+      }
+
+    });
   },
 
   /* Animation methods */
 
-  setVisibility: function(shouldShow) {
-    var animationMethod = shouldShow ? 'slideDown' : 'slideUp';
+  // setVisibility: function(shouldShow) {
+  //   var method = shouldShow
+  //   // var animationMethod = shouldShow ? 'slideDown' : 'slideUp';
 
-    this.$()[animationMethod](this.get('animationDuration'));
-  },
+  //   // this.$()[animationMethod](this.get('animationDuration'));
+  // },
 
   show: function() {
-    this._setVisibility(true);
+    this.$().slideDown(this.get('animationDuration'));
   },
 
   hide: function() {
-    this._setVisibility(false);
+    this.$().slideUp(this.get('animationDuration'));
   },
 
-  _setVisibility: function(shouldShow) {
+  setVisibility: function(shouldShow) {
+    var method = shouldShow ? 'show' : 'hide';
+
     if (!this.get('isDestroying')) {
 
       /* Enough time to invoke CSS transitions */
@@ -109,43 +115,43 @@ export default Em.Component.extend({
         }
       }, 100);
 
-      this.setVisibility(shouldShow);
+      this[method]();
     }
   },
 
   /* Private methods */
 
-  _handleClick: function() {
-    var _this = this;
-
-    return new Em.RSVP.Promise(function(resolve, reject) {
-      _this.handleClick(resolve, reject);
-    });
-  },
-
   _hideEndingQueue: function() {
     var _this = this;
     var queue = _this.get('parentView.queue');
 
-    /* If this message is in the timed queue we might need to hide the message before it's removed from the queue, but only if there are no other messages in the queue. */
+    /* If this message is in the timed queue we might
+    need to hide the message before it's removed from
+    the queue, but only if there are no other messages
+    in the queue. */
 
     if (_this.get('message.timed')) {
       queue.on('willHideQueue', function() {
         var queueLength = queue.get('timedMessages.length');
 
-        /* If there is not another message queued, start hiding the queue */
+        /* If there is not another message queued, start
+        hiding the queue */
 
         if (queueLength === 1) {
-          _this.hide();
+          _this.setVisibility(false);
         }
 
-        /* However, check to see if another message has been added in the interim and, if so, cancel the hiding of the queue */
+        /* However, check to see if another message has been
+        added in the interim and, if so, cancel the hiding of
+        the queue */
+
+        /* TODO - Remove 0.9, which allows for small margin for error */
 
         Em.run.later(this, function() {
           if (queueLength > 1) {
-            _this.show();
+            _this.setVisibility(true);
           }
-        }, this.get('animationDuration') * 0.9); // Allows for small margin of error
+        }, this.get('animationDuration') * 0.9);
       });
     }
   }.on('willInsertElement'),
@@ -168,12 +174,12 @@ export default Em.Component.extend({
     }
   }.observes('message').on('willInsertElement'),
 
-  _willShow: function() {
-    this.show();
+  _showOnRender: function() {
+    this.setVisibility(true);
   }.on('didInsertElement'),
 
-  _willHide: function() {
-    this.hide();
+  _hideOnDestroy: function() {
+    this.setVisibility(false);
   }.on('willDestroyElement'),
 
 });

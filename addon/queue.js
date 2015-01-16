@@ -2,6 +2,10 @@ import Em from 'ember';
 import Message from './models/message';
 import defaultFor from './utils/default-for';
 
+// TODO - Currently the queue can't be extended.
+
+var hider, timer;
+
 export default Em.ArrayProxy.extend(
   Em.Evented, {
 
@@ -19,28 +23,36 @@ export default Em.ArrayProxy.extend(
   },
 
   pushMessage: function(messageProperties) {
-    var message, isTimed, multiplier;
+    var message, newDuration, multiplier;
+
+    console.log(messageProperties);
 
     /* Allow message to be passed as an object */
 
-    Em.assert('Flash message must have a type', messageProperties.type);
-    Em.assert('Flash message must have content', messageProperties.content);
+    ['content', 'type'].forEach(function(property) {
+      var propertyExists = !!messageProperties[property];
+
+      Em.assert('Flash message must have ' + property, propertyExists);
+    });
 
     /* Covers cases with no duration and duration of zero */
 
     if (!messageProperties.duration) {
-      messageProperties.duration = defaultFor(messageProperties.duration, this.get('interval'));
+      messageProperties.duration = defaultFor(
+        messageProperties.duration,
+        this.get('interval')
+      );
     }
 
     message = Message.create(messageProperties);
-    isTimed = message.get('timed');
 
     /* Add animation time to message duration */
 
-    if(isTimed) {
+    if (message.get('timed')) {
       multiplier = this.get('timedMessages.length') > 0 ? 1 : 2;
+      newDuration = this.get('animationDuration') * multiplier;
 
-      message.incrementProperty('duration', this.get('animationDuration') * multiplier);
+      message.incrementProperty('duration', newDuration);
     }
 
     this.pushObject(message);
@@ -48,6 +60,8 @@ export default Em.ArrayProxy.extend(
 
   removeMessage: function(message) {
     if (this.indexOf(message) > -1) {
+      Em.run.cancel(timer);
+      Em.run.cancel(hider);
       this.removeObject(message);
     } else {
       Em.warn('Message not found in message queue: ' + JSON.stringify(message));
@@ -66,11 +80,15 @@ export default Em.ArrayProxy.extend(
 
       /* Schedule the timed message to be visually hidden */
 
-      Em.run.later(this, this.trigger, 'willHideQueue', earlyDuration);
+      hider = Em.run.later(this, function() {
+        this.trigger('willHideQueue');
+      }, earlyDuration);
 
       /* Schedule the timed message to be removed from the queue */
 
-      Em.run.later(this, this.removeMessage, currentMessage, duration);
+      timer = Em.run.later(this, function() {
+        this.removeMessage(currentMessage);
+      }, duration);
     }
   }.observes('currentMessage'),
 
