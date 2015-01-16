@@ -2,20 +2,28 @@ import Em from 'ember';
 import Message from './models/message';
 import defaultFor from './utils/default-for';
 
-// TODO - Currently the queue can't be extended.
-
 export default Em.ArrayProxy.extend(
   Em.Evented, {
 
-  animationDuration: 500, // Default duration to account for animations
+  // TODO - make these options extendable on the component and figure out a way to import from app tree
+
+  /* Options */
+
+  animationDuration: 500,
+  interval: 3000,
+
+  /* Properties */
+
   content: Em.A(),
   currentMessage: Em.computed.oneWay('timedMessages.firstObject'),
-  interval: 3000, // Default duration to show each message
   untimedMessages: Em.computed.filterBy('content', 'timed', false),
   timedMessages: Em.computed.filterBy('content', 'timed', true),
 
-  _hider: null,
-  _remover: null,
+  /* We declare the private properties on the queue so the
+  class can be extended easily */
+
+  _hider: Em.Object.create(),
+  _remover: Em.Object.create(),
 
   /* Public methods */
 
@@ -57,13 +65,32 @@ export default Em.ArrayProxy.extend(
     this.pushObject(message);
   },
 
+  createID: function(message) {
+    return message.get('content').dasherize();
+  },
+
   removeMessage: function(message) {
+
+    /* If the message is in the timed queue and it's being
+    removed by an early click, cancel the timers that would
+    have eventually removed the message from the queue */
+
     if (this.indexOf(message) > -1) {
-      Em.run.cancel(this.get('_hider'));
-      Em.run.cancel(this.get('_remover'));
       this.removeObject(message);
+
+      if (message.get('timed')) {
+        Em.run.cancel(
+          this.get('_hider.' + this.createID(message))
+        );
+
+        Em.run.cancel(
+          this.get('_remover.' + this.createID(message))
+        );
+      }
     } else {
-      Em.warn('Message not found in message queue: ' + JSON.stringify(message));
+      Em.warn('Message not found in message queue: ' +
+        JSON.stringify(message)
+      );
     }
   },
 
@@ -79,15 +106,19 @@ export default Em.ArrayProxy.extend(
 
       /* Schedule the timed message to be visually hidden */
 
-      this.set('_hider', Em.run.later(this, function() {
-        this.trigger('willHideQueue');
-      }, earlyDuration));
+      this.set('_hider.' + this.createID(currentMessage),
+        Em.run.later(this, function() {
+          this.trigger('willHideQueue');
+        }, earlyDuration)
+      );
 
       /* Schedule the timed message to be removed from the queue */
 
-      this.set('_remover', Em.run.later(this, function() {
-        this.removeMessage(currentMessage);
-      }, duration));
+      this.set('_remover.' + this.createID(currentMessage),
+        Em.run.later(this, function() {
+          this.removeMessage(currentMessage);
+        }, duration)
+      );
     }
   }.observes('currentMessage'),
 
