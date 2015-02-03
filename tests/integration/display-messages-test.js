@@ -1,11 +1,16 @@
 import Em from 'ember';
 import { test } from 'ember-qunit';
-import message from '../helpers/message';
 import startApp from '../helpers/start-app';
+
+var message = {
+  content: 'This is the first message',
+  duration: 3000,
+  type: 'success'
+};
 
 var secondMessage = {
   content: 'well done',
-  duration: 3000, // Default
+  duration: 3000,
   type: 'error'
 };
 
@@ -57,7 +62,8 @@ test('Message queue component should display multiple messages in sequence', fun
   visit('/');
 
   andThen(function() {
-    // var queueComponent = inspect('queue');
+    var queueComponent = container.lookup('component:message-queue');
+    var animationDuration = queueComponent.get('animationDuration');
 
     /* Send messages to queue */
 
@@ -80,7 +86,7 @@ test('Message queue component should display multiple messages in sequence', fun
 
         notEqual(inspect(property).html().trim(), secondMessage[property], report);
       });
-    }, message['duration'] - 100);
+    }, message['duration'] + (animationDuration * 2) - 100);
 
     /* Check second message displays after change */
 
@@ -90,7 +96,7 @@ test('Message queue component should display multiple messages in sequence', fun
 
         equal(inspect(property).html().trim(), secondMessage[property], report);
       });
-    }, message['duration']);
+    }, message['duration'] + (animationDuration * 2));
   });
 
 });

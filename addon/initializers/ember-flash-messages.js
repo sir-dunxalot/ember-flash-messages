@@ -16,7 +16,9 @@ export default {
       Queue.pushMessage(message);
     };
 
-    app.register('flashMessage:main', flashMessage, { instantiate: false });
+    app.register('flashMessage:main', flashMessage, {
+      instantiate: false
+    });
 
     ['route', 'controller', 'view'].forEach(function(place) {
       app.inject(place, 'flashMessage', 'flashMessage:main');

@@ -1,3 +1,4 @@
+import Em from 'ember';
 import resolver from './helpers/resolver';
 import {
   setResolver

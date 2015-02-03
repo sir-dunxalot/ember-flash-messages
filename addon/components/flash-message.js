@@ -42,7 +42,10 @@ export default Em.Component.extend({
   }.property('iconClassFormat', 'type'),
 
   typeClass: function() {
-    return this.get('className') + '-' + this.get('type');
+    var type = this.get('type');
+    var affix = type ? '-' + type : '';
+
+    return this.get('className') + affix;
   }.property('className', 'type'),
 
   /* Event handling */

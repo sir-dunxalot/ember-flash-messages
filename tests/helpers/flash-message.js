@@ -1,8 +1,7 @@
 import Em from 'ember';
 
 export default Em.Test.registerAsyncHelper('flashMessage',
-  function(app, instance, messageProperties) {
-    console.log(argument);
+  function(app, instance, message) {
 
     instance.flashMessage(message);
 

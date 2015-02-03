@@ -1,6 +1,5 @@
 import Em from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
-import message from '../../helpers/message';
 
 var isFunction = QUnit.isFunction;
 

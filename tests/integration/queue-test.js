@@ -1,8 +1,13 @@
 import Em from 'ember';
 import { test } from 'ember-qunit';
-import message from '../helpers/message';
 import startApp from '../helpers/start-app';
 import Queue from 'ember-flash-messages/queue';
+
+var message = {
+  content: 'This is the first message',
+  duration: 3000,
+  type: 'success'
+};
 
 var App, container, controller;
 
