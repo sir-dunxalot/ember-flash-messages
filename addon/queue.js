@@ -64,7 +64,7 @@ export default Em.ArrayProxy.extend(
   },
 
   createID: function(message) {
-    return message.get('content').dasherize();
+    return message.get('content').dasherize()/* + Date.now()*/;
   },
 
   removeMessage: function(message) {
@@ -74,7 +74,7 @@ export default Em.ArrayProxy.extend(
     have eventually removed the message from the queue */
 
     if (this.indexOf(message) > -1) {
-      this.removeObject(message);
+      this.removeObject(Message.create(message));
 
       if (message.get('timed')) {
         Em.run.cancel(
