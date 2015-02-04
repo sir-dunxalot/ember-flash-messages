@@ -5,8 +5,6 @@ import defaultFor from './utils/default-for';
 export default Em.ArrayProxy.extend(
   Em.Evented, {
 
-  // TODO - make these options extendable on the component and figure out a way to import from app tree
-
   /* Options */
 
   animationDuration: 500,

@@ -141,13 +141,17 @@ test('Event handling', function() {
 
   });
 
+  /* Handle click should be a promise */
+
   set('handleClick', function() {
+    return new Em.RSVP.Promise(function(resolve, reject) {
 
-    ok(true,
-      'Clicking on the component should call handleClick');
+      ok(true,
+        'Clicking on the component should call handleClick');
 
+    });
   });
 
-
+  this.$().click();
 
 });

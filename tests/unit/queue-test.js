@@ -1,16 +1,16 @@
 import Em from 'ember';
 import { moduleFor, test } from 'ember-qunit';
+import queue from 'ember-flash-messages/queue';
 
+var contains = QUnit.contains;
 var isFunction = QUnit.isFunction;
 var typeOf = QUnit.typeOf;
 
-var controller, queue;
-
-moduleFor('controller:index', 'Flash messages - Queue', {
+module('Flash messages - Queue', {
 
   setup: function() {
-    controller = this.subject();
-    queue = controller.get('queue');
+    // controller = this.subject();
+    // queue = controller.get('queue');
   },
 
   teardown: function() {
@@ -20,8 +20,12 @@ moduleFor('controller:index', 'Flash messages - Queue', {
   }
 });
 
-test('Queue management', function() {
+test('Queue construction', function() {
 
-  console.log(Em.typeOf(queue));
+  contains(queue.get('constructor').toString(), 'Array',
+    'Queue should be constructed from an array class');
+
+  // console.log(Em.typeOf(queue));
+  // console.log(queue.get('constructor'));
 
 });
