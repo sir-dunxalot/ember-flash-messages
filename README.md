@@ -8,14 +8,16 @@ Ember Flash Messages (`ember-flash-messages`) adds API-like functionality to you
 
 - Three easy ways to show messages:
   - Time messages and show them one at a time
-  - Show messages at the same time for an indefinite amount of time
+  - Show multiple messages for an indefinite amount of time
   - Add a static component to a template
+- Use all of the above in parallel
 - Use Handlebars in your static flash messages' content
 - Let the user close the message regardless of the remaining duration
-- Add an action the will be run whenever the user clicks or closes a message
+- Add an action that will be run when the user clicks the message
 - Use out-of-the-box in any route, controller, or view
 - Use in your application or route-specific templates
 - Specify default options and message-specific overrides
+- Layout CSS importable with an option in your Brocfile
 - Semantic markup
 
 [See what's in the works here](#features-in-the-works).
@@ -39,11 +41,8 @@ Documentation including installation, usage, and customizable options is availab
 - Message component content property will accept Handlebars
 - Basic CSS made importable in Brocfile
 - Improved semanticism in the templates
-- Close button added to CSS
-- Default interval made available
+- Close button added to importable layout CSS
 - `clearQueue()` method injected with `flashMessage()`
-- Action to be passed using options object
-- Tests for all of the above
 - Close button to use icon format
 
 
