@@ -1,6 +1,6 @@
 {
   "name": "ember-flash-messages",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -34,7 +34,7 @@
     "express": "^4.8.5",
     "glob": "^4.0.5"
   },
-  "description": "A small notification library for showing flash messages in Ember CLI apps",
+  "description": "Adds API-like functionality for rendering and managing flash messages in your Ember CLI apps",
   "keywords": [
     "ember-addon",
     "alert",
