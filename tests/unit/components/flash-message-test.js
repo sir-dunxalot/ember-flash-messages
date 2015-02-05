@@ -20,10 +20,9 @@ moduleForComponent('flash-message', 'Flash messages - Flash message component', 
   },
 
   teardown: function() {
-    // Em.run(function() {
-    //   component.clear();
-    // });
+
   }
+
 });
 
 

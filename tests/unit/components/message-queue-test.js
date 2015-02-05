@@ -6,15 +6,16 @@ var isFunction = QUnit.isFunction;
 var component;
 
 moduleForComponent('message-queue', 'Flash messages - Message queue component', {
+  needs: ['component:flash-message'],
 
   setup: function() {
     component = this.subject();
   },
 
   teardown: function() {
-    // Em.run(function() {
-    //   component.clear();
-    // });
+    Em.run(function() {
+      component.clear();
+    });
   }
 });
 
