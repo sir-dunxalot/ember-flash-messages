@@ -6,12 +6,6 @@ var contains = QUnit.contains;
 var isFunction = QUnit.isFunction;
 var typeOf = QUnit.typeOf;
 
-var clearQueue = function() {
-  Em.run(function() {
-    queue.clear();
-  });
-};
-
 module('Flash messages - Queue', {
 
   setup: function() {
@@ -107,10 +101,12 @@ test('Pushing messages', function() {
     type: 'success'
   };
 
-  queue.pushMessage({
-    content: 'This is the first message',
-    duration: 3000,
-    type: 'success'
+  Em.run(function() {
+    queue.pushMessage({
+      content: 'This is the first message',
+      duration: 3000,
+      type: 'success'
+    });
   });
 
   strictEqual(queue.get('length'), 1,
@@ -129,7 +125,9 @@ test('Pushing messages', function() {
   strictEqual(queue.get('length'), 0,
     'Calling clear() should clear the timed messages array');
 
-  queue.pushMessage(untimedMessage);
+  Em.run(function() {
+    queue.pushMessage(untimedMessage);
+  });
 
   strictEqual(queue.get('length'), 1,
     'Queue content should have one message');
