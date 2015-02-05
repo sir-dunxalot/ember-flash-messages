@@ -1,18 +1,23 @@
 Ember Flash Messages [![Build Status](https://travis-ci.org/sir-dunxalot/ember-flash-messages.svg?branch=master)](https://travis-ci.org/sir-dunxalot/ember-flash-messages) ![Ember Addon](https://s3.amazonaws.com/images.jebbit.com/ember/badge.svg)
 ======
 
-Ember Flash Messages (`ember-flash-messages`) is a customizable, lightweight Ember.js addon for displaying flash messages to users.
+Ember Flash Messages (`ember-flash-messages`) adds API-like functionality to your Ember CLI app for rendering and managing flash messages. The primary purpose of this addon is to manage functionality in your JS whilst getting out of the way for styling and templating, allowing you to match your styleguide and mockups precisely. However, basic stylesheets and animations are included and may be optionally imported.
 
 
 ## Features
 
-- Messages queue and display one at a time
-- Works out-of-the-box in any route, controller, or view
-- No library requirements (Bootstrap, jquery animate, etc)
-- Just call `this.flashMessage(type, content [, duration])`
-- Message component made available for static alerts
-- Works in application or route-specific templates
-- Default and message-specific durations
+- Three easy ways to show messages:
+  - Time messages and show them one at a time
+  - Show multiple messages for an indefinite amount of time
+  - Add a static component to a template
+- Use all of the above in parallel
+- Use Handlebars in your static flash messages' content
+- Let the user close the message regardless of the remaining duration
+- Add an action that will be run when the user clicks the message
+- Use out-of-the-box in any route, controller, or view
+- Use in your application or route-specific templates
+- Specify default options and message-specific overrides
+- Layout CSS importable with an option in your Brocfile
 - Semantic markup
 
 [See what's in the works here](#features-in-the-works).
@@ -21,7 +26,7 @@ Ember Flash Messages (`ember-flash-messages`) is a customizable, lightweight Emb
 ## Installation
 
 ```
-npm install --save-dev ember-flash-messages
+ember install:addon ember-flash-messages
 ```
 
 
@@ -32,25 +37,13 @@ Documentation including installation, usage, and customizable options is availab
 
 ## Features in the Works
 
-- Demo (p1)
-- Message component will accept block content
+- Demo
 - Message component content property will accept Handlebars
-- Docs on 'how to extend and override classes and templates'
 - Basic CSS made importable in Brocfile
-- The `clear()` method on the queue will be made public
-- You will be able to push static messages to the message queue that will require being 'closed' by the user
-- You will be able to specify 'css' as an animation option
-- Assertions to check that `type` and `content` are always passed to the `{{flash-message}}` component
-- The `iconClassFormat` property will be made public
-- Increased test coverage for:
-  - `{{flash-message}}` component
-  - Testing `animationLibrary` property
-
-We might implement:
-
-- Non-current-message messages will be in the template but hidden for semanticism
-- Public events like `didShowMessage` and `didChangeMessage`
-- Mixins and variables made available for advanced styling customization
+- Improved semanticism in the templates
+- Close button added to importable layout CSS
+- `clearQueue()` method injected with `flashMessage()`
+- Close button to use icon format
 
 
 ## Issues
@@ -62,8 +55,8 @@ If you have any issues or feature requests/ideas, please [open an issue](https:/
 
 ```shell
 git clone https://github.com/sir-dunxalot/ember-flash-messages.git
-npm install
-bower install
+cd ember-flash-messages
+ember install
 ember s
 ```
 
@@ -75,7 +68,9 @@ ember test
 
 ### Working on wiki documentation:
 
-Clone the repo as above. Then run:
+You can edit the documentation directly on Github - it's a wiki!
+
+Alternatively, if you want to work on the documentation locally you can clone the repo as above then run:
 
 ```shell
 cd docs

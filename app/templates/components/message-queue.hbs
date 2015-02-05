@@ -1,7 +1,17 @@
+{{#if untimedMessages}}
+  <ul class="ul">
+    {{#each untimedMessages}}
+      <li>
+        {{flash-message
+          message=this
+        }}
+      </li>
+    {{/each}}
+  </ul>
+{{/if}}
+
 {{#if currentMessage}}
   {{flash-message
-    type=currentMessage.type
-    content=currentMessage.content
-    classPrefix=classPrefix
+    message=currentMessage
   }}
 {{/if}}

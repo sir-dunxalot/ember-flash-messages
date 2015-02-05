@@ -1,11 +1,17 @@
-<button {{action 'showMessage' 'success' 'First messsge'}}>
-  Show Message 1
-</button>
+<ol>
+  {{#each examples}}
+    <li>
+      <button {{action 'showMessage' _view.contentIndex}}>
+        {{content}}
+      </button>
+    </li>
+  {{/each}}
+</ol>
 
-<button {{action 'showMessage' 'error' 'Second message'}}>
-  Show Message 2
-</button>
+<h2>Static Messages</h2>
 
-<button {{action 'showMessage' 'error' 'Second message' 1000}}>
-  Show Message 3 for 1000ms
-</button>
+{{#flash-message type='hello'}}
+  Testing block content {{#link-to 'index'}}and Handlebars{{/link-to}}
+{{/flash-message}}
+
+{{flash-message type='success' content='what?'}}

@@ -1,20 +1,14 @@
 import Em from 'ember';
+import selectorFor from './selector-for';
 
-export function inspect(app, name, useJquery) {
-  var element;
+export default Em.Test.registerHelper('inspect',
+  function(app, name, useJquery) {
+    var element = find(selectorFor(name))[0];
 
-  if (!name || typeof name === 'boolean') {
-    useJquery = name;
-    name = app;
+    if (useJquery === false) {
+      return element;
+    } else {
+      return $(element);
+    }
   }
-
-  element = find('[data-test="flash-' + name + '"]')[0];
-
-  if (useJquery === false) {
-    return element;
-  } else {
-    return $(element);
-  }
-}
-
-export default Em.Test.registerHelper('inspect', inspect);
+);

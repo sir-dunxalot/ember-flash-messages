@@ -1,11 +1,24 @@
-<dt {{bind-attr class='typeClass'}}>
-  {{#if iconClass}}
-    <span {{bind-attr class="iconClass"}} data-test="flash-icon"></span>
-  {{/if}}
+<dt class="icon_wrapper">
+  <span {{bind-attr class='iconClass'}} data-test="flash-icon"></span>
 
-  <span data-test="flash-type">{{type}}</span>
+  <span class="hidden" data-test="flash-type">
+    {{type}}
+  </span>
 </dt>
 
-<dd {{bind-attr class='contentClass'}} data-test="flash-content">
-  {{content}}
+<dd class="content" data-test="flash-content">
+  {{!-- Allow HTML --}}
+  {{{content}}}
+
+  {{!-- Allow block helpers --}}
+  {{yield}}
 </dd>
+
+{{#unless message.timed}}
+  <div class="button_wrapper">
+    <button class="button" data-test="flash-button">
+      <span class="icon-close"></span>
+      <span class="hidden">Close</span>
+    </button>
+  </div>
+{{/unless}}

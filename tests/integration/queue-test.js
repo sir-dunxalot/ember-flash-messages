@@ -1,8 +1,13 @@
 import Em from 'ember';
 import { test } from 'ember-qunit';
-import message from '../helpers/message';
 import startApp from '../helpers/start-app';
 import Queue from 'ember-flash-messages/queue';
+
+var message = {
+  content: 'This is the first message',
+  duration: 3000,
+  type: 'success'
+};
 
 var App, container, controller;
 
@@ -29,6 +34,10 @@ test('Message should be pushed to queue', function() {
   visit('/');
 
   andThen(function() {
+    var queueComponent = container.lookup('component:message-queue');
+    // Times two because of start and end animations
+    var animationDuration = queueComponent.get('animationDuration') * 2;
+
     equal(Queue.get('length'), 0, 'Queue should be empty');
 
     controller.flashMessage(message['type'], message['content']);
@@ -36,17 +45,27 @@ test('Message should be pushed to queue', function() {
     equal(Queue.get('length'), 1, 'Queue should contain one message');
 
     Em.run.later(Queue, function() {
+
       equal(Queue.get('length'), 1, 'Message should be in queue after ' + earlyDuration + 'ms');
-    }, earlyDuration);
+
+    }, earlyDuration + animationDuration);
 
     Em.run.later(Queue, function() {
+
       equal(Queue.get('length'), 0, 'Message should be removed from queue after ' + duration + 'ms');
-    }, duration);
+
+    }, duration + animationDuration);
 
     ['content', 'duration', 'type'].forEach(function(property) {
-      var report = property.capitalize() + ' should be "' + message[property] + '"';
+      var expectedValue = message[property];
 
-      equal(Queue.get('currentMessage.' + property), message[property], report);
+      if (property === 'duration') {
+        expectedValue += animationDuration;
+      }
+
+      equal(Queue.get('currentMessage.' + property), expectedValue,
+        property.capitalize() + ' should be "' + expectedValue + '"');
+
     });
 
   });
