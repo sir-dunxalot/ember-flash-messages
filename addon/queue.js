@@ -63,10 +63,6 @@ export default Em.ArrayProxy.extend(
     this.pushObject(message);
   },
 
-  createID: function(message) {
-    return message.get('content').dasherize()/* + Date.now()*/;
-  },
-
   removeMessage: function(message) {
 
     /* If the message is in the timed queue and it's being
@@ -74,15 +70,15 @@ export default Em.ArrayProxy.extend(
     have eventually removed the message from the queue */
 
     if (this.indexOf(message) > -1) {
-      this.removeObject(Message.create(message));
+      this.removeObject(message);
 
       if (message.get('timed')) {
         Em.run.cancel(
-          this.get('_hider.' + this.createID(message))
+          this.get('_hider.' + message.get('createdAt'))
         );
 
         Em.run.cancel(
-          this.get('_remover.' + this.createID(message))
+          this.get('_remover.' + message.get('createdAt'))
         );
       }
     } else {
@@ -104,7 +100,7 @@ export default Em.ArrayProxy.extend(
 
       /* Schedule the timed message to be visually hidden */
 
-      this.set('_hider.' + this.createID(currentMessage),
+      this.set('_hider.' + currentMessage.get('createdAt'),
         Em.run.later(this, function() {
           this.trigger('willHideQueue');
         }, earlyDuration)
@@ -112,7 +108,7 @@ export default Em.ArrayProxy.extend(
 
       /* Schedule the timed message to be removed from the queue */
 
-      this.set('_remover.' + this.createID(currentMessage),
+      this.set('_remover.' + currentMessage.get('createdAt'),
         Em.run.later(this, function() {
           this.removeMessage(currentMessage);
         }, duration)

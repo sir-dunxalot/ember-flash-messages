@@ -19,7 +19,9 @@ module('Flash messages - Queue', {
   },
 
   teardown: function() {
-    clearQueue();
+    Em.run(function() {
+      queue.clear();
+    });
   }
 
 });
@@ -117,7 +119,9 @@ test('Pushing messages', function() {
   strictEqual(queue.get('timedMessages.length'), 1,
     'Queue timed messages array should have one message');
 
-  clearQueue();
+  Em.run(function() {
+    queue.clear();
+  });
 
   strictEqual(queue.get('length'), 0,
     'Calling clear() should clear the queue content');
@@ -133,7 +137,9 @@ test('Pushing messages', function() {
   strictEqual(queue.get('untimedMessages.length'), 1,
     'Queue untimed messages array should have one message');
 
-  clearQueue();
+  Em.run(function() {
+    queue.clear();
+  });
 
   strictEqual(queue.get('length'), 0,
     'Calling removeMessage() should clear the queue content');
