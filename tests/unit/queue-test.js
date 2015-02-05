@@ -8,9 +8,9 @@ var typeOf = QUnit.typeOf;
 
 module('Flash messages - Queue', {
 
-  setup: function() {
-
-  },
+  // setup: function() {
+  //
+  // },
 
   teardown: function() {
     Em.run(function() {

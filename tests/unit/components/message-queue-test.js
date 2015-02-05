@@ -20,6 +20,7 @@ moduleForComponent('message-queue', 'Flash messages - Message queue component', 
 });
 
 
+
 test('Data test attribute', function() {
 
   ok(component.get('dataTest'),
@@ -29,6 +30,7 @@ test('Data test attribute', function() {
     'Component should have a data-test attribute');
 
 });
+
 
 
 test('Default properties and methods', function() {

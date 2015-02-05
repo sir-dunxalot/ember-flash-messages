@@ -35,12 +35,10 @@ Documentation including installation, usage, and customizable options is availab
 
 ## Features in the Works
 
-- Demo (p1)
+- Demo
 - Message component content property will accept Handlebars
 - Basic CSS made importable in Brocfile
-- Full test suite
-- Should message property be two-way
-- Queued messages should be in the template but hidden for semanticism
+- Improved semanticism in the templates
 
 
 ## Issues
@@ -66,7 +64,9 @@ ember test
 
 ### Working on wiki documentation:
 
-Clone the repo as above. Then run:
+You can edit the documentation directly - it's a wiki!
+
+Alternatively, if you want to work on the documentation locally you can clone the repo as above then run:
 
 ```shell
 cd docs

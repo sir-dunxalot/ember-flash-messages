@@ -19,11 +19,12 @@ moduleForComponent('flash-message', 'Flash messages - Flash message component', 
     };
   },
 
-  teardown: function() {
-
-  }
+  // teardown: function() {
+  //
+  // }
 
 });
+
 
 
 test('Data test attributes', function() {
@@ -43,6 +44,7 @@ test('Data test attributes', function() {
   });
 
 });
+
 
 
 test('Default properties and methods', function() {
@@ -114,6 +116,7 @@ test('Default properties and methods', function() {
 });
 
 
+
 test('Usability', function() {
   var role = 'alert';
 
@@ -127,6 +130,7 @@ test('Usability', function() {
     'Component element should have its role attribute bound');
 
 });
+
 
 
 test('Event handling', function() {

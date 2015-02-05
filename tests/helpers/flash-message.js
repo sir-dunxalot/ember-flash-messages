@@ -5,6 +5,7 @@ export default Em.Test.registerAsyncHelper('flashMessage',
 
     instance.flashMessage(message);
 
+    // Use if async functionality is added
     // return app.testHelpers.wait();
   }
 );

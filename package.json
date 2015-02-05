@@ -39,7 +39,9 @@
     "ember-addon",
     "alert",
     "alerts",
+    "flash",
     "flash messages",
+    "message",
     "messages",
     "notify"
   ],

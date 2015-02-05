@@ -29,10 +29,7 @@ export default Em.Component.extend({
   visible: false,
 
   animationDuration: function() {
-    return defaultFor(
-      this.get('parentView.animationDuration'),
-      500
-    );
+    return defaultFor(this.get('parentView.animationDuration'), 500);
   }.property('parentView.animationDuration'),
 
   iconClass: function() {

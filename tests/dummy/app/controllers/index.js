@@ -27,7 +27,7 @@ export default Em.ObjectController.extend({
       type: 'success',
       content: "{{#link-to 'index'}}Go home{{/link-to}}",
     }, {
-      // Check what happens with no arguments
+      // See what happens with no arguments
     }
   ]),
 

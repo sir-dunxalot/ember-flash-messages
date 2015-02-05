@@ -1,9 +1,12 @@
 .flash_message,
-.flash_message .content {
+[class*="flash_message"],
+.flash_message .content,
+[class*="flash_message"] .content {
   width: 100%;
 }
 
-.flash_message {
+.flash_message,
+[class*="flash_message"] {
   padding: 15px;
   margin: 0 0 15px 0;
 
@@ -14,7 +17,8 @@
   opacity: 0;
 }
 
-.flash_message.visible {
+.flash_message.visible,
+[class*="flash_message"].visible {
   display: table;
   border-collapse: collapse;
   max-width: 100%;
@@ -23,13 +27,17 @@
 }
 
 .flash_message .icon_wrapper,
+[class*="flash_message"] .icon_wrapper,
 .flash_message .content,
-.flash_message .button_wrapper {
+[class*="flash_message"] .content,
+.flash_message .button_wrapper,
+[class*="flash_message"] .button_wrapper {
   display: table-cell;
   vertical-align: middle;
 }
 
-.flash_message .hidden {
+.flash_message .hidden,
+[class*="flash_message"] .hidden {
   border: 0;
   clip: rect(0 0 0 0);
   height: 1px;
