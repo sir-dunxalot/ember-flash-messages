@@ -63,7 +63,8 @@ test('Message queue component should display multiple messages in sequence', fun
 
   andThen(function() {
     var queueComponent = container.lookup('component:message-queue');
-    var animationDuration = queueComponent.get('animationDuration');
+    // Times two for before and after animations
+    var animationDuration = queueComponent.get('animationDuration') * 2;
 
     /* Send messages to queue */
 
@@ -86,7 +87,7 @@ test('Message queue component should display multiple messages in sequence', fun
 
         notEqual(inspect(property).html().trim(), secondMessage[property], report);
       });
-    }, message['duration'] + (animationDuration * 2) - 100);
+    }, message['duration'] + animationDuration - 100);
 
     /* Check second message displays after change */
 
@@ -96,7 +97,7 @@ test('Message queue component should display multiple messages in sequence', fun
 
         equal(inspect(property).html().trim(), secondMessage[property], report);
       });
-    }, message['duration'] + (animationDuration * 2));
+    }, message['duration'] + animationDuration);
   });
 
 });

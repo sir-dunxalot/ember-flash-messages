@@ -19,8 +19,7 @@ export default Em.Component.extend({
   /* Properties */
 
   attributeBindings: ['dataTest:data-test', 'role'],
-  classNameBindings: ['typeClass', 'visible'],
-  classNames: ['flash_message'],
+  classNameBindings: ['className', 'typeClass', 'visible'],
   dataTest: 'flash-message',
   inQueue: Em.computed.bool('parentView.queue'),
   removeMessageAction: 'removeMessage',
@@ -66,7 +65,7 @@ export default Em.Component.extend({
     });
   },
 
-  handleClick: function(resolve, reject) {
+  handleClick: function() {
     var _this = this;
     var parentView = this.get('parentView');
     var inQueue = this.get('inQueue');
@@ -157,12 +156,12 @@ export default Em.Component.extend({
 
   _setMessageProperties: function() {
     var message = this.get('message');
-    var keys = ['content', 'duration', 'type'];
+    var keys = ['action', 'content', 'duration', 'type'];
     var changes = {};
 
     if (message) {
       keys.forEach(function(key) {
-        var property = message.get(key);
+        var property = message.get ? message.get(key) : message.key;
 
         if (property) {
           changes[key] = property;

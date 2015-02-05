@@ -39,6 +39,12 @@ Documentation including installation, usage, and customizable options is availab
 - Message component content property will accept Handlebars
 - Basic CSS made importable in Brocfile
 - Improved semanticism in the templates
+- Close button added to CSS
+- Default interval made available
+- `clearQueue()` method injected with `flashMessage()`
+- Action to be passed using options object
+- Tests for all of the above
+- Close button to use icon format
 
 
 ## Issues
@@ -51,8 +57,7 @@ If you have any issues or feature requests/ideas, please [open an issue](https:/
 ```shell
 git clone https://github.com/sir-dunxalot/ember-flash-messages.git
 cd ember-flash-messages
-npm install
-bower install
+ember install
 ember s
 ```
 
@@ -64,7 +69,7 @@ ember test
 
 ### Working on wiki documentation:
 
-You can edit the documentation directly - it's a wiki!
+You can edit the documentation directly on Github - it's a wiki!
 
 Alternatively, if you want to work on the documentation locally you can clone the repo as above then run:
 
