@@ -4,6 +4,7 @@ import Em from 'ember';
 import defaultFor from '../utils/default-for';
 import insert from '../utils/computed/insert';
 import Message from '../models/message';
+import Queue from '../queue';
 
 export default Em.Component.extend({
 
@@ -18,6 +19,7 @@ export default Em.Component.extend({
 
   /* Properties */
 
+  animationDuration: Em.computed.alias('queue.animationDuration'),
   attributeBindings: ['dataTest:data-test', 'role'],
   classNameBindings: ['className', 'typeClass', 'visible'],
   dataTest: 'flash-message',
@@ -26,10 +28,6 @@ export default Em.Component.extend({
   role: 'alert',
   tagName: 'dl',
   visible: false,
-
-  animationDuration: function() {
-    return defaultFor(this.get('parentView.animationDuration'), 500);
-  }.property('parentView.animationDuration'),
 
   iconClass: function() {
     var format = this.get('iconClassFormat');
@@ -43,6 +41,10 @@ export default Em.Component.extend({
 
     return this.get('className') + affix;
   }.property('className', 'type'),
+
+  queue: function() {
+    return Queue;
+  }.property().readOnly(),
 
   /* Event handling */
 

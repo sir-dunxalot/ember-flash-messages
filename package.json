@@ -1,6 +1,6 @@
 {
   "name": "ember-flash-messages",
-  "version": "0.5.0",
+  "version": "0.5.2",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -17,7 +17,7 @@
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "",
+  "author": "Duncan Walker <walkerdu@bc.edu>",
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.0.0",

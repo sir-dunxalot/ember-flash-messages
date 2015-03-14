@@ -7,16 +7,18 @@ module.exports = {
   included: function(app) {
     var options = app.options.flashMessages;
 
-    if (options) {
+    if (!options) {
+      return;
+    }
 
-      if (options.layout) {
 
-        /* Prepend so the stylesheet is easily overwritten */
+    if (options.layout) {
 
-        app.import('vendor/styles/layout.css', {
-          prepend: true,
-        });
-      }
+      /* Prepend so the stylesheet is easily overwritten */
+
+      app.import('vendor/styles/layout.css', {
+        prepend: true,
+      });
     }
   }
 };
