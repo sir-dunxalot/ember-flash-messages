@@ -35,7 +35,7 @@
     "glob": "^4.4.2",
     "rimraf": "2.2.8"
   },
-  "description": "A small notification library for showing flash messages in Ember CLI apps",
+  "description": "Adds API-like functionality for rendering and managing flash messages in your Ember CLI apps",
   "keywords": [
     "ember-addon",
     "alert",
