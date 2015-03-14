@@ -32,7 +32,8 @@
     "ember-data": "1.0.0-beta.12",
     "ember-export-application-global": "^1.0.0",
     "express": "^4.8.5",
-    "glob": "^4.0.5"
+    "glob": "^4.4.2",
+    "rimraf": "2.2.8"
   },
   "description": "A small notification library for showing flash messages in Ember CLI apps",
   "keywords": [
