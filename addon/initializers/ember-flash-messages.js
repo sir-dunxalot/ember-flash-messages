@@ -20,7 +20,7 @@ export default {
       instantiate: false
     });
 
-    ['route', 'controller', 'view'].forEach(function(place) {
+    ['route', 'controller', 'view', 'component'].forEach(function(place) {
       app.inject(place, 'flashMessage', 'flashMessage:main');
     });
   }
