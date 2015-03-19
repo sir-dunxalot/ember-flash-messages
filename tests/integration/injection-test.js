@@ -37,6 +37,6 @@ test('flashMessage method should be on controllers', function() {
 
 test('flashMessage method should be on views', function() {
   var view = container.lookup('view:index');
-
+  
   ok(view.flashMessage);
 });
