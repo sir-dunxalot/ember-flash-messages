@@ -1,4 +1,4 @@
-Ember Flash Messages [![Build Status](https://travis-ci.org/sir-dunxalot/ember-flash-messages.svg?branch=master)](https://travis-ci.org/sir-dunxalot/ember-flash-messages) ![Ember Addon](https://s3.amazonaws.com/images.jebbit.com/ember/badge.svg)
+Ember Flash Messages [![Build Status](https://travis-ci.org/sir-dunxalot/ember-flash-messages.svg?branch=master)](https://travis-ci.org/sir-dunxalot/ember-flash-messages)
 ======
 
 Ember Flash Messages (`ember-flash-messages`) adds API-like functionality to your Ember CLI app for rendering and managing flash messages. The primary purpose of this addon is to manage functionality in your JS whilst getting out of the way for styling and templating, allowing you to match your styleguide and mockups precisely. However, a basic stylesheet for flash message layout may be optionally imported.
