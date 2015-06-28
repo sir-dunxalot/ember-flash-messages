@@ -29,22 +29,22 @@ export default Em.Component.extend({
   tagName: 'dl',
   visible: false,
 
-  iconClass: function() {
+  iconClass: Ember.computed('iconClassFormat', 'type', function() {
     var format = this.get('iconClassFormat');
 
     return format.replace('{{type}}', this.get('type'));
-  }.property('iconClassFormat', 'type'),
+  }),
 
-  typeClass: function() {
+  typeClass: Ember.computed('className', 'type', function() {
     var type = this.get('type');
     var affix = type ? '-' + type : '';
 
     return this.get('className') + affix;
-  }.property('className', 'type'),
+  }),
 
-  queue: function() {
+  queue: Ember.computed(function() {
     return Queue;
-  }.property().readOnly(),
+  }),
 
   /* Event handling */
 
@@ -122,7 +122,7 @@ export default Em.Component.extend({
 
   /* Private methods */
 
-  _hideEndingQueue: function() {
+  _hideEndingQueue: Ember.on('willInsertElement', function() {
     var queue = this.get('parentView.queue');
 
     /* If this message is in the timed queue we might
@@ -154,37 +154,39 @@ export default Em.Component.extend({
         }, this.get('animationDuration') * 0.9);
       });
     }
-  }.on('willInsertElement'),
+  }),
 
-  _setMessageProperties: function() {
-    var message = this.get('message');
-    var keys = ['action', 'content', 'duration', 'type'];
-    var changes = {};
+  _setMessageProperties: Ember.on('willInsertElement',
+    Ember.observer('message', function() {
+      var message = this.get('message');
+      var keys = ['action', 'content', 'duration', 'type'];
+      var changes = {};
 
-    if (message) {
-      keys.forEach(function(key) {
-        var property = message.get ? message.get(key) : message.key;
+      if (message) {
+        keys.forEach(function(key) {
+          var property = message.get ? message.get(key) : message.key;
 
-        if (property) {
-          changes[key] = property;
-        }
-      });
+          if (property) {
+            changes[key] = property;
+          }
+        });
 
-      this.setProperties(changes);
-    }
-  }.observes('message').on('willInsertElement'),
+        this.setProperties(changes);
+      }
+    })
+  ),
 
-  _showOnRender: function() {
+  _showOnRender: Ember.on('didInsertElement', function() {
 
     /* Assert the required properties are passed. Don't check
     for the content property because this could be used as a
     block helper */
 
     this.setVisibility(true);
-  }.on('didInsertElement'),
+  }),
 
-  _hideOnDestroy: function() {
+  _hideOnDestroy: Ember.on('willDestroyElement', function() {
     this.setVisibility(false);
-  }.on('willDestroyElement'),
+  }),
 
 });

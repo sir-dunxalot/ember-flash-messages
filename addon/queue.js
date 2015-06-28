@@ -90,7 +90,7 @@ export default Em.ArrayProxy.extend(
 
   /* Private methods */
 
-  _queueDidChange: function() {
+  _queueDidChange: Ember.observer('currentMessage', function() {
     var currentMessage = this.get('currentMessage');
     var duration, earlyDuration;
 
@@ -114,6 +114,6 @@ export default Em.ArrayProxy.extend(
         }, duration)
       );
     }
-  }.observes('currentMessage'),
+  }),
 
 }).create(); /* Creates a singleton */

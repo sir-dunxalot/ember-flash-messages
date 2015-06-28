@@ -21,9 +21,9 @@ export default Em.Component.extend({
   shouldShow: Em.computed.or('currentMessage', 'untimedMessages.length'),
   untimedMessages: Em.computed.oneWay('queue.untimedMessages'),
 
-  queue: function() {
+  queue: Ember.computed(function() {
     return Queue;
-  }.property().readOnly(),
+  }),
 
   /* Methods */
 

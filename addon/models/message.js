@@ -7,11 +7,11 @@ export default Em.Object.extend({
 
   /* Use like an ID to identify each message */
 
-  createdAt: function() {
+  createdAt: Ember.computed(function() {
     return Date.now();
-  }.property(),
+  }),
 
-  timed: function() {
+  timed: Ember.computed('duration', function() {
     return this.get('duration') !== 0;
-  }.property('duration'),
+  }),
 });
