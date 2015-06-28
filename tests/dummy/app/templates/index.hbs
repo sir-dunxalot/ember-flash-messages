@@ -1,8 +1,8 @@
 <ol>
-  {{#each examples}}
+  {{#each examples as |example|}}
     <li>
       <button {{action 'showMessage' _view.contentIndex}}>
-        {{content}}
+        {{example.content}}
       </button>
     </li>
   {{/each}}

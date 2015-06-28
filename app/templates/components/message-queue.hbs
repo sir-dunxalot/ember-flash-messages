@@ -1,9 +1,9 @@
 {{#if untimedMessages}}
   <ul class="ul">
-    {{#each untimedMessages}}
+    {{#each untimedMessages as |message|}}
       <li>
         {{flash-message
-          message=this
+          message=message
         }}
       </li>
     {{/each}}
