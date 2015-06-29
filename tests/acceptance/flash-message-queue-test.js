@@ -1,30 +1,24 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
 import startApp from '../helpers/start-app';
+import {
+  expectedContent,
+  expectedDuration,
+  expectedType,
+  expectedMessage,
+
+  expectedContentTwo,
+  expectedDurationTwo,
+  expectedTypeTwo,
+  expectedMessageTwo,
+
+  untimedMessageDuration,
+  untimedMessageContent,
+  untimedMessageType,
+  untimedMessage,
+} from '../helpers/test-messages';
 
 const { run } = Ember;
-
-/* First test message */
-
-const expectedContent = 'This is the first message';
-const expectedDuration = 3000; // Default
-const expectedType = 'success';
-const expectedMessage = {
-  content: expectedContent,
-  duration: expectedDuration,
-  type: expectedType,
-};
-
-/* Second test message */
-
-const expectedContentTwo = 'This is the second message';
-const expectedDurationTwo = 2000;
-const expectedTypeTwo = 'error';
-const expectedMessageTwo = {
-  content: expectedContentTwo,
-  duration: expectedDurationTwo,
-  type: expectedTypeTwo,
-};
 
 let animationDuration,
     application,
@@ -148,11 +142,6 @@ test('Multiple timed messages', function(assert) {
 });
 
 test('Untimed messages', function(assert) {
-  const untimedMessage = {
-    duration: 0,
-    content: expectedContent,
-    type: expectedType,
-  };
 
   assert.expect(7);
 
