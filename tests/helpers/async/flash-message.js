@@ -1,9 +1,11 @@
 import Ember from 'ember';
 
 export default Ember.Test.registerAsyncHelper('flashMessage',
-  function(app, instance, message) {
+  function(app, messageType, messageContent) {
+    const container = app.__container__;
+    const route = container.lookup('route:application');
 
-    instance.flashMessage(message);
+    route.flashMessage(messageType, messageContent);
 
     /* Use if async functionality is added */
 
