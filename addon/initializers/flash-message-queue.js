@@ -14,8 +14,6 @@ export function initialize(/* container, application */) {
           };
         }
 
-        // console.log(this.);
-
         this.get('flashMessageQueue').pushMessage(message);
       },
 
