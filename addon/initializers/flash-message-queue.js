@@ -1,3 +1,5 @@
+import Ember from 'ember';
+
 export function initialize(/* container, application */) {
 
   ['View', 'Controller', 'Route', 'Component'].forEach(function(classType) {

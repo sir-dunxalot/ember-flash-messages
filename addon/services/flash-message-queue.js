@@ -1,9 +1,18 @@
 import Ember from 'ember';
-import Message from '../models/message';
-import defaultFor from '../utils/default-for';
+import Message from 'ember-flash-messages/models/message';
+import defaultFor from 'ember-flash-messages/utils/default-for';
 
-export default Ember.Service.extend(
-  Ember.Evented, {
+const {
+  A,
+  Evented,
+  Service,
+  computed,
+  observer,
+  run,
+} = Ember;
+
+export default Service.extend(
+  Evented, {
 
   /* Options */
 
@@ -12,10 +21,10 @@ export default Ember.Service.extend(
 
   /* Properties */
 
-  content: Ember.A(),
-  currentMessage: Ember.computed.oneWay('timedMessages.firstObject'),
-  untimedMessages: Ember.computed.filterBy('content', 'timed', false),
-  timedMessages: Ember.computed.filterBy('content', 'timed', true),
+  content: A(),
+  currentMessage: computed.oneWay('timedMessages.firstObject'),
+  untimedMessages: computed.filterBy('content', 'timed', false),
+  timedMessages: computed.filterBy('content', 'timed', true),
 
   /* We declare the private properties on the queue so the
   class can be extended easily */
@@ -25,12 +34,12 @@ export default Ember.Service.extend(
 
   /* Public methods */
 
-  clear: function() {
-    this.set('content', Ember.A());
+  clear() {
+    this.set('content', A());
   },
 
-  pushMessage: function(messageProperties) {
-    var message, newDuration, multiplier;
+  pushMessage(messageProperties) {
+    let message;
 
     /* Allow message to be passed as an object */
 
@@ -54,8 +63,8 @@ export default Ember.Service.extend(
     /* Add animation time to message duration */
 
     if (message.get('timed')) {
-      multiplier = this.get('timedMessages.length') > 0 ? 1 : 2;
-      newDuration = this.get('animationDuration') * multiplier;
+      const multiplier = this.get('timedMessages.length') > 0 ? 1 : 2;
+      const newDuration = this.get('animationDuration') * multiplier;
 
       message.incrementProperty('duration', newDuration);
     }
@@ -63,7 +72,7 @@ export default Ember.Service.extend(
     this.get('content').pushObject(message);
   },
 
-  removeMessage: function(message) {
+  removeMessage(message) {
     const content = this.get('content');
 
     /* If the message is in the timed queue and it's being
@@ -74,11 +83,11 @@ export default Ember.Service.extend(
       content.removeObject(message);
 
       if (message.get('timed')) {
-        Ember.run.cancel(
+        run.cancel(
           this.get('_hider.' + message.get('createdAt'))
         );
 
-        Ember.run.cancel(
+        run.cancel(
           this.get('_remover.' + message.get('createdAt'))
         );
       }
@@ -91,18 +100,17 @@ export default Ember.Service.extend(
 
   /* Private methods */
 
-  _queueDidChange: Ember.observer('currentMessage', function() {
-    var currentMessage = this.get('currentMessage');
-    var duration, earlyDuration;
+  _queueDidChange: observer('currentMessage', function() {
+    const currentMessage = this.get('currentMessage');
 
     if (currentMessage) {
-      duration = currentMessage.get('duration');
-      earlyDuration = duration - this.get('animationDuration');
+      const duration = currentMessage.get('duration');
+      const earlyDuration = duration - this.get('animationDuration');
 
       /* Schedule the timed message to be visually hidden */
 
       this.set('_hider.' + currentMessage.get('createdAt'),
-        Ember.run.later(this, function() {
+        run.later(this, function() {
           this.trigger('willHideQueue');
         }, earlyDuration)
       );
@@ -110,7 +118,7 @@ export default Ember.Service.extend(
       /* Schedule the timed message to be removed from the queue */
 
       this.set('_remover.' + currentMessage.get('createdAt'),
-        Ember.run.later(this, function() {
+        run.later(this, function() {
           this.removeMessage(currentMessage);
         }, duration)
       );
