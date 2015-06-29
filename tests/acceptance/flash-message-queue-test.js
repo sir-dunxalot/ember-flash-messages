@@ -24,8 +24,7 @@ let animationDuration,
     application,
     container,
     content,
-    beforeRemovalTime,
-    expectedRemovalTime,
+    interval,
     queue;
 
 module('Acceptance | flash message queue', {
@@ -40,9 +39,8 @@ module('Acceptance | flash message queue', {
 
     queue = container.lookup('service:flash-message-queue');
     animationDuration = queue.get('animationDuration');
+    interval = queue.get('interval');
     content = queue.get('content');
-    expectedRemovalTime = animationDuration * 2; // Show and close animations
-    beforeRemovalTime = expectedRemovalTime - 100;
   },
 
   afterEach: function() {
@@ -68,6 +66,7 @@ test('Messages should be pushed to the queue', function(assert) {
   flashMessage(expectedType, expectedContent);
 
   andThen(function() {
+    const timeBeforeRemoval = interval + animationDuration * 2;
 
     assert.equal(content.get('length'), 1,
       'The queue should contain one message');
@@ -87,18 +86,18 @@ test('Messages should be pushed to the queue', function(assert) {
     run.later(this, function() {
 
       assert.equal(content.get('length'), 1,
-        `Message should still be in queue after ${beforeRemovalTime}ms`);
+        `Message should still be in queue after ${timeBeforeRemoval - 100}ms`);
 
-    }, expectedDuration + beforeRemovalTime);
+    }, timeBeforeRemoval - 100);
 
     /* Then check that it's removed at the correct time */
 
     run.later(this, function() {
 
       assert.equal(content.get('length'), 0,
-        `Message should be removed from queue after ${expectedRemovalTime} ms`);
+        `Message should be removed from queue after ${timeBeforeRemoval} ms`);
 
-    }, expectedDuration + expectedRemovalTime);
+    }, timeBeforeRemoval);
 
   });
 });
@@ -136,7 +135,7 @@ test('Multiple timed messages', function(assert) {
 
     run.later(this, function() {
       checkCurrentMessage(assert, expectedMessageTwo, false);
-    }, expectedRemovalTime + expectedDuration);
+    }, expectedDuration + animationDuration * 2);
 
   });
 });
