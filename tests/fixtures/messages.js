@@ -45,5 +45,5 @@ export {
   untimedMessageDuration,
   untimedMessageContent,
   untimedMessageType,
-  untimedMessage,
+  untimedMessage
 };

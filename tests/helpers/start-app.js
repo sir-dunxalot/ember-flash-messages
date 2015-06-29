@@ -6,6 +6,7 @@ import config from '../../config/environment';
 /* Custom helpers */
 
 import checkCurrentMessage from './sync/check-current-message';
+import checkMessageDom from './sync/check-message-dom';
 import inspect from './sync/inspect';
 import flashMessage from './async/flash-message';
 

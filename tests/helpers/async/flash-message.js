@@ -6,9 +6,5 @@ export default Ember.Test.registerAsyncHelper('flashMessage',
     const route = container.lookup('route:application');
 
     route.flashMessage(messageType, messageContent);
-
-    /* Use if async functionality is added */
-
-    // return app.testHelpers.wait();
   }
 );

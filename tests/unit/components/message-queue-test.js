@@ -30,7 +30,7 @@ test('Data test attribute', function(assert) {
   assert.ok(component.get('dataTest'),
     'Component should have a dataTest property');
 
-  assert.equal(this.$().attr('data-test'), 'flash-queue',
+  assert.equal(this.$().attr('data-test'), 'flash-message-queue',
     'Component should have a data-test attribute');
 
 });

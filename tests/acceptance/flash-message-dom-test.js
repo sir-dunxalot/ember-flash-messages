@@ -76,10 +76,8 @@ test('Timed message in queue component element', function(assert) {
   flashMessage(expectedMessage);
 
   andThen(function() {
-    const flashMessageElement = inspect('message');
-
-    assert.equal(flashMessageElement.length, 1,
-      'There should be one flash message shown in the DOM');
-
+    Ember.run.scheduleOnce('afterRender', this, function() {
+      checkMessageDom(assert, inspect('message'), expectedMessage);
+    });
   });
 });
