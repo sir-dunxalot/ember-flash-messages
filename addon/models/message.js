@@ -1,5 +1,7 @@
 import Ember from 'ember';
 
+const { computed } = Ember;
+
 export default Ember.Object.extend({
   content: null,
   duration: null,
@@ -7,11 +9,11 @@ export default Ember.Object.extend({
 
   /* Use like an ID to identify each message */
 
-  createdAt: Ember.computed(function() {
+  createdAt: computed(function() {
     return Date.now();
   }),
 
-  timed: Ember.computed('duration', function() {
+  timed: computed('duration', function() {
     return this.get('duration') !== 0;
   }),
 });

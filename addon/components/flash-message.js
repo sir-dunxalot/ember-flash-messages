@@ -6,7 +6,15 @@ import defaultFor from '../utils/default-for';
 import insert from 'ember-flash-messages/utils/computed/insert';
 import layout from 'ember-flash-messages/templates/components/flash-message';
 
-export default Ember.Component.extend({
+const {
+  Component,
+  RSVP,
+  computed,
+  run,
+  on
+} = Ember;
+
+export default Component.extend({
 
   /* Options */
 
@@ -14,10 +22,9 @@ export default Ember.Component.extend({
   className: 'flash_message',
   content: null,
   iconClassFormat: 'icon-{{type}}',
-  message: null,
   type: null,
 
-  message: Ember.computed({
+  message: computed({
     get() {
       return {
         action: this.get('action'),
@@ -33,56 +40,60 @@ export default Ember.Component.extend({
 
   /* Properties */
 
-  animationDuration: Ember.computed.oneWay('flashMessageQueue.animationDuration'),
+  animationDuration: computed.oneWay('flashMessageQueue.animationDuration'),
   attributeBindings: ['dataTest:data-test', 'role'],
   classNameBindings: ['className', 'typeClass', 'visible'],
   dataTest: 'flash-message',
-  inQueue: Ember.computed.bool('parentView.isMessageQueueComponent'),
+  inQueue: computed.bool('parentView.isMessageQueueComponent'),
   layout: layout,
   removeMessageAction: 'removeMessage',
   role: 'alert',
   tagName: 'dl',
   visible: false,
 
-  iconClass: Ember.computed('iconClassFormat', 'type', function() {
-    var format = this.get('iconClassFormat');
+  iconClass: computed('iconClassFormat', 'type', function() {
+    const format = this.get('iconClassFormat');
 
     return format.replace('{{type}}', this.get('type'));
   }),
 
-  typeClass: Ember.computed('className', 'type', function() {
-    var type = this.get('type');
-    var affix = type ? '-' + type : '';
+  typeClass: computed('className', 'type', function() {
+    const { className, type } = this.getProperties(
+      [ 'className', 'type' ]
+    );
+    const affix = type ? '-' + type : '';
 
-    return this.get('className') + affix;
+    return `${className}${affix}`;
   }),
 
   /* Event handling */
 
-  click: function() {
-    var _this = this;
+  click() {
 
     /* Remove message visually... */
 
-    _this.handleClick().then(function() {
-      var message = _this.get('message');
+    this.handleClick().then(function() {
+      const { action, message } = this.getProperties(
+        [ 'action', 'message' ]
+      );
 
-      if (_this.get('action')) {
+      if (action) {
 
         /* ... Then remove message from queue(s) */
 
-        _this.sendAction('action', message); // Only runs if action is set
+        this.sendAction('action', message); // Only runs if action is set
       }
 
-      _this.sendAction('removeMessageAction', message);
-    });
+      this.sendAction('removeMessageAction', message);
+    }.bind(this));
   },
 
-  handleClick: function() {
-    var inQueue = this.get('inQueue');
-    var parentView = this.get('parentView');
+  handleClick() {
+    const { inQueue, parentView } = this.getProperties(
+      [ 'inQueue', 'parentView' ]
+    );
 
-    return new Ember.RSVP.Promise(function(resolve, reject) {
+    return new RSVP.Promise(function(resolve, reject) {
 
       /* If message is in the queue, see if the queue should remain visible... */
 
@@ -105,22 +116,22 @@ export default Ember.Component.extend({
 
   /* Animation methods */
 
-  hide: function() {
+  hide() {
     this.$().slideUp(this.get('animationDuration'));
   },
 
-  show: function() {
+  show() {
     this.$().slideDown(this.get('animationDuration'));
   },
 
-  setVisibility: function(shouldShow) {
+  setVisibility(shouldShow) {
     var method = shouldShow ? 'show' : 'hide';
 
     if (!this.get('isDestroying')) {
 
       /* Enough time to invoke CSS transitions */
 
-      Ember.run.later(this, function() {
+      run.later(this, function() {
         if (!this.get('isDestroying')) {
           this.set('visible', shouldShow);
         }
@@ -133,7 +144,7 @@ export default Ember.Component.extend({
   /* Private methods */
 
   _hideEndingQueue: Ember.on('willInsertElement', function() {
-    var queue = this.get('flashMessageQueue');
+    const queue = this.get('flashMessageQueue');
 
     /* If this message is in the timed queue we might
     need to hide the message before it's removed from
@@ -157,7 +168,7 @@ export default Ember.Component.extend({
 
         /* TODO - Remove 0.9, which allows for small margin for error */
 
-        Ember.run.later(this, function() {
+        run.later(this, function() {
           if (queueLength > 1) {
             this.setVisibility(true);
           }
@@ -166,7 +177,7 @@ export default Ember.Component.extend({
     }
   }),
 
-  _showOnRender: Ember.on('didInsertElement', function() {
+  _showOnRender: on('didInsertElement', function() {
 
     /* Assert the required properties are passed. Don't check
     for the content property because this could be used as a
@@ -175,7 +186,7 @@ export default Ember.Component.extend({
     this.setVisibility(true);
   }),
 
-  _hideOnDestroy: Ember.on('willDestroyElement', function() {
+  _hideOnDestroy: on('willDestroyElement', function() {
     this.setVisibility(false);
   }),
 

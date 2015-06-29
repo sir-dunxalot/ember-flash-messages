@@ -1,5 +1,4 @@
 export function initialize(/* container, application */) {
-  // const injection = ;
 
   ['View', 'Controller', 'Route', 'Component'].forEach(function(classType) {
     Ember[classType].reopen({
