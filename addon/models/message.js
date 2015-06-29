@@ -1,6 +1,6 @@
-import Em from 'ember';
+import Ember from 'ember';
 
-export default Em.Object.extend({
+export default Ember.Object.extend({
   content: null,
   duration: null,
   type: null,

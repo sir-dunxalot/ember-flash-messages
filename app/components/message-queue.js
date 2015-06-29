@@ -1,3 +1,1 @@
-import Notify from 'ember-flash-messages/components/message-queue';
-
-export default Notify;
+export { default } from 'ember-flash-messages/components/message-queue';

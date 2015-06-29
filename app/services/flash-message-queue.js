@@ -1,0 +1,1 @@
+export { default } from 'ember-flash-messages/services/flash-message-queue';

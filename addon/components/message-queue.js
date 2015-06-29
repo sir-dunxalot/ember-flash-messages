@@ -1,28 +1,30 @@
 /* global velocity */
 
-import Em from 'ember';
-import insert from '../utils/computed/insert';
-import Queue from '../queue';
+import Ember from 'ember';
+// import Queue from '../queue';
+import insert from 'ember-flash-messages/utils/computed/insert';
+import layout from 'ember-flash-messages/templates/components/message-queue';
 
-export default Em.Component.extend({
+export default Ember.Component.extend({
 
   /* Options */
 
   className: 'flash_queue',
-  interval: Em.computed.alias('queue.interval'),
+  interval: Ember.computed.alias('queue.interval'),
 
   /* Properties */
 
-  animationDuration: Em.computed.alias('queue.animationDuration'),
+  animationDuration: Ember.computed.alias('queue.animationDuration'),
   attributeBindings: ['dataTest:data-test'],
   classNameBindings: ['className'],
-  currentMessage: Em.computed.oneWay('queue.currentMessage'),
+  currentMessage: Ember.computed.oneWay('queue.currentMessage'),
   dataTest: 'flash-queue',
-  shouldShow: Em.computed.or('currentMessage', 'untimedMessages.length'),
-  untimedMessages: Em.computed.oneWay('queue.untimedMessages'),
+  layout: layout,
+  shouldShow: Ember.computed.or('currentMessage', 'untimedMessages.length'),
+  untimedMessages: Ember.computed.oneWay('queue.untimedMessages'),
 
   queue: Ember.computed(function() {
-    return Queue;
+    return {}; // TODO
   }),
 
   /* Methods */

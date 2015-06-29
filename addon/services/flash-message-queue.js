@@ -1,9 +1,9 @@
-import Em from 'ember';
-import Message from './models/message';
-import defaultFor from './utils/default-for';
+import Ember from 'ember';
+import Message from '../models/message';
+import defaultFor from '../utils/default-for';
 
-export default Em.ArrayProxy.extend(
-  Em.Evented, {
+export default Ember.Service.extend(
+  Ember.Evented, {
 
   /* Options */
 
@@ -12,21 +12,21 @@ export default Em.ArrayProxy.extend(
 
   /* Properties */
 
-  content: Em.A(),
-  currentMessage: Em.computed.oneWay('timedMessages.firstObject'),
-  untimedMessages: Em.computed.filterBy('content', 'timed', false),
-  timedMessages: Em.computed.filterBy('content', 'timed', true),
+  content: Ember.A(),
+  currentMessage: Ember.computed.oneWay('timedMessages.firstObject'),
+  untimedMessages: Ember.computed.filterBy('content', 'timed', false),
+  timedMessages: Ember.computed.filterBy('content', 'timed', true),
 
   /* We declare the private properties on the queue so the
   class can be extended easily */
 
-  _hider: Em.Object.create(),
-  _remover: Em.Object.create(),
+  _hider: Ember.Object.create(),
+  _remover: Ember.Object.create(),
 
   /* Public methods */
 
   clear: function() {
-    this.set('content', Em.A());
+    this.set('content', Ember.A());
   },
 
   pushMessage: function(messageProperties) {
@@ -37,7 +37,7 @@ export default Em.ArrayProxy.extend(
     ['content', 'type'].forEach(function(property) {
       var propertyExists = !!messageProperties[property];
 
-      Em.assert('You must pass the ' + property + ' property to flashMessage', propertyExists);
+      Ember.assert('You must pass the ' + property + ' property to flashMessage', propertyExists);
     });
 
     /* Covers cases with no duration and duration of zero */
@@ -73,16 +73,16 @@ export default Em.ArrayProxy.extend(
       this.removeObject(message);
 
       if (message.get('timed')) {
-        Em.run.cancel(
+        Ember.run.cancel(
           this.get('_hider.' + message.get('createdAt'))
         );
 
-        Em.run.cancel(
+        Ember.run.cancel(
           this.get('_remover.' + message.get('createdAt'))
         );
       }
     } else {
-      Em.warn('Message not found in message queue: ' +
+      Ember.warn('Message not found in message queue: ' +
         JSON.stringify(message)
       );
     }
@@ -101,7 +101,7 @@ export default Em.ArrayProxy.extend(
       /* Schedule the timed message to be visually hidden */
 
       this.set('_hider.' + currentMessage.get('createdAt'),
-        Em.run.later(this, function() {
+        Ember.run.later(this, function() {
           this.trigger('willHideQueue');
         }, earlyDuration)
       );
@@ -109,11 +109,10 @@ export default Em.ArrayProxy.extend(
       /* Schedule the timed message to be removed from the queue */
 
       this.set('_remover.' + currentMessage.get('createdAt'),
-        Em.run.later(this, function() {
+        Ember.run.later(this, function() {
           this.removeMessage(currentMessage);
         }, duration)
       );
     }
   }),
-
-}).create(); /* Creates a singleton */
+});

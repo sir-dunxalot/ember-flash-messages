@@ -1,12 +1,13 @@
 /* global velocity */
 
-import Em from 'ember';
-import defaultFor from '../utils/default-for';
-import insert from '../utils/computed/insert';
+import Ember from 'ember';
 import Message from '../models/message';
-import Queue from '../queue';
+// import Queue from '../queue';
+import defaultFor from '../utils/default-for';
+import insert from 'ember-flash-messages/utils/computed/insert';
+import layout from 'ember-flash-messages/templates/components/flash-message';
 
-export default Em.Component.extend({
+export default Ember.Component.extend({
 
   /* Options */
 
@@ -19,11 +20,12 @@ export default Em.Component.extend({
 
   /* Properties */
 
-  animationDuration: Em.computed.alias('queue.animationDuration'),
+  animationDuration: Ember.computed.alias('queue.animationDuration'),
   attributeBindings: ['dataTest:data-test', 'role'],
   classNameBindings: ['className', 'typeClass', 'visible'],
   dataTest: 'flash-message',
-  inQueue: Em.computed.bool('parentView.queue'),
+  inQueue: Ember.computed.bool('parentView.queue'),
+  layout: layout,
   removeMessageAction: 'removeMessage',
   role: 'alert',
   tagName: 'dl',
@@ -43,7 +45,7 @@ export default Em.Component.extend({
   }),
 
   queue: Ember.computed(function() {
-    return Queue;
+    return {}; // TODO
   }),
 
   /* Event handling */
@@ -72,7 +74,7 @@ export default Em.Component.extend({
     var parentView = this.get('parentView');
     var inQueue = this.get('inQueue');
 
-    return new Em.RSVP.Promise(function(resolve, reject) {
+    return new Ember.RSVP.Promise(function(resolve, reject) {
 
       /* If message is in the queue, see if the queue should remain visible... */
 
@@ -81,7 +83,7 @@ export default Em.Component.extend({
       } else {
         _this.setVisibility(false);
 
-        Em.run.later(_this, function() {
+        Ember.run.later(_this, function() {
           if (!inQueue) {
             _this.removeFromParent();
           }
@@ -110,7 +112,7 @@ export default Em.Component.extend({
 
       /* Enough time to invoke CSS transitions */
 
-      Em.run.later(this, function() {
+      Ember.run.later(this, function() {
         if (!this.get('isDestroying')) {
           this.set('visible', shouldShow);
         }
@@ -147,7 +149,7 @@ export default Em.Component.extend({
 
         /* TODO - Remove 0.9, which allows for small margin for error */
 
-        Em.run.later(this, function() {
+        Ember.run.later(this, function() {
           if (queueLength > 1) {
             this.setVisibility(true);
           }
