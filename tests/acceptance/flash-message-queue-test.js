@@ -16,7 +16,7 @@ import {
   untimedMessageContent,
   untimedMessageType,
   untimedMessage,
-} from '../helpers/test-messages';
+} from '../fixtures/messages';
 
 const { run } = Ember;
 
