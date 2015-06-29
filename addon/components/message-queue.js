@@ -7,16 +7,15 @@ export default Component.extend({
 
   /* Options */
 
-  className: 'flash_queue',
+  className: 'flash-message-queue',
   interval: computed.alias('flashMessageQueue.interval'),
 
   /* Properties */
 
   animationDuration: computed.alias('flashMessageQueue.animationDuration'),
-  attributeBindings: ['dataTest:data-test'],
   classNameBindings: ['className'],
   currentMessage: computed.oneWay('flashMessageQueue.currentMessage'),
-  dataTest: 'flash-queue',
+  dataTest: 'flash-message-queue',
   isMessageQueueComponent: true,
   layout: layout,
   shouldShow: computed.or('currentMessage', 'untimedMessages.length'),

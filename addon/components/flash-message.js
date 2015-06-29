@@ -14,7 +14,7 @@ export default Component.extend({
   /* Options */
 
   action: null,
-  className: 'flash_message',
+  className: 'flash-message',
   content: null,
   duration: null,
   iconClassFormat: 'icon-{{type}}',
@@ -37,7 +37,7 @@ export default Component.extend({
   /* Properties */
 
   animationDuration: computed.oneWay('flashMessageQueue.animationDuration'),
-  attributeBindings: ['dataTest:data-test', 'role'],
+  attributeBindings: ['role'],
   classNameBindings: ['className', 'typeClass', 'visible'],
   dataTest: 'flash-message',
   inQueue: computed.bool('parentView.isMessageQueueComponent'),

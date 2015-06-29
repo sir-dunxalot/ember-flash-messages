@@ -22,8 +22,7 @@ let animationDuration,
     application,
     container,
     content,
-    beforeRemovalTime,
-    expectedRemovalTime,
+    interval,
     queue;
 
 module('Acceptance | flash message dom', {
@@ -38,9 +37,8 @@ module('Acceptance | flash message dom', {
 
     queue = container.lookup('service:flash-message-queue');
     animationDuration = queue.get('animationDuration');
+    interval = queue.get('interval');
     content = queue.get('content');
-    expectedRemovalTime = animationDuration * 2; // Show and close animations
-    beforeRemovalTime = expectedRemovalTime - 100;
   },
 
   afterEach: function() {
@@ -49,16 +47,39 @@ module('Acceptance | flash message dom', {
 });
 
 test('Message queue component element', function(assert) {
+
+  assert.expect(3);
+
   visit('/');
 
   andThen(function() {
-    var queueComponent = inspect('queue');
+    const queueComponent = container.lookup('component:message-queue');
+    const queueElement = inspect('message-queue');
+    const className = queueComponent.get('className');
 
-    assert.ok(!!queueComponent,
+    assert.ok(!!queueElement,
       'The component should render on the page');
 
-    assert.equal(queueComponent.text().trim(), '',
+    assert.equal(queueElement.text().trim(), '',
       'The component should render empty');
+
+    assert.ok(queueElement.hasClass(className),
+      'The component should have the bound className');
+
+  });
+});
+
+test('Timed message in queue component element', function(assert) {
+
+  visit('/');
+
+  flashMessage(expectedMessage);
+
+  andThen(function() {
+    const flashMessageElement = inspect('message');
+
+    assert.equal(flashMessageElement.length, 1,
+      'There should be one flash message shown in the DOM');
 
   });
 });
