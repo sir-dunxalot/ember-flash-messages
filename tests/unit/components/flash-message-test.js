@@ -109,6 +109,33 @@ test('Default properties and methods', function(assert) {
 
 });
 
+test('Message property', function(assert) {
+  const newMessage = {
+    action: 'someAction',
+    content: 'Oh no, that is an error!',
+    duration: 2023,
+    type: 'error',
+  };
+
+  const message = component.get('message');
+
+  assert.expect(8);
+
+  for (let property in newMessage) {
+    assert.strictEqual(message.get(property), null,
+      `The message property should contain a ${property} property but it should not be set`);
+  }
+
+  setProperties({
+    message: newMessage
+  });
+
+  for (let property in newMessage) {
+    assert.equal(component.get(property), newMessage[property],
+      `The ${property} property should have updated after message was set`);
+  }
+});
+
 /* Test the usability of the outputted DOM */
 
 test('Usability', function(assert) {

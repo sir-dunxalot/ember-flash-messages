@@ -21,17 +21,18 @@ export default Component.extend({
   action: null,
   className: 'flash_message',
   content: null,
+  duration: null,
   iconClassFormat: 'icon-{{type}}',
   type: null,
 
   message: computed({
     get() {
-      return {
+      return Ember.Object.create({
         action: this.get('action'),
         content: this.get('content'),
         duration: this.get('duration'),
         type: this.get('type'),
-      }
+      });
     },
     set(key, value) {
       this.setProperties(value);
