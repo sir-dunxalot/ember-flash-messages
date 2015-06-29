@@ -5,8 +5,8 @@ import config from '../../config/environment';
 
 /* Custom helpers */
 
-import inspect from './inspect';
-import flashMessage from './flash-message';
+import inspect from './sync/inspect';
+import flashMessage from './async/flash-message';
 
 export default function startApp(attrs) {
   var application;
