@@ -1,5 +1,7 @@
 import Ember from 'ember';
 
+const { computed } = Ember;
+
 /**
 Example usage:
 
@@ -19,10 +21,11 @@ App.SomeController = Ember.Controller.extend({
 */
 
 export default function(dependentKey, string) {
-  return Ember.computed(dependentKey, function() {
-    var inCorrectFormat = string.indexOf('{{value}}') > -1;
+  return computed(dependentKey, function() {
+    const inCorrectFormat = string.indexOf('{{value}}') > -1;
 
     Ember.assert('You must pass a string in the format "Some stuff {{value}}" as the second argument of Utils.computed.insert', inCorrectFormat);
+
     return string.replace('{{value}}', this.get(dependentKey));
   });
 }
