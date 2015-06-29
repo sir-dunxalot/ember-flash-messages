@@ -1,9 +1,4 @@
-/* global velocity */
-
 import Ember from 'ember';
-import Message from '../models/message';
-import defaultFor from '../utils/default-for';
-import insert from 'ember-flash-messages/utils/computed/insert';
 import layout from 'ember-flash-messages/templates/components/flash-message';
 
 const {
@@ -94,7 +89,7 @@ export default Component.extend({
       [ 'inQueue', 'parentView' ]
     );
 
-    return new RSVP.Promise(function(resolve, reject) {
+    return new RSVP.Promise(function(resolve /*, reject */) {
 
       /* If message is in the queue, see if the queue should remain visible... */
 
