@@ -3,7 +3,7 @@ import { moduleForComponent, test } from 'ember-qunit';
 import selectorFor from '../../helpers/selector-for';
 
 const { run } = Ember;
-const { isFunction, typeOf } = QUnit;
+const { isFunction, typeOf } = window.QUnit;
 
 let component, set;
 
@@ -22,7 +22,7 @@ moduleForComponent('flash-message', 'Unit | Component | flash message', {
 
 });
 
-/* Test the correct data attribtues are set on the component */
+/* Test the correct data attribtues are set on the component for testing */
 
 test('Data test attributes', function(assert) {
 

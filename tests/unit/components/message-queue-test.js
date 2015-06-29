@@ -1,55 +1,59 @@
-import Em from 'ember';
+import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 
-var isFunction = QUnit.isFunction;
+const { run } = Ember;
+const { isFunction } = window.QUnit;
 
-var component;
+let component;
 
-moduleForComponent('message-queue', 'Flash messages - Message queue component', {
-  needs: ['component:flash-message'],
+moduleForComponent('message-queue', 'Unit | Component | message queue component', {
+  unit: true,
+  needs: ['component:flash-message', 'service:flash-message-queue'],
 
-  setup: function() {
-    component = this.subject();
+  beforeEach: function() {
+    component = this.subject({
+      flashMessageQueue: Ember.inject.service(),
+    });
   },
 
-  teardown: function() {
-    Em.run(function() {
+  afterEach: function() {
+    run(function() {
       component.clear();
     });
   }
 });
 
+/* Test the correct data attribtues are set on the component for testing */
 
+test('Data test attribute', function(assert) {
 
-test('Data test attribute', function() {
-
-  ok(component.get('dataTest'),
+  assert.ok(component.get('dataTest'),
     'Component should have a dataTest property');
 
-  equal(this.$().attr('data-test'), 'flash-queue',
+  assert.equal(this.$().attr('data-test'), 'flash-queue',
     'Component should have a data-test attribute');
 
 });
 
+/* Default component functionality */
 
-
-test('Default properties and methods', function() {
+test('Default properties and methods', function(assert) {
 
   /* Check properties */
 
-  var required = ['className', 'interval', 'queue'];
+  const required = ['className', 'interval', 'flashMessageQueue'];
 
   required.forEach(function(property) {
 
-    ok(component.get(property),
+    assert.ok(!!component.get(property),
       'Component should have a default value for ' + property);
 
   });
 
-  ok(this.$().hasClass(component.get('className')),
+  assert.ok(this.$().hasClass(component.get('className')),
     'Component element should have default class name');
 
-  strictEqual(component.get('shouldShow'), false,
+  assert.strictEqual(component.get('shouldShow'), false,
     'shouldShow should be false by default');
 
   /* Check methods */
