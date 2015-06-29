@@ -4,7 +4,7 @@ import Ember from 'ember';
 Example usage:
 
 ```
-App.SomeController = Em.Controller.extend({
+App.SomeController = Ember.Controller.extend({
   type: 'MultipleChoice',
   questionController: Utils.computed.insert('type', 'App.{{value}}QuestionController')
 });

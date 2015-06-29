@@ -1,7 +1,8 @@
 <ol>
-  {{#each examples as |example|}}
+  {{#each examples as |example index|}}
     <li>
-      <button {{action 'showMessage' _view.contentIndex}}>
+      {{log}}
+      <button {{action 'showMessage' index}}>
         {{example.content}}
       </button>
     </li>

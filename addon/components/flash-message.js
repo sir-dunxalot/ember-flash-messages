@@ -2,7 +2,6 @@
 
 import Ember from 'ember';
 import Message from '../models/message';
-// import Queue from '../queue';
 import defaultFor from '../utils/default-for';
 import insert from 'ember-flash-messages/utils/computed/insert';
 import layout from 'ember-flash-messages/templates/components/flash-message';
@@ -18,13 +17,27 @@ export default Ember.Component.extend({
   message: null,
   type: null,
 
+  message: Ember.computed({
+    get() {
+      return {
+        action: this.get('action'),
+        content: this.get('content'),
+        duration: this.get('duration'),
+        type: this.get('type'),
+      }
+    },
+    set(key, value) {
+      this.setProperties(value);
+    }
+  }),
+
   /* Properties */
 
-  animationDuration: Ember.computed.alias('queue.animationDuration'),
+  animationDuration: Ember.computed.oneWay('flashMessageQueue.animationDuration'),
   attributeBindings: ['dataTest:data-test', 'role'],
   classNameBindings: ['className', 'typeClass', 'visible'],
   dataTest: 'flash-message',
-  inQueue: Ember.computed.bool('parentView.queue'),
+  inQueue: Ember.computed.bool('parentView.isMessageQueueComponent'),
   layout: layout,
   removeMessageAction: 'removeMessage',
   role: 'alert',
@@ -42,10 +55,6 @@ export default Ember.Component.extend({
     var affix = type ? '-' + type : '';
 
     return this.get('className') + affix;
-  }),
-
-  queue: Ember.computed(function() {
-    return {}; // TODO
   }),
 
   /* Event handling */
@@ -70,9 +79,8 @@ export default Ember.Component.extend({
   },
 
   handleClick: function() {
-    var _this = this;
-    var parentView = this.get('parentView');
     var inQueue = this.get('inQueue');
+    var parentView = this.get('parentView');
 
     return new Ember.RSVP.Promise(function(resolve, reject) {
 
@@ -81,18 +89,18 @@ export default Ember.Component.extend({
       if (inQueue && parentView.getQueueLength() > 1) {
         resolve();
       } else {
-        _this.setVisibility(false);
+        this.setVisibility(false);
 
-        Ember.run.later(_this, function() {
+        Ember.run.later(this, function() {
           if (!inQueue) {
-            _this.removeFromParent();
+            this.removeFromParent();
           }
 
           resolve();
-        }, _this.get('animationDuration'));
+        }, this.get('animationDuration'));
       }
 
-    });
+    }.bind(this));
   },
 
   /* Animation methods */
@@ -125,7 +133,7 @@ export default Ember.Component.extend({
   /* Private methods */
 
   _hideEndingQueue: Ember.on('willInsertElement', function() {
-    var queue = this.get('parentView.queue');
+    var queue = this.get('flashMessageQueue');
 
     /* If this message is in the timed queue we might
     need to hide the message before it's removed from
@@ -157,26 +165,6 @@ export default Ember.Component.extend({
       });
     }
   }),
-
-  _setMessageProperties: Ember.on('willInsertElement',
-    Ember.observer('message', function() {
-      var message = this.get('message');
-      var keys = ['action', 'content', 'duration', 'type'];
-      var changes = {};
-
-      if (message) {
-        keys.forEach(function(key) {
-          var property = message.get ? message.get(key) : message.key;
-
-          if (property) {
-            changes[key] = property;
-          }
-        });
-
-        this.setProperties(changes);
-      }
-    })
-  ),
 
   _showOnRender: Ember.on('didInsertElement', function() {
 

@@ -60,17 +60,18 @@ export default Ember.Service.extend(
       message.incrementProperty('duration', newDuration);
     }
 
-    this.pushObject(message);
+    this.get('content').pushObject(message);
   },
 
   removeMessage: function(message) {
+    const content = this.get('content');
 
     /* If the message is in the timed queue and it's being
     removed by an early click, cancel the timers that would
     have eventually removed the message from the queue */
 
-    if (this.indexOf(message) > -1) {
-      this.removeObject(message);
+    if (content.indexOf(message) > -1) {
+      content.removeObject(message);
 
       if (message.get('timed')) {
         Ember.run.cancel(
