@@ -2,7 +2,7 @@ import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import selectorFor from '../../helpers/selector-for';
 
-const { run } = Ember;
+const { RSVP, run } = Ember;
 const { isFunction, typeOf } = window.QUnit;
 
 let component, set;
@@ -169,7 +169,7 @@ test('Event handling', function(assert) {
 
   setProperties({
     handleClick: function() {
-      return new Em.RSVP.Promise(function(resolve, reject) {
+      return new RSVP.Promise(function(resolve, reject) {
 
         assert.ok(true,
           'Clicking on the component should call handleClick');

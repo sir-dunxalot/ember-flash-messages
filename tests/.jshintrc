@@ -23,11 +23,8 @@
     "currentPath",
     "currentRouteName",
     "flashMessage",
-    "inspect",
-    "contains",
-    "isFunction",
-    "typeOf",
-    "checkCurrentMessage"
+    "checkCurrentMessage",
+    "inspect"
   ],
   "node": false,
   "browser": false,

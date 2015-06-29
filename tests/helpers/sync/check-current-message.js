@@ -21,7 +21,7 @@ export default Ember.Test.registerHelper('checkCurrentMessage',
         expectedValue += animationDuration * multiplier;
       }
 
-      equal(queue.get('currentMessage.' + property), expectedValue,
+      assert.equal(queue.get('currentMessage.' + property), expectedValue,
         `The current message ${capitalizedProperty} property should be ${expectedValue}`);
 
     });

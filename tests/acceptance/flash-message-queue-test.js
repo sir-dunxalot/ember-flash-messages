@@ -92,7 +92,7 @@ test('Messages should be pushed to the queue', function(assert) {
 
     run.later(this, function() {
 
-      equal(content.get('length'), 1,
+      assert.equal(content.get('length'), 1,
         `Message should still be in queue after ${beforeRemovalTime}ms`);
 
     }, expectedDuration + beforeRemovalTime);
@@ -101,7 +101,7 @@ test('Messages should be pushed to the queue', function(assert) {
 
     run.later(this, function() {
 
-      equal(content.get('length'), 0,
+      assert.equal(content.get('length'), 0,
         `Message should be removed from queue after ${expectedRemovalTime} ms`);
 
     }, expectedDuration + expectedRemovalTime);
@@ -154,7 +154,7 @@ test('Untimed messages', function(assert) {
     type: expectedType,
   };
 
-  assert.expect(9);
+  assert.expect(7);
 
   visit('/');
 
@@ -181,19 +181,6 @@ test('Untimed messages', function(assert) {
 
     assert.equal(queue.get('untimedMessages.length'), 1,
       'The untimed message queue should contain one message');
-
-    /* Push the second untimed message */
-
-    route.flashMessage(untimedMessage);
-
-    assert.equal(content.get('length'), 2,
-      'The queue should contain one message');
-
-    assert.equal(queue.get('timedMessages.length'), 0,
-      'The timed message queue should not contain any messages');
-
-    assert.equal(queue.get('untimedMessages.length'), 2,
-      'The untimed message queue should contain two messages');
 
   });
 

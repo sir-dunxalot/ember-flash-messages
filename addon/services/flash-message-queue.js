@@ -3,7 +3,6 @@ import Message from 'ember-flash-messages/models/message';
 import defaultFor from 'ember-flash-messages/utils/default-for';
 
 const {
-  A,
   Evented,
   Service,
   computed,
@@ -21,7 +20,7 @@ export default Service.extend(
 
   /* Properties */
 
-  content: A(),
+  content: Ember.A(),
   currentMessage: computed.oneWay('timedMessages.firstObject'),
   untimedMessages: computed.filterBy('content', 'timed', false),
   timedMessages: computed.filterBy('content', 'timed', true),
@@ -35,7 +34,7 @@ export default Service.extend(
   /* Public methods */
 
   clear() {
-    this.set('content', A());
+    this.set('content', Ember.A());
   },
 
   pushMessage(messageProperties) {

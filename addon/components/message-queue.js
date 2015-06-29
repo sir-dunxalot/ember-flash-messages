@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import insert from 'ember-flash-messages/utils/computed/insert';
 import layout from 'ember-flash-messages/templates/components/message-queue';
 
 const { Component, computed } = Ember;
