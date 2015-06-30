@@ -125,7 +125,7 @@ test('Clicking timed message', function(assert) {
 
     /* Click to remove */
 
-    click(message);
+    // asyncClick('message');
   });
 
   andThenAfterRender(function() {
@@ -163,10 +163,7 @@ test('Clicking untimed message', function(assert) {
   flashMessage(untimedMessage);
 
   andThenAfterRender(function() {
-    const message = inspect('message');
-
-    checkMessageDom(assert, message, untimedMessage);
-
+    checkMessageDom(assert, inspect('message'), untimedMessage);
   });
 
   /* Click to remove */

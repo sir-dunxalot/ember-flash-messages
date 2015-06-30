@@ -6,7 +6,7 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('actions');
+  this.route('block-components');
 });
 
 export default Router;
