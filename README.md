@@ -18,7 +18,7 @@ Stylesheets for a basic flash message layout may be optionally imported.
 Simple JS usage in any route, component, controller, or view:
 
 ```js
-// app/controller/index.js
+// app/controllers/index.js
 
 export default Ember.Controller.extend({
 
@@ -32,7 +32,7 @@ export default Ember.Controller.extend({
 Firing an action when the message is clicked:
 
 ```js
-// app/controller/index.js
+// app/components/index.js
 
 export default Ember.Component.extend({
 
@@ -65,7 +65,7 @@ Adding as a standalone component in a template:
 Showing a message in perpetuity:
 
 ```js
-// app/controller/index.js
+// app/routes/index.js
 
 export default Ember.Route.extend({
 
@@ -84,13 +84,13 @@ export default Ember.Route.extend({
 
 **Users of older version of Ember (e.g. 1.10) should use release `v0.5.2`.**
 
-```
+```sh
 ember install ember-flash-messages
 ```
 
 Now add the flash message queue to your template. Usually this is the application template.
 
-```
+```hbs
 {{flash-message-queue}}
 ```
 
