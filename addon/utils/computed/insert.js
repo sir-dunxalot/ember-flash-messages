@@ -1,10 +1,12 @@
-import Em from 'ember';
+import Ember from 'ember';
+
+const { computed } = Ember;
 
 /**
 Example usage:
 
 ```
-App.SomeController = Em.Controller.extend({
+App.SomeController = Ember.Controller.extend({
   type: 'MultipleChoice',
   questionController: Utils.computed.insert('type', 'App.{{value}}QuestionController')
 });
@@ -19,10 +21,11 @@ App.SomeController = Em.Controller.extend({
 */
 
 export default function(dependentKey, string) {
-  return function() {
-    var inCorrectFormat = string.indexOf('{{value}}') > -1;
+  return computed(dependentKey, function() {
+    const inCorrectFormat = string.indexOf('{{value}}') > -1;
 
-    Em.assert('You must pass a string in the format "Some stuff {{value}}" as the second argument of Utils.computed.insert', inCorrectFormat);
+    Ember.assert('You must pass a string in the format "Some stuff {{value}}" as the second argument of Utils.computed.insert', inCorrectFormat);
+
     return string.replace('{{value}}', this.get(dependentKey));
-  }.property(dependentKey);
+  });
 }

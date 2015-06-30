@@ -1,7 +1,7 @@
-import Em from 'ember';
+import Ember from 'ember';
 
-export default Em.ObjectController.extend({
-  examples: Em.A([
+export default Ember.Controller.extend({
+  examples: Ember.A([
     {
       type: 'success',
       content: 'This is the first message'

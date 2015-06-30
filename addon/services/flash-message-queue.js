@@ -1,9 +1,17 @@
-import Em from 'ember';
-import Message from './models/message';
-import defaultFor from './utils/default-for';
+import Ember from 'ember';
+import FlashMessage from 'ember-flash-messages/models/flash-message';
+import defaultFor from 'ember-flash-messages/utils/default-for';
 
-export default Em.ArrayProxy.extend(
-  Em.Evented, {
+const {
+  Evented,
+  Service,
+  computed,
+  observer,
+  run,
+} = Ember;
+
+export default Service.extend(
+  Evented, {
 
   /* Options */
 
@@ -12,32 +20,32 @@ export default Em.ArrayProxy.extend(
 
   /* Properties */
 
-  content: Em.A(),
-  currentMessage: Em.computed.oneWay('timedMessages.firstObject'),
-  untimedMessages: Em.computed.filterBy('content', 'timed', false),
-  timedMessages: Em.computed.filterBy('content', 'timed', true),
+  content: Ember.A(),
+  currentMessage: computed.oneWay('timedMessages.firstObject'),
+  untimedMessages: computed.filterBy('content', 'timed', false),
+  timedMessages: computed.filterBy('content', 'timed', true),
 
   /* We declare the private properties on the queue so the
   class can be extended easily */
 
-  _hider: Em.Object.create(),
-  _remover: Em.Object.create(),
+  _hider: Ember.Object.create(),
+  _remover: Ember.Object.create(),
 
   /* Public methods */
 
-  clear: function() {
-    this.set('content', Em.A());
+  clear() {
+    this.set('content', Ember.A());
   },
 
-  pushMessage: function(messageProperties) {
-    var message, newDuration, multiplier;
+  pushMessage(messageProperties) {
+    let message;
 
     /* Allow message to be passed as an object */
 
     ['content', 'type'].forEach(function(property) {
       var propertyExists = !!messageProperties[property];
 
-      Em.assert('You must pass the ' + property + ' property to flashMessage', propertyExists);
+      Ember.assert('You must pass the ' + property + ' property to flashMessage', propertyExists);
     });
 
     /* Covers cases with no duration and duration of zero */
@@ -49,40 +57,41 @@ export default Em.ArrayProxy.extend(
       );
     }
 
-    message = Message.create(messageProperties);
+    message = FlashMessage.create(messageProperties);
 
     /* Add animation time to message duration */
 
     if (message.get('timed')) {
-      multiplier = this.get('timedMessages.length') > 0 ? 1 : 2;
-      newDuration = this.get('animationDuration') * multiplier;
+      const multiplier = this.get('timedMessages.length') > 0 ? 1 : 2;
+      const newDuration = this.get('animationDuration') * multiplier;
 
       message.incrementProperty('duration', newDuration);
     }
 
-    this.pushObject(message);
+    this.get('content').pushObject(message);
   },
 
-  removeMessage: function(message) {
+  removeMessage(message) {
+    const content = this.get('content');
 
     /* If the message is in the timed queue and it's being
     removed by an early click, cancel the timers that would
     have eventually removed the message from the queue */
 
-    if (this.indexOf(message) > -1) {
-      this.removeObject(message);
+    if (content.indexOf(message) > -1) {
+      content.removeObject(message);
 
       if (message.get('timed')) {
-        Em.run.cancel(
+        run.cancel(
           this.get('_hider.' + message.get('createdAt'))
         );
 
-        Em.run.cancel(
+        run.cancel(
           this.get('_remover.' + message.get('createdAt'))
         );
       }
     } else {
-      Em.warn('Message not found in message queue: ' +
+      Ember.warn('Message not found in message queue: ' +
         JSON.stringify(message)
       );
     }
@@ -90,18 +99,17 @@ export default Em.ArrayProxy.extend(
 
   /* Private methods */
 
-  _queueDidChange: function() {
-    var currentMessage = this.get('currentMessage');
-    var duration, earlyDuration;
+  _queueDidChange: observer('currentMessage', function() {
+    const currentMessage = this.get('currentMessage');
 
     if (currentMessage) {
-      duration = currentMessage.get('duration');
-      earlyDuration = duration - this.get('animationDuration');
+      const duration = currentMessage.get('duration');
+      const earlyDuration = duration - this.get('animationDuration');
 
       /* Schedule the timed message to be visually hidden */
 
       this.set('_hider.' + currentMessage.get('createdAt'),
-        Em.run.later(this, function() {
+        run.later(this, function() {
           this.trigger('willHideQueue');
         }, earlyDuration)
       );
@@ -109,11 +117,10 @@ export default Em.ArrayProxy.extend(
       /* Schedule the timed message to be removed from the queue */
 
       this.set('_remover.' + currentMessage.get('createdAt'),
-        Em.run.later(this, function() {
+        run.later(this, function() {
           this.removeMessage(currentMessage);
         }, duration)
       );
     }
-  }.observes('currentMessage'),
-
-}).create(); /* Creates a singleton */
+  }),
+});

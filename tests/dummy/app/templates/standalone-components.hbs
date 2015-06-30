@@ -1,0 +1,61 @@
+<h3>Block component</h3>
+
+{{#flash-message
+  type='success'
+  dataTest='flash-message-block'
+}}
+  This is the block message
+{{/flash-message}}
+
+<h3>Block component with HTMLBars</h3>
+
+{{#flash-message
+  type='success'
+  dataTest='flash-message-block-htmlbars'
+}}
+  This proves that {{check-htmlbars true}}
+{{/flash-message}}
+
+<h3>Block component with action</h3>
+
+{{#flash-message
+  type='success'
+  dataTest='flash-message-block-action'
+  action='testMessageAction'
+}}
+  This is the block message with an action
+{{/flash-message}}
+
+<h3>Inline component</h3>
+
+{{flash-message
+  type='error'
+  content='Some inline content'
+  dataTest='flash-message-inline'
+}}
+
+<h3>Inline component with HTML</h3>
+
+{{flash-message
+  type='warning'
+  content='Some inline <strong>content</strong>'
+  dataTest='flash-message-inline-html'
+}}
+
+<h3>Inline with action</h3>
+
+{{flash-message
+  type='info'
+  action='testMessageAction'
+  content='Some inline content with an action'
+  dataTest='flash-message-inline-action'
+}}
+
+<h3>Inline with className</h3>
+
+{{flash-message
+  type='error'
+  className='flasher'
+  content='Some inline content'
+  dataTest='flash-message-inline-class-name'
+}}

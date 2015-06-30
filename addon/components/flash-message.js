@@ -1,116 +1,131 @@
-/* global velocity */
+import Ember from 'ember';
+import FlashMessage from 'ember-flash-messages/models/flash-message';
+import layout from 'ember-flash-messages/templates/components/flash-message';
 
-import Em from 'ember';
-import defaultFor from '../utils/default-for';
-import insert from '../utils/computed/insert';
-import Message from '../models/message';
-import Queue from '../queue';
+const {
+  Component,
+  RSVP,
+  computed,
+  run,
+  on
+} = Ember;
 
-export default Em.Component.extend({
+export default Component.extend({
 
   /* Options */
 
   action: null,
-  className: 'flash_message',
+  className: 'flash-message',
   content: null,
+  duration: null,
   iconClassFormat: 'icon-{{type}}',
-  message: null,
   type: null,
+
+  message: computed({
+    get() {
+      return FlashMessage.create({
+        action: this.get('action'),
+        content: this.get('content'),
+        createdAt: this.get('createdAt'),
+        duration: this.get('duration'),
+        type: this.get('type'),
+      });
+    },
+    set(key, value) {
+      this.setProperties(value);
+    }
+  }),
 
   /* Properties */
 
-  animationDuration: Em.computed.alias('queue.animationDuration'),
-  attributeBindings: ['dataTest:data-test', 'role'],
+  animationDuration: computed.oneWay('flashMessageQueue.animationDuration'),
+  attributeBindings: ['role'],
   classNameBindings: ['className', 'typeClass', 'visible'],
+  createdAt: null,
   dataTest: 'flash-message',
-  inQueue: Em.computed.bool('parentView.queue'),
-  removeMessageAction: 'removeMessage',
+  inQueue: computed.bool('parentView.isMessageQueueComponent'),
+  layout: layout,
+  removeMessageAction: null,
   role: 'alert',
   tagName: 'dl',
   visible: false,
 
-  iconClass: function() {
-    var format = this.get('iconClassFormat');
+  iconClass: computed('iconClassFormat', 'type', function() {
+    const format = this.get('iconClassFormat');
 
     return format.replace('{{type}}', this.get('type'));
-  }.property('iconClassFormat', 'type'),
+  }),
 
-  typeClass: function() {
-    var type = this.get('type');
-    var affix = type ? '-' + type : '';
+  typeClass: computed('className', 'type', function() {
+    const { className, type } = this.getProperties(
+      [ 'className', 'type' ]
+    );
+    const affix = type ? '-' + type : '';
 
-    return this.get('className') + affix;
-  }.property('className', 'type'),
-
-  queue: function() {
-    return Queue;
-  }.property().readOnly(),
+    return `${className}${affix}`;
+  }),
 
   /* Event handling */
 
-  click: function() {
-    var _this = this;
+  click() {
 
     /* Remove message visually... */
 
-    _this.handleClick().then(function() {
-      var message = _this.get('message');
+    this.handleClick().then(function() {
+      const message = this.get('message') || this.get('attrs.message.value');
 
-      if (_this.get('action')) {
+      /* this.sendAction('action') is automatically run here */
 
-        /* ... Then remove message from queue(s) */
+      /* ... Then remove message from queue(s) */
 
-        _this.sendAction('action', message); // Only runs if action is set
-      }
-
-      _this.sendAction('removeMessageAction', message);
-    });
+      this.sendAction('removeMessageAction', message);
+    }.bind(this));
   },
 
-  handleClick: function() {
-    var _this = this;
-    var parentView = this.get('parentView');
-    var inQueue = this.get('inQueue');
+  handleClick() {
+    const { inQueue, parentView } = this.getProperties(
+      [ 'inQueue', 'parentView' ]
+    );
 
-    return new Em.RSVP.Promise(function(resolve, reject) {
+    return new RSVP.Promise(function(resolve /*, reject */) {
 
       /* If message is in the queue, see if the queue should remain visible... */
 
       if (inQueue && parentView.getQueueLength() > 1) {
         resolve();
       } else {
-        _this.setVisibility(false);
+        this.setVisibility(false);
 
-        Em.run.later(_this, function() {
+        Ember.run.later(this, function() {
           if (!inQueue) {
-            _this.removeFromParent();
+            this.removeFromParent();
           }
 
           resolve();
-        }, _this.get('animationDuration'));
+        }, this.get('animationDuration'));
       }
 
-    });
+    }.bind(this));
   },
 
   /* Animation methods */
 
-  hide: function() {
+  hide() {
     this.$().slideUp(this.get('animationDuration'));
   },
 
-  show: function() {
+  show() {
     this.$().slideDown(this.get('animationDuration'));
   },
 
-  setVisibility: function(shouldShow) {
+  setVisibility(shouldShow) {
     var method = shouldShow ? 'show' : 'hide';
 
     if (!this.get('isDestroying')) {
 
       /* Enough time to invoke CSS transitions */
 
-      Em.run.later(this, function() {
+      run.later(this, function() {
         if (!this.get('isDestroying')) {
           this.set('visible', shouldShow);
         }
@@ -122,17 +137,17 @@ export default Em.Component.extend({
 
   /* Private methods */
 
-  _hideEndingQueue: function() {
-    var queue = this.get('parentView.queue');
+  _hideEndingQueue: Ember.on('willInsertElement', function() {
+    const queue = this.get('flashMessageQueue');
 
     /* If this message is in the timed queue we might
     need to hide the message before it's removed from
     the queue, but only if there are no other messages
     in the queue. */
 
-    if (this.get('message.timed')) {
+    if (queue && this.get('message.timed')) {
       queue.on('willHideQueue', this, function() {
-        var queueLength = queue.get('timedMessages.length');
+        const queueLength = queue.get('timedMessages.length');
 
         /* If there is not another message queued, start
         hiding the queue */
@@ -147,44 +162,26 @@ export default Em.Component.extend({
 
         /* TODO - Remove 0.9, which allows for small margin for error */
 
-        Em.run.later(this, function() {
+        run.later(this, function() {
           if (queueLength > 1) {
             this.setVisibility(true);
           }
         }, this.get('animationDuration') * 0.9);
       });
     }
-  }.on('willInsertElement'),
+  }),
 
-  _setMessageProperties: function() {
-    var message = this.get('message');
-    var keys = ['action', 'content', 'duration', 'type'];
-    var changes = {};
-
-    if (message) {
-      keys.forEach(function(key) {
-        var property = message.get ? message.get(key) : message.key;
-
-        if (property) {
-          changes[key] = property;
-        }
-      });
-
-      this.setProperties(changes);
-    }
-  }.observes('message').on('willInsertElement'),
-
-  _showOnRender: function() {
+  _showOnRender: on('didInsertElement', function() {
 
     /* Assert the required properties are passed. Don't check
     for the content property because this could be used as a
     block helper */
 
     this.setVisibility(true);
-  }.on('didInsertElement'),
+  }),
 
-  _hideOnDestroy: function() {
+  _hideOnDestroy: on('willDestroyElement', function() {
     this.setVisibility(false);
-  }.on('willDestroyElement'),
+  }),
 
 });

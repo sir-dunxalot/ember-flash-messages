@@ -1,107 +1,102 @@
-import Em from 'ember';
+import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import selectorFor from '../../helpers/selector-for';
 
-var isFunction = QUnit.isFunction;
-var typeOf = QUnit.typeOf;
+const { RSVP, run } = Ember;
+const { isFunction, typeOf } = window.QUnit;
 
-var component, set;
+let component, set;
 
-moduleForComponent('flash-message', 'Flash messages - Flash message component', {
+function setProperties(properties) {
+  run(function() {
+    component.setProperties(properties);
+  });
+}
 
-  setup: function() {
-    component = this.subject();
+moduleForComponent('flash-message', 'Unit | Component | flash message', {
+  unit: true,
 
-    set = function(key, value) {
-      Em.run(function() {
-        component.set(key, value);
-      });
-    };
+  beforeEach() {
+    component = this.subject({
+      flashMessageQueue: Ember.inject.service(),
+    });
   },
 
-  // teardown: function() {
-  //
-  // }
-
 });
 
+/* Test the correct data attribtues are set on the component for testing */
 
+test('Data test attributes', function(assert) {
 
-test('Data test attributes', function() {
-  var _this = this;
+  component.set('duration', 1000);
 
-  ok(component.get('dataTest'),
+  assert.ok(component.get('dataTest'),
     'Component should have a dataTest property');
 
-  equal(_this.$().attr('data-test'), 'flash-message',
-    'Component should have a data-test attribute');
+  ['content', 'icon'].forEach(function(name) {
 
-  ['button', 'content', 'icon'].forEach(function(name) {
-
-    ok(_this.$().find(selectorFor(name)).length,
+    assert.ok(this.$().find(selectorFor(name)).length,
       'Component layout should have an element for the ' + name);
 
-  });
+  }, this);
 
 });
 
+/* Default component functionality */
 
+test('Default properties and methods', function(assert) {
+  const className = 'new-class';
+  const type = 'success';
 
-test('Default properties and methods', function() {
-  var className = 'new-class';
-  var type = 'success';
-
-  var required = [
-    'animationDuration',
+  const required = [
     'className',
-    'iconClassFormat'
+    'iconClassFormat',
   ];
 
-  var shouldBeNull = [
+  const shouldBeNull = [
     'action',
     'content',
-    'message',
-    'type'
+    'type',
   ];
 
   /* Check properties */
 
   required.forEach(function(property) {
 
-    ok(component.get(property),
+    assert.ok(component.get(property),
       'Component should have a default value for ' + property);
 
   });
 
   shouldBeNull.forEach(function(property) {
 
-    strictEqual(component.get(property), null,
+    assert.strictEqual(component.get(property), null,
       property + ' should be defined but not set (equal to null)');
 
   });
 
-  ok(this.$().hasClass(component.get('className')),
+  assert.ok(this.$().hasClass(component.get('className')),
     'Component element should have the default class name');
 
   typeOf(component.get('inQueue'), 'boolean',
     'inQueue should be a boolean property');
 
-  strictEqual(component.get('visible'), false,
+  assert.strictEqual(component.get('visible'), false,
     'visible should be false');
 
-  ok(!this.$().hasClass('visible'),
+  assert.ok(!this.$().hasClass('visible'),
     'Component element should not initially have a visible class');
 
   /* Test changing the properties */
 
-  set('className', className);
+  setProperties({ className });
 
-  ok(this.$().hasClass(className),
+  assert.ok(this.$().hasClass(className),
     'Component element should have new class name');
 
-  set('type', type);
+  setProperties({ type });
 
-  ok(this.$().hasClass(className + '-' + type),
+  assert.ok(this.$().hasClass(className + '-' + type),
     'Component element should have new type class name');
 
   /* Check methods */
@@ -115,27 +110,54 @@ test('Default properties and methods', function() {
 
 });
 
+test('Message property', function(assert) {
+  const newMessage = {
+    action: 'someAction',
+    content: 'Oh no, that is an error!',
+    duration: 2023,
+    type: 'error',
+  };
 
+  const message = component.get('message');
 
-test('Usability', function() {
-  var role = 'alert';
+  assert.expect(8);
 
-  equal(component.get('tagName'), 'dl',
+  for (let property in newMessage) {
+    assert.strictEqual(message.get(property), null,
+      `The message property should contain a ${property} property but it should not be set`);
+  }
+
+  setProperties({
+    message: newMessage
+  });
+
+  for (let property in newMessage) {
+    assert.equal(component.get(property), newMessage[property],
+      `The ${property} property should have updated after message was set`);
+  }
+});
+
+/* Test the usability of the outputted DOM */
+
+test('Usability', function(assert) {
+  const role = 'alert';
+
+  assert.equal(component.get('tagName'), 'dl',
     'Component element should be a definition list');
 
-  equal(component.get('role'), role,
+  assert.equal(component.get('role'), role,
     'Component element\'s role should be ' + role);
 
-  equal(this.$().attr('role'), role,
+  assert.equal(this.$().attr('role'), role,
     'Component element should have its role attribute bound');
 
 });
 
+/* Test the events invoked by the app and user */
 
+test('Event handling', function(assert) {
 
-test('Event handling', function() {
-
-  expect(3);
+  assert.expect(3);
 
   ['click', 'handleClick'].forEach(function(method) {
 
@@ -146,13 +168,15 @@ test('Event handling', function() {
 
   /* Handle click should be a promise */
 
-  set('handleClick', function() {
-    return new Em.RSVP.Promise(function(resolve, reject) {
+  setProperties({
+    handleClick: function() {
+      return new RSVP.Promise(function(resolve, reject) {
 
-      ok(true,
-        'Clicking on the component should call handleClick');
+        assert.ok(true,
+          'Clicking on the component should call handleClick');
 
-    });
+      });
+    },
   });
 
   this.$().click();
