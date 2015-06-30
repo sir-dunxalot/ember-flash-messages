@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Test.registerHelper('checkMessageDom',
   function(app, assert, element, expectedMessage) {
-    const isJqueryObject = element instanceof jQuery;
+    const isJqueryObject = element instanceof Ember.$;
     const expectedType = expectedMessage.type;
 
     let className, container, iconClassFormat, flashMessageComponent;

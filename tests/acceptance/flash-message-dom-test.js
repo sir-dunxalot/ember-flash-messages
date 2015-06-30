@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
+import selectorFor from '../helpers/selector-for';
 import startApp from '../helpers/start-app';
 import {
   expectedContent,
@@ -36,6 +37,11 @@ module('Acceptance | flash message dom', {
     /* Set the helper properties */
 
     queue = container.lookup('service:flash-message-queue');
+
+    Ember.run(function() {
+      queue.clear();
+    });
+
     animationDuration = queue.get('animationDuration');
     interval = queue.get('interval');
     content = queue.get('content');
@@ -69,7 +75,11 @@ test('Message queue component element', function(assert) {
   });
 });
 
+/* Timed messages */
+
 test('Timed message in queue component element', function(assert) {
+
+  assert.expect(12);
 
   visit('/');
 
@@ -78,6 +88,69 @@ test('Timed message in queue component element', function(assert) {
   andThen(function() {
     Ember.run.scheduleOnce('afterRender', this, function() {
       checkMessageDom(assert, inspect('message'), expectedMessage);
+    });
+  });
+});
+
+test('Multiple timed messages in queue component element', function(assert) {
+
+  assert.expect(24);
+
+  visit('/');
+
+  flashMessage(expectedMessage);
+  flashMessage(expectedMessageTwo);
+
+  andThen(function() {
+    Ember.run.scheduleOnce('afterRender', this, function() {
+      checkMessageDom(assert, inspect('message'), expectedMessage);
+
+      Ember.run.later(this, function() {
+        checkMessageDom(assert, inspect('message'), expectedMessageTwo);
+      }, expectedDuration + animationDuration * 2);
+    });
+  });
+});
+
+/* Untimed messages */
+
+test('Untimed message in queue component element', function(assert) {
+
+  assert.expect(13);
+
+  visit('/');
+
+  flashMessage(untimedMessage);
+
+  andThen(function() {
+    Ember.run.scheduleOnce('afterRender', this, function() {
+      checkMessageDom(assert, inspect('message'), untimedMessage);
+    });
+  });
+});
+
+/* Timed and untimed messages */
+
+test('Timed message and untimed message in queue component element', function(assert) {
+
+  assert.expect(25);
+
+  visit('/');
+
+  flashMessage(expectedMessageTwo);
+  flashMessage(untimedMessage);
+
+  andThen(function() {
+    const flashMessageComponent = container.lookup('component:flash-message');
+    const className = flashMessageComponent.get('className');
+    const messageSelector = selectorFor('message');
+
+    const untimedMessageSelector = `${messageSelector}.${className}-${untimedMessageType}`;
+    const expectedMessageSelector = `${messageSelector}.${className}-${expectedTypeTwo}`;
+
+    Ember.run.scheduleOnce('afterRender', this, function() {
+      checkMessageDom(assert, find(untimedMessageSelector), untimedMessage);
+      checkMessageDom(assert, find(expectedMessageSelector), expectedMessageTwo);
     });
   });
 });

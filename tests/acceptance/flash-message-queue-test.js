@@ -38,6 +38,11 @@ module('Acceptance | flash message queue', {
     /* Set the helper properties */
 
     queue = container.lookup('service:flash-message-queue');
+
+    Ember.run(function() {
+      queue.clear();
+    });
+
     animationDuration = queue.get('animationDuration');
     interval = queue.get('interval');
     content = queue.get('content');

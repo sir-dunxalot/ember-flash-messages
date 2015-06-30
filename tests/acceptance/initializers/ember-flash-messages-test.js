@@ -10,7 +10,6 @@ module('Acceptance | initializers/ember flash messages', {
   beforeEach: function() {
     application = startApp();
     container = application.__container__;
-
   },
 
   afterEach: function() {
