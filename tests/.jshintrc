@@ -25,7 +25,8 @@
     "flashMessage",
     "checkCurrentMessage",
     "checkMessageDom",
-    "inspect"
+    "inspect",
+    "andThenAfterRender"
   ],
   "node": false,
   "browser": false,

@@ -85,10 +85,8 @@ test('Timed message in queue component element', function(assert) {
 
   flashMessage(expectedMessage);
 
-  andThen(function() {
-    Ember.run.scheduleOnce('afterRender', this, function() {
-      checkMessageDom(assert, inspect('message'), expectedMessage);
-    });
+  andThenAfterRender(function() {
+    checkMessageDom(assert, inspect('message'), expectedMessage);
   });
 });
 
@@ -101,14 +99,12 @@ test('Multiple timed messages in queue component element', function(assert) {
   flashMessage(expectedMessage);
   flashMessage(expectedMessageTwo);
 
-  andThen(function() {
-    Ember.run.scheduleOnce('afterRender', this, function() {
-      checkMessageDom(assert, inspect('message'), expectedMessage);
+  andThenAfterRender(function() {
+    checkMessageDom(assert, inspect('message'), expectedMessage);
 
-      Ember.run.later(this, function() {
-        checkMessageDom(assert, inspect('message'), expectedMessageTwo);
-      }, expectedDuration + animationDuration * 2);
-    });
+    Ember.run.later(this, function() {
+      checkMessageDom(assert, inspect('message'), expectedMessageTwo);
+    }, expectedDuration + animationDuration * 2);
   });
 });
 
@@ -122,10 +118,8 @@ test('Untimed message in queue component element', function(assert) {
 
   flashMessage(untimedMessage);
 
-  andThen(function() {
-    Ember.run.scheduleOnce('afterRender', this, function() {
-      checkMessageDom(assert, inspect('message'), untimedMessage);
-    });
+  andThenAfterRender(function() {
+    checkMessageDom(assert, inspect('message'), untimedMessage);
   });
 });
 
@@ -140,7 +134,7 @@ test('Timed message and untimed message in queue component element', function(as
   flashMessage(expectedMessageTwo);
   flashMessage(untimedMessage);
 
-  andThen(function() {
+  andThenAfterRender(function() {
     const flashMessageComponent = container.lookup('component:flash-message');
     const className = flashMessageComponent.get('className');
     const messageSelector = selectorFor('message');
@@ -148,9 +142,7 @@ test('Timed message and untimed message in queue component element', function(as
     const untimedMessageSelector = `${messageSelector}.${className}-${untimedMessageType}`;
     const expectedMessageSelector = `${messageSelector}.${className}-${expectedTypeTwo}`;
 
-    Ember.run.scheduleOnce('afterRender', this, function() {
-      checkMessageDom(assert, find(untimedMessageSelector), untimedMessage);
-      checkMessageDom(assert, find(expectedMessageSelector), expectedMessageTwo);
-    });
+    checkMessageDom(assert, find(untimedMessageSelector), untimedMessage);
+    checkMessageDom(assert, find(expectedMessageSelector), expectedMessageTwo);
   });
 });
