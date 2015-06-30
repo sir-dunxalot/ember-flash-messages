@@ -8,11 +8,11 @@ export default Component.extend({
   /* Options */
 
   className: 'flash-message-queue',
-  interval: computed.alias('flashMessageQueue.interval'),
+  interval: computed.oneWay('flashMessageQueue.interval'),
 
   /* Properties */
 
-  animationDuration: computed.alias('flashMessageQueue.animationDuration'),
+  animationDuration: computed.oneWay('flashMessageQueue.animationDuration'),
   classNameBindings: ['className'],
   currentMessage: computed.oneWay('flashMessageQueue.currentMessage'),
   dataTest: 'flash-message-queue',
