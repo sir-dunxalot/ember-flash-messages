@@ -82,6 +82,8 @@ export default Ember.Route.extend({
 
 ## Installation
 
+**Users of older version of Ember (e.g. 1.10) should use release `v0.5.2`.**
+
 ```
 ember install ember-flash-messages
 ```
