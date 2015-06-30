@@ -1,80 +1,111 @@
 Ember Flash Messages [![Build Status](https://travis-ci.org/sir-dunxalot/ember-flash-messages.svg?branch=master)](https://travis-ci.org/sir-dunxalot/ember-flash-messages)
 ======
 
-Ember Flash Messages (`ember-flash-messages`) adds API-like functionality to your Ember CLI app for rendering and managing flash messages. The primary purpose of this addon is to manage functionality in your JS whilst getting out of the way for styling and templating, allowing you to match your styleguide and mockups precisely. However, a basic stylesheet for flash message layout may be optionally imported.
+Ember Flash Messages (`ember-flash-messages`) adds API-like functionality to your Ember CLI app for rendering and managing flash messages.
 
+The primary goal of this addon is to manage functionality in your JS whilst getting out of the way for styling and templating, allowing you to match your styleguide and mockups precisely.
 
-## Features
+Stylesheets for a basic flash message layout may be optionally imported.
 
-- Three easy ways to show messages:
-  - Time messages and show them one at a time
-  - Show multiple messages for an indefinite amount of time
-  - Add a static component to a template
-- Use all of the above in parallel
-- Use Handlebars in your static flash messages' content
-- Let the user close the message regardless of the remaining duration
-- Add an action that will be run when the user clicks the message
-- Use out-of-the-box in any route, controller, or view
-- Use in your application or route-specific templates
-- Specify default options and message-specific overrides
-- Layout CSS importable with an option in your Brocfile
-- Semantic markup
+## Contents
 
-[See what's in the works here](#features-in-the-works).
+- [Examples](#examples)
+- [Installation](#installation)
+- [Documentation](#documentation)
 
+## Examples
+
+Simple JS usage in any route, component, controller, or view:
+
+```js
+// app/controller/index.js
+
+export default Ember.Controller.extend({
+
+  afterSomeEvent: function() {
+    this.flashMessage('success', 'Content saved!');
+  },
+
+});
+```
+
+Firing an action when the message is clicked:
+
+```js
+// app/controller/index.js
+
+export default Ember.Component.extend({
+
+  actions: {
+    undo(message) {
+      console.log(message);
+    }
+  }
+
+  afterSomeEvent: function() {
+    this.flashMessage({
+      type: 'warning',
+      action: 'undo', // Run when message is
+      content: '<strong>Click here</strong> to cancel', // Pass HTML
+      duration: 5000, // Milliseconds to show the message for
+    });
+  },
+
+});
+```
+
+Adding as a standalone component in a template:
+
+```hbs
+{{#flash-message type='some-event'}}
+  Welcome to your new account!. {{#link-to 'tutorial'}}Click here to repeat the tutorial{{/link-to}}.
+{{/flash-message}}
+```
+
+Showing a message in perpetuity:
+
+```js
+// app/controller/index.js
+
+export default Ember.Route.extend({
+
+  afterSomeEvent: function() {
+    this.flashMessage({
+      type: 'success',
+      content: 'This will show forever!',
+      duration: 0, // Pass zero duration
+    });
+  },
+
+});
+```
 
 ## Installation
 
 ```
-ember install:addon ember-flash-messages
+ember install ember-flash-messages
 ```
 
+Now add the flash message queue to your template. Usually this is the application template.
+
+```
+{{flash-message-queue}}
+```
 
 ## Documentation
 
 Documentation including installation, usage, and customizable options is available [in the wiki](https://github.com/sir-dunxalot/ember-flash-messages/wiki).
 
-
-## Features in the Works
-
-- Demo
-- Message component content property will accept Handlebars
-- Basic CSS made importable in Brocfile
-- Improved semanticism in the templates
-- Close button added to importable layout CSS
-- `clearQueue()` method injected with `flashMessage()`
-- Close button to use icon format
-
-
 ## Issues
 
-If you have any issues or feature requests/ideas, please [open an issue](https://github.com/sir-dunxalot/ember-flash-messages/issues/new) or submit a PR.
-
+If you have any issues or feature requests, please [open an issue](https://github.com/sir-dunxalot/ember-flash-messages/issues/new) or submit a PR.
 
 ## Development
 
-```shell
-git clone https://github.com/sir-dunxalot/ember-flash-messages.git
-cd ember-flash-messages
-ember install
-ember s
-```
-
-The test suite can be ran as follows:
-
-```shell
-ember test
-```
+- Clone: `git clone https://github.com/sir-dunxalot/ember-disqus.git`
+- Serve: `ember s`
+- Test: `ember test` or `/tests` route
 
 ### Working on wiki documentation:
 
 You can edit the documentation directly on Github - it's a wiki!
-
-Alternatively, if you want to work on the documentation locally you can clone the repo as above then run:
-
-```shell
-cd docs
-git submodule update --init --recursive # Updates submodule
-```
-
-You can open a PR to the documentation, as usual. Please note it is technically a seperate git repo.
