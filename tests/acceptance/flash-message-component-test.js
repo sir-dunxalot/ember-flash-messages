@@ -36,7 +36,7 @@ module('Acceptance | flash message component', {
 
   afterEach() {
     Ember.run(application, 'destroy');
-  }
+  },
 
 });
 

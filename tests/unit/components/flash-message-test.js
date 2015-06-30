@@ -16,7 +16,7 @@ function setProperties(properties) {
 moduleForComponent('flash-message', 'Unit | Component | flash message', {
   unit: true,
 
-  beforeEach: function() {
+  beforeEach() {
     component = this.subject({
       flashMessageQueue: Ember.inject.service(),
     });

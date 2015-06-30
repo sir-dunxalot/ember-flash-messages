@@ -7,14 +7,16 @@ const { isFunction } = window.QUnit;
 let application, container;
 
 module('Acceptance | initializers/ember flash messages', {
-  beforeEach: function() {
+
+  beforeEach() {
     application = startApp();
     container = application.__container__;
   },
 
-  afterEach: function() {
+  afterEach() {
     Ember.run(application, 'destroy');
-  }
+  },
+
 });
 
 test('Injections on Ember classes', function(assert) {

@@ -28,7 +28,8 @@ let animationDuration,
     queue;
 
 module('Acceptance | flash message queue', {
-  beforeEach: function() {
+
+  beforeEach() {
 
     /* Setup the app */
 
@@ -48,9 +49,10 @@ module('Acceptance | flash message queue', {
     content = queue.get('content');
   },
 
-  afterEach: function() {
+  afterEach() {
     Ember.run(application, 'destroy');
-  }
+  },
+
 });
 
 test('Messages should be pushed to the queue', function(assert) {

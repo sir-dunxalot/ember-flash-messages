@@ -10,13 +10,13 @@ moduleForComponent('message-queue', 'Unit | Component | message queue component'
   unit: true,
   needs: ['component:flash-message', 'service:flash-message-queue'],
 
-  beforeEach: function() {
+  beforeEach() {
     component = this.subject({
       flashMessageQueue: Ember.inject.service(),
     });
   },
 
-  afterEach: function() {
+  afterEach() {
     run(function() {
       component.clear();
     });
