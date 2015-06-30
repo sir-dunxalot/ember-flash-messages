@@ -61,7 +61,7 @@ test('Message queue component element', function(assert) {
   visit('/');
 
   andThen(function() {
-    const queueComponent = container.lookup('component:message-queue');
+    const queueComponent = container.lookup('component:flash-message-queue');
     const queueElement = inspect('message-queue');
     const className = queueComponent.get('className');
 

@@ -6,7 +6,7 @@ const { isFunction } = window.QUnit;
 
 let component;
 
-moduleForComponent('message-queue', 'Unit | Component | message queue component', {
+moduleForComponent('flash-message-queue', 'Unit | Component | flash message queue component', {
   unit: true,
   needs: ['component:flash-message', 'service:flash-message-queue'],
 

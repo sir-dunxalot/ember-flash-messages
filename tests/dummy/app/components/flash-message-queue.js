@@ -1,6 +1,6 @@
-import MessageQueueComponent from 'ember-flash-messages/components/message-queue';
+import FlashMessageQueueComponent from 'ember-flash-messages/components/flash-message-queue';
 
-export default MessageQueueComponent.extend({
+export default FlashMessageQueueComponent.extend({
 
   /* If an action is goign to be called in the component,
   bubble it up */
