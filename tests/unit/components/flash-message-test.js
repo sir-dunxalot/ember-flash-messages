@@ -17,7 +17,9 @@ moduleForComponent('flash-message', 'Unit | Component | flash message', {
   unit: true,
 
   beforeEach: function() {
-    component = this.subject();
+    component = this.subject({
+      flashMessageQueue: Ember.inject.service(),
+    });
   },
 
 });
@@ -26,13 +28,12 @@ moduleForComponent('flash-message', 'Unit | Component | flash message', {
 
 test('Data test attributes', function(assert) {
 
+  component.set('duration', 1000);
+
   assert.ok(component.get('dataTest'),
     'Component should have a dataTest property');
 
-  assert.equal(this.$().attr('data-test'), 'flash-message',
-    'Component should have a data-test attribute');
-
-  ['button', 'content', 'icon'].forEach(function(name) {
+  ['content', 'icon'].forEach(function(name) {
 
     assert.ok(this.$().find(selectorFor(name)).length,
       'Component layout should have an element for the ' + name);

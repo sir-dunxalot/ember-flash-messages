@@ -145,9 +145,9 @@ export default Component.extend({
     the queue, but only if there are no other messages
     in the queue. */
 
-    if (this.get('message.timed')) {
+    if (queue && this.get('message.timed')) {
       queue.on('willHideQueue', this, function() {
-        var queueLength = queue.get('timedMessages.length');
+        const queueLength = queue.get('timedMessages.length');
 
         /* If there is not another message queued, start
         hiding the queue */
