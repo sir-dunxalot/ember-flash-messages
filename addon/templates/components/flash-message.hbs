@@ -1,4 +1,4 @@
-<dt class="icon_wrapper">
+<dt class="flash-message-icon-wrapper">
   <span class="{{iconClass}}" data-test="flash-icon"></span>
 
   <span class="hidden" data-test="flash-type">
@@ -6,7 +6,7 @@
   </span>
 </dt>
 
-<dd class="content" data-test="flash-content">
+<dd class="flash-message-content" data-test="flash-content">
   {{!-- Allow HTML --}}
   {{{content}}}
 
@@ -14,8 +14,10 @@
   {{yield}}
 </dd>
 
+{{!-- A close button is shown for non-timed messages --}}
+
 {{#unless message.timed}}
-  <div class="button_wrapper">
+  <div class="flash-message-button-wrapper">
     <button class="button" data-test="flash-button">
       <span class="icon-close"></span>
       <span class="hidden">Close</span>

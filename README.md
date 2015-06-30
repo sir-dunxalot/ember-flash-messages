@@ -104,9 +104,14 @@ If you have any issues or feature requests, please [open an issue](https://githu
 
 ## Development
 
-- Clone: `git clone https://github.com/sir-dunxalot/ember-disqus.git`
-- Serve: `ember s`
-- Test: `ember test` or `/tests` route
+```sh
+git clone https://github.com/sir-dunxalot/ember-flash-messages.git
+cd ember-flash-messages
+ember install
+ember s
+```
+
+Tests can be run with `ember test` or by navigating to the `/tests` route.
 
 ### Working on wiki documentation:
 
