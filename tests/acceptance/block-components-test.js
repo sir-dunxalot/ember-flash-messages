@@ -1,10 +1,10 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
-import startApp from 'ember-flash-messages/tests/helpers/start-app';
+import startApp from '../helpers/start-app';
 
 var application;
 
-module('Acceptance | actions', {
+module('Acceptance | block components', {
   beforeEach: function() {
     application = startApp();
   },
@@ -15,9 +15,10 @@ module('Acceptance | actions', {
 });
 
 test('visiting /', function(assert) {
-  visit('/');
+  visit('/block-components');
 
   andThen(function() {
+
     assert.ok(true);
   });
 });

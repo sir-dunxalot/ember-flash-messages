@@ -5,7 +5,7 @@ export default Ember.Test.registerHelper('checkMessageDom',
     const isJqueryObject = element instanceof Ember.$;
     const expectedType = expectedMessage.type;
 
-    let className, container, iconClassFormat, flashMessageComponent;
+    let animationDuration, className, container, iconClassFormat, flashMessageComponent;
 
     assert.notEqual(element.length, 0,
       'The jquery element passed into checkMessageDom should exist');
@@ -19,6 +19,7 @@ export default Ember.Test.registerHelper('checkMessageDom',
 
     container = app.__container__;
     flashMessageComponent = container.lookup('component:flash-message');
+    animationDuration = flashMessageComponent.get('animationDuration');
     iconClassFormat = flashMessageComponent.get('iconClassFormat');
 
     if (!className) {
@@ -46,6 +47,13 @@ export default Ember.Test.registerHelper('checkMessageDom',
 
     assert.ok(element.hasClass(`${className}-${expectedMessage.type}`),
       'The message element should have the correct type class bound');
+
+    Ember.run.later(this, function() {
+
+      assert.ok(element.hasClass('visible'),
+        'The message element should have the visible class bound');
+
+    }, animationDuration);
 
     assert.equal(element.attr('role'), 'alert',
       'The message element should have the ARIA role bound');

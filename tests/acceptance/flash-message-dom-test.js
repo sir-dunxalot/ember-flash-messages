@@ -79,7 +79,7 @@ test('Message queue component element', function(assert) {
 
 test('Timed message in queue component element', function(assert) {
 
-  assert.expect(12);
+  assert.expect(13);
 
   visit('/');
 
@@ -92,7 +92,7 @@ test('Timed message in queue component element', function(assert) {
 
 test('Multiple timed messages in queue component element', function(assert) {
 
-  assert.expect(24);
+  assert.expect(26);
 
   visit('/');
 
@@ -108,11 +108,40 @@ test('Multiple timed messages in queue component element', function(assert) {
   });
 });
 
+/* Clicking timed messages */
+
+test('Clicking timed message', function(assert) {
+
+  assert.expect(14);
+
+  visit('/');
+
+  flashMessage(expectedMessage);
+
+  andThenAfterRender(function() {
+    const message = inspect('message');
+
+    checkMessageDom(assert, message, expectedMessage);
+
+    /* Click to remove */
+
+    click(message);
+  });
+
+  andThenAfterRender(function() {
+
+    assert.ok(!inspect('message').length,
+      'The message should be removed from the DOM after being clicked');
+
+  });
+});
+
+
 /* Untimed messages */
 
 test('Untimed message in queue component element', function(assert) {
 
-  assert.expect(13);
+  assert.expect(14);
 
   visit('/');
 
@@ -123,11 +152,51 @@ test('Untimed message in queue component element', function(assert) {
   });
 });
 
+/* Clicking untimed messages */
+
+test('Clicking untimed message', function(assert) {
+
+  assert.expect(16);
+
+  visit('/');
+
+  flashMessage(untimedMessage);
+
+  andThenAfterRender(function() {
+    const message = inspect('message');
+
+    checkMessageDom(assert, message, untimedMessage);
+
+  });
+
+  /* Click to remove */
+
+  asyncClick('message');
+
+  /* Then check the message has been removed */
+
+  andThenAfterRender(function() {
+    const message = inspect('message');
+
+    assert.ok(!message.hasClass('visible'),
+      'The message should not have the visible class after being clicked');
+
+    Ember.run.later(this, function() {
+
+      assert.ok(!message.length,
+        'The message should be removed from the DOM after the animation duration has passed');
+
+    }, animationDuration);
+
+  });
+});
+
+
 /* Timed and untimed messages */
 
 test('Timed message and untimed message in queue component element', function(assert) {
 
-  assert.expect(25);
+  assert.expect(27);
 
   visit('/');
 

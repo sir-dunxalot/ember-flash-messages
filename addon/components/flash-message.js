@@ -69,9 +69,8 @@ export default Component.extend({
     /* Remove message visually... */
 
     this.handleClick().then(function() {
-      const { action, message } = this.getProperties(
-        [ 'action', 'message' ]
-      );
+      const action = this.get('action');
+      const message = this.get('message') || this.get('attrs.message.value');
 
       if (action) {
 

@@ -26,7 +26,8 @@
     "checkCurrentMessage",
     "checkMessageDom",
     "inspect",
-    "andThenAfterRender"
+    "andThenAfterRender",
+    "asyncClick"
   ],
   "node": false,
   "browser": false,

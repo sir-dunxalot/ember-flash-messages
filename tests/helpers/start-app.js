@@ -10,6 +10,7 @@ import checkMessageDom from './sync/check-message-dom';
 import inspect from './sync/inspect';
 
 import andThenAfterRender from './async/and-then-after-render';
+import asyncClick from './async/async-click';
 import flashMessage from './async/flash-message';
 
 export default function startApp(attrs) {
