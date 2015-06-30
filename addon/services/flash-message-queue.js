@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Message from 'ember-flash-messages/models/message';
+import FlashMessage from 'ember-flash-messages/models/flash-message';
 import defaultFor from 'ember-flash-messages/utils/default-for';
 
 const {
@@ -57,7 +57,7 @@ export default Service.extend(
       );
     }
 
-    message = Message.create(messageProperties);
+    message = FlashMessage.create(messageProperties);
 
     /* Add animation time to message duration */
 

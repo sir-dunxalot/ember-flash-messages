@@ -4,6 +4,7 @@
       <li>
         {{flash-message
           message=message
+          removeMessageAction='removeMessage'
         }}
       </li>
     {{/each}}
@@ -13,5 +14,6 @@
 {{#if currentMessage}}
   {{flash-message
     message=currentMessage
+    removeMessageAction='removeMessage'
   }}
 {{/if}}

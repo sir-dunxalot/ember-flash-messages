@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import FlashMessage from 'ember-flash-messages/models/flash-message';
 import layout from 'ember-flash-messages/templates/components/flash-message';
 
 const {
@@ -22,9 +23,10 @@ export default Component.extend({
 
   message: computed({
     get() {
-      return Ember.Object.create({
+      return FlashMessage.create({
         action: this.get('action'),
         content: this.get('content'),
+        createdAt: this.get('createdAt'),
         duration: this.get('duration'),
         type: this.get('type'),
       });
@@ -39,10 +41,11 @@ export default Component.extend({
   animationDuration: computed.oneWay('flashMessageQueue.animationDuration'),
   attributeBindings: ['role'],
   classNameBindings: ['className', 'typeClass', 'visible'],
+  createdAt: null,
   dataTest: 'flash-message',
   inQueue: computed.bool('parentView.isMessageQueueComponent'),
   layout: layout,
-  removeMessageAction: 'removeMessage',
+  removeMessageAction: null,
   role: 'alert',
   tagName: 'dl',
   visible: false,
@@ -69,15 +72,11 @@ export default Component.extend({
     /* Remove message visually... */
 
     this.handleClick().then(function() {
-      const action = this.get('action');
       const message = this.get('message') || this.get('attrs.message.value');
 
-      if (action) {
+      /* this.sendAction('action') is automatically run here */
 
-        /* ... Then remove message from queue(s) */
-
-        this.sendAction('action', message); // Only runs if action is set
-      }
+      /* ... Then remove message from queue(s) */
 
       this.sendAction('removeMessageAction', message);
     }.bind(this));

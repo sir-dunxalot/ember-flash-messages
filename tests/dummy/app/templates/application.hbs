@@ -1,5 +1,10 @@
 <h2 id='title'>Welcome to Ember Flash Messages</h2>
 
-{{message-queue}}
+<ul>
+  <li>{{#link-to 'index'}}Home{{/link-to}}</li>
+  <li>{{#link-to 'standalone-components'}}Standalone component use{{/link-to}}</li>
+</ul>
 
 {{outlet}}
+
+{{message-queue}}
