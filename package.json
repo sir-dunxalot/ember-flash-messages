@@ -1,6 +1,6 @@
 {
   "name": "ember-flash-messages",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Adds API-like functionality for rendering and managing flash messages in your Ember CLI apps",
   "directories": {
     "doc": "doc",
