@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import layout from 'ember-flash-messages/templates/components/flash-message-queue';
 
 const { Component, computed } = Ember;
 
@@ -17,7 +16,6 @@ export default Component.extend({
   currentMessage: computed.oneWay('flashMessageQueue.currentMessage'),
   dataTest: 'flash-message-queue',
   isMessageQueueComponent: true,
-  layout: layout,
   shouldShow: computed.or('currentMessage', 'untimedMessages.length'),
   untimedMessages: computed.oneWay('flashMessageQueue.untimedMessages'),
 

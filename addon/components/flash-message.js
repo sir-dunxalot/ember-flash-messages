@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import FlashMessage from 'ember-flash-messages/models/flash-message';
-import layout from 'ember-flash-messages/templates/components/flash-message';
 
 const {
   Component,
@@ -44,7 +43,6 @@ export default Component.extend({
   createdAt: null,
   dataTest: 'flash-message',
   inQueue: computed.bool('parentView.isMessageQueueComponent'),
-  layout: layout,
   removeMessageAction: null,
   role: 'alert',
   tagName: 'dl',
