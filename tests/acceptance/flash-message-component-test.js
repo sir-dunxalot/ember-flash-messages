@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import FlashMessage from 'ember-flash-messages/models/flash-message';
 import { module, test } from 'qunit';
 import startApp from '../helpers/start-app';
 

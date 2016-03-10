@@ -5,7 +5,7 @@ import selectorFor from '../../helpers/selector-for';
 const { RSVP, run } = Ember;
 const { isFunction, typeOf } = window.QUnit;
 
-let component, set;
+let component;
 
 function setProperties(properties) {
   run(function() {
@@ -170,7 +170,7 @@ test('Event handling', function(assert) {
 
   setProperties({
     handleClick: function() {
-      return new RSVP.Promise(function(resolve, reject) {
+      return new RSVP.Promise(function(/* resolve, reject */) {
 
         assert.ok(true,
           'Clicking on the component should call handleClick');
