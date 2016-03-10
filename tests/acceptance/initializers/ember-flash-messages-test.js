@@ -26,11 +26,10 @@ test('Injections on Ember classes', function(assert) {
     const component = container.lookup('component:test-for-injection');
     const controller = container.lookup('controller:application');
     const route = container.lookup('route:application');
-    const view = container.lookup('view:test-for-injection');
 
-    assert.expect(8);
+    assert.expect(6);
 
-    [component, controller, route, view].forEach(function(instance) {
+    [component, controller, route].forEach(function(instance) {
       const name = instance.get('constructor').toString();
 
       assert.ok(!!instance.get('flashMessageQueue'),

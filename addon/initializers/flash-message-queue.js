@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export function initialize(/* container, application */) {
 
-  ['View', 'Controller', 'Route', 'Component'].forEach(function(classType) {
+  ['Controller', 'Route', 'Component'].forEach(function(classType) {
     Ember[classType].reopen({
       flashMessageQueue: Ember.inject.service(),
 

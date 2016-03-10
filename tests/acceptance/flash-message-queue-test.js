@@ -7,14 +7,14 @@ import {
   expectedType,
   expectedMessage,
 
-  expectedContentTwo,
-  expectedDurationTwo,
-  expectedTypeTwo,
+  // expectedContentTwo,
+  // expectedDurationTwo,
+  // expectedTypeTwo,
   expectedMessageTwo,
 
-  untimedMessageDuration,
-  untimedMessageContent,
-  untimedMessageType,
+  // untimedMessageDuration,
+  // untimedMessageContent,
+  // untimedMessageType,
   untimedMessage,
 } from '../fixtures/messages';
 
