@@ -69,7 +69,7 @@ export default Component.extend({
 
     /* Remove message visually... */
 
-    this.handleClick().then(function() {
+    this.handleClick().then(() => {
       const message = this.get('message') || this.get('attrs.message.value');
 
       /* this.sendAction('action') is automatically run here */
@@ -77,7 +77,7 @@ export default Component.extend({
       /* ... Then remove message from queue(s) */
 
       this.sendAction('removeMessageAction', message);
-    }.bind(this));
+    });
   },
 
   handleClick() {
@@ -85,7 +85,7 @@ export default Component.extend({
       [ 'inQueue', 'parentView' ]
     );
 
-    return new RSVP.Promise(function(resolve /*, reject */) {
+    return new RSVP.Promise((resolve /*, reject */) => {
 
       /* If message is in the queue, see if the queue should remain visible... */
 
@@ -103,7 +103,7 @@ export default Component.extend({
         }, this.get('animationDuration'));
       }
 
-    }.bind(this));
+    });
   },
 
   /* Animation methods */
