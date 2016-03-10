@@ -53,7 +53,7 @@ test('Default properties and methods', function(assert) {
   assert.ok(this.$().hasClass(component.get('className')),
     'Component element should have default class name');
 
-  assert.strictEqual(component.get('shouldShow'), false,
+  assert.notOk(component.get('shouldShow'),
     'shouldShow should be false by default');
 
   /* Check methods */
