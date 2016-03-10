@@ -143,7 +143,7 @@ export default Component.extend({
     the queue, but only if there are no other messages
     in the queue. */
 
-    if (queue && this.get('message.timed')) {
+    if (queue && this.get('message.duration') !== 0) {
       queue.on('willHideQueue', this, function() {
         const queueLength = queue.get('timedMessages.length');
 
